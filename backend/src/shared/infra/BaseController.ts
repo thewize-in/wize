@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
+import { Request, Response, CookieOptions } from 'express';
 
 export abstract class BaseController {
     protected request!: Request;
     protected response!: Response;
 
-    protected abstract executeImpl(): Promise<void | any>;
+    protected abstract executeImpl(): void | any;
     public execute(req: Request, res: Response): void {
         this.request = req;
         this.response = res;
@@ -13,17 +13,24 @@ export abstract class BaseController {
     public static jsonResponse(res: Response, code: number, message: string) {
         return res.status(code).json({ message: message });
     }
+    protected sendCookie(res: Response, cookie: { key: string; value: string; options: CookieOptions }) {
+        res.status(201)
+            .cookie(cookie.key, cookie.value, {
+                expires: cookie.options.expires,
+                secure: cookie.options.secure,
+                httpOnly: cookie.options.httpOnly,
+            })
+            .send('ok');
+    }
     public ok<T>(res: Response, dto?: T) {
-
         if (dto) return res.status(200).json(dto);
         return res.sendStatus(200);
     }
     public fail(error: Error | string) {
         console.log(error);
         return this.response?.status(500).json({
-            message: error.toString()
+            message: error.toString(),
         });
-
     }
     public clientError(message?: string) {
         return BaseController.jsonResponse(this.response, 400, message ? message : 'Unauthorized');
