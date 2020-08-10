@@ -12,13 +12,13 @@ export class AuthorizationMiddleware {
             return next();
         };
     }
-    public ensureUserIsParticipant() {
+    public ensureUserIsPatient() {
         return async (req: Request, res: Response, next: NextFunction) => {
             if (req.session && req.session.user['role'] === 1) return next();
             return this.endRequest(403, 'unauthorized request', res);
         };
     }
-    public ensureUserIsHost() {
+    public ensureUserIsDoctor() {
         return async (req: Request, res: Response, next: NextFunction) => {
             if (req.session && req.session.user['role'] === 2) return next();
             return this.endRequest(403, 'unauthorized request', res);

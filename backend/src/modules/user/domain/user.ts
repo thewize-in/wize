@@ -1,13 +1,13 @@
 import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { Guard } from '../../../shared/core/logic/Guard';
 import { Result } from '../../../shared/core/logic/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
 import { Role } from './Role';
+import { Username } from './Username';
 
 interface UserProps {
     role: Role;
-    username: string;
-    displayName: string;
+    username: Username;
+    displayName?: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -23,11 +23,14 @@ export class User extends AggregateRoot<UserProps> {
     get googleId(): string {
         return this.props.googleId;
     }
-    get username(): string {
+    get username(): Username {
         return this.props.username;
     }
+    set username(value: Username) {
+        this.props.username = value;
+    }
     get displayName(): string {
-        return this.props.username;
+        return this.props.displayName;
     }
     get firstName(): string {
         return this.props.firstName;
@@ -56,7 +59,8 @@ export class User extends AggregateRoot<UserProps> {
     public static create(props: UserProps): Result<User> {
         const user = new User({
             ...props,
-            displayName: props.username,
+            username: Username.create(props.email).getValue(),
+            displayName: `${props.firstName ? props.firstName : props.username.value}`,
         });
         return Result.ok<User>(user);
     }

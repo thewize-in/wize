@@ -2,13 +2,13 @@ require('dotenv').config();
 import { AuthProviderProfileInfo } from '../models/authProviderProfileInfo';
 import { AuthProvider } from '../models/authProvider';
 import { OAuth2Client } from 'google-auth-library';
-import { authConfig } from '../../../../../shared/config/authConfig';
+import { authConfig } from '../../../config/authConfig';
 
 export interface IGoogleService extends AuthProvider {
     getProfileInfo(token: string): Promise<AuthProviderProfileInfo>;
     checkValidAuthToken(token: string): Promise<boolean | object>;
 }
-type googleProfie = {
+type googleProfieDTO = {
     name: string;
     given_name: string;
     family_name: string;
@@ -23,7 +23,7 @@ export class GoogleService implements IGoogleService {
         this.client = new OAuth2Client(authConfig.googleClientId);
     }
     public async getProfileInfo(token: string): Promise<AuthProviderProfileInfo> {
-        const data: googleProfie = await this.getTicketPaylod(token);
+        const data: googleProfieDTO = await this.getTicketPaylod(token);
         return {
             username: data.name,
             first_name: data.given_name,

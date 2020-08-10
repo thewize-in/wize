@@ -3,6 +3,7 @@ const signInBtn = document.querySelector('#signIn');
 
 signInBtn.addEventListener('click', onSignIn);
 function onSignIn(googleUser) {
+    document.querySelector('pre').innerHTML = googleUser.getAuthResponse().id_token;
     axios
         .post(
             'http://localhost:3000/login',

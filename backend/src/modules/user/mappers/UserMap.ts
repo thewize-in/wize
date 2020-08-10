@@ -1,13 +1,11 @@
 import { Mapper } from '../../../shared/infra/Mapper';
 import { User } from '../domain/user';
-import { TextUtils } from '../../../shared/utils/TextUtils';
 
 export class UserMap implements Mapper<User> {
     public static toPersistence(user: User): any {
         return {
             google_id: user.googleId,
-            uuid: user.id.toValue(),
-            username: TextUtils.removeWhiteSpace(user.username).toLowerCase(),
+            username: user.username.value,
             display_name: user.displayName,
             first_name: user.firstName,
             last_name: user.lastName,

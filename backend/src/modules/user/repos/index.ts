@@ -1,5 +1,5 @@
 import { UserRepo } from './UserRepo';
-import { UserModel } from '../../../shared/infra/database/mongoose/models/userModel';
+import { userModel } from '../../../shared/infra/database/mongoose/models/userModel';
 
-const userRepo = new UserRepo(UserModel);
+const userRepo = new UserRepo(userModel);
 export { userRepo };

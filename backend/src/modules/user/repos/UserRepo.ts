@@ -4,7 +4,6 @@ import { Model, Document } from 'mongoose';
 import { UserMap } from '../mappers/UserMap';
 import { Result } from '../../../shared/core/logic/Result';
 import { Guard } from '../../../shared/core/logic/Guard';
-import { GetUserByUsernameDTO } from '../useCases/getUserByUsername/GetUserByUsernameDTO';
 
 export interface IUserRepo extends Repo<User> {
     findUserByEmail(email: string): Promise<User>;
@@ -15,38 +14,35 @@ export interface IUserRepo extends Repo<User> {
     findUserByIdAndDelete(id: string): Promise<boolean>;
 }
 export class UserRepo implements IUserRepo {
-    private _model: Model<Document>;
+    private model: Model<Document>;
     constructor(model: any) {
-        this._model = model;
+        this.model = model;
     }
     async save(user: User): Promise<void> {
         const rawUser = UserMap.toPersistence(user);
 
         try {
-            new this._model(rawUser).save();
+            new this.model(rawUser).save();
             console.log('new user saved');
         } catch (err) {
             Result.fail<User>(err);
         }
     }
     async exists(user: User): Promise<boolean> {
-        const isUserExist = await this._model.findOne({ email: user.email });
+        const isUserExist = await this.model.findOne({ email: user.email });
         return isUserExist ? true : false;
     }
     async findUserByEmail(email: string): Promise<User> {
-        const rawUser: any = await this._model.findOne({ email }, { id: 1 });
+        const rawUser: any = await this.model.findOne({ email }, { id: 1 });
         return UserMap.toDomain(rawUser);
     }
     async findUserById(id: string): Promise<User> {
-        const rawUser: any = await this._model.findById(id, { username: 1, email: 1 });
+        const rawUser: any = await this.model.findById(id, { username: 1, email: 1 });
         return UserMap.toDTO(rawUser);
     }
     async findUserByUsername(username: string): Promise<User> {
         try {
-            const userOrError: any = await this._model.findOne(
-                { username },
-                { username: 1, display_name: 1, email: 1 },
-            );
+            const userOrError: any = await this.model.findOne({ username }, { username: 1, display_name: 1, email: 1 });
             const guardResult = Guard.againstNullOrUndefined(userOrError, 'userOrError');
 
             if (!guardResult.succeeded) return Result.success(false);
@@ -59,7 +55,7 @@ export class UserRepo implements IUserRepo {
     }
     async existsAndReturn(user: User): Promise<object> {
         try {
-            const userOrError: any = await this._model.findOne({ email: user.email }, { _id: 1, user_role: 1 });
+            const userOrError: any = await this.model.findOne({ email: user.email }, { _id: 1, user_role: 1 });
             const guardResult = Guard.againstNullOrUndefined(userOrError, 'userOrError');
 
             if (!guardResult.succeeded) return Result.success(false);
@@ -71,7 +67,7 @@ export class UserRepo implements IUserRepo {
     }
     async findUserByIdAndReturnAll(id: string): Promise<User> {
         try {
-            const userOrError: any = await this._model.findById(id, {
+            const userOrError: any = await this.model.findById(id, {
                 username: 1,
                 display_name: 1,
                 first_name: 1,
@@ -90,7 +86,7 @@ export class UserRepo implements IUserRepo {
     }
     async findUserByIdAndDelete(id: string): Promise<boolean> {
         try {
-            await this._model.findByIdAndDelete(id);
+            await this.model.findByIdAndDelete(id);
             return Result.success(true);
         } catch (err) {
             return Result.success(false);

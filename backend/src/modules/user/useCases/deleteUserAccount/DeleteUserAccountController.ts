@@ -1,6 +1,6 @@
 /**
  * @class DeleteUserAccountController
- * use two usecase 1- DeleteUserAccount 2- LogoutUser
+ * this class using two usecase 1- DeleteUserAccount 2- LogoutUser
  *
  */
 import { BaseController } from '../../../../shared/infra/BaseController';

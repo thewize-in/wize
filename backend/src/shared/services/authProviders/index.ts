@@ -1,4 +1,4 @@
-import { GoogleService } from './provides/googleProvider';
+import { GoogleService } from './provider/googleProvider';
 
 const googleService = new GoogleService();
 

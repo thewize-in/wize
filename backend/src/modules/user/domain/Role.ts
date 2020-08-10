@@ -1,6 +1,6 @@
 export enum Role {
     guest,
-    participant,
-    host,
+    patient,
+    doctor,
     admin,
 }

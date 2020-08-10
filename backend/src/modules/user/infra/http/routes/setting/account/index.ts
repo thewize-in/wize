@@ -7,7 +7,7 @@ const userAccountRouter = express.Router();
 userAccountRouter.post(
     '/delete',
     authorizationMiddleware.ensureAuthenticated(),
-    authorizationMiddleware.ensureUserIsParticipant(),
+    authorizationMiddleware.ensureUserIsPatient(),
     (req: Request, res: Response) => {
         deleteUserAccountController.execute(req, res);
     },

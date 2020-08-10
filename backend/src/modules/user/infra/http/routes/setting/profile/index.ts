@@ -7,7 +7,7 @@ const userProfileRouter = express.Router();
 userProfileRouter.get(
     '/',
     authorizationMiddleware.ensureAuthenticated(),
-    authorizationMiddleware.ensureUserIsParticipant(),
+    authorizationMiddleware.ensureUserIsPatient(),
     (req: Request, res: Response) => {
         getUserProfileController.execute(req, res);
     },

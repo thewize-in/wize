@@ -52,5 +52,5 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.index({ email: -1 });
-const UserModel = mongoose.model('users', userSchema);
-export { UserModel };
+const userModel = mongoose.model('users', userSchema);
+export { userModel };

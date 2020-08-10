@@ -1,6 +1,6 @@
 import { UseCase } from '../../../../shared/domain/UseCase';
-import { AuthProviderProfileInfo } from '../../services/authProviders/models/authProviderProfileInfo';
-import { IGoogleService } from '../../services/authProviders/provides/googleProvider';
+import { AuthProviderProfileInfo } from '../../../../shared/services/authProviders/models/authProviderProfileInfo';
+import { IGoogleService } from '../../../../shared/services/authProviders/provider/googleProvider';
 import { Result } from '../../../../shared/core/logic/Result';
 import { User } from '../../domain/user';
 import { UserMap } from '../../mappers/UserMap';
