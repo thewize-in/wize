@@ -1,11 +1,15 @@
 import { Result } from '../../../shared/core/logic/Result';
 import { DoctorStatus } from './doctorStatus';
 import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { DoctorCreated } from './events/DoctorCreated';
+// import { DoctorCreated } from './events/DoctorCreated';
 
 interface DoctorProps {
     doctorId: string;
     status?: DoctorStatus;
+}
+interface UpdateStatusProps {
+    active: boolean;
+    pause: boolean;
 }
 export class Doctor extends AggregateRoot<DoctorProps> {
     get doctorId(): string {
@@ -23,9 +27,6 @@ export class Doctor extends AggregateRoot<DoctorProps> {
             pause: false,
         };
         const doctor: Doctor = new Doctor({ ...props, status: DoctorStatus.create(defaultDoctorStatus).getValue() });
-
-        doctor.addDomainEvent(new DoctorCreated(doctor));
-
         return Result.ok<Doctor>(doctor);
     }
 }

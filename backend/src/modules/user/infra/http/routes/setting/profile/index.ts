@@ -4,12 +4,7 @@ import { getUserProfileController } from '../../../../../useCases/getUserProfile
 
 const userProfileRouter = express.Router();
 
-userProfileRouter.get(
-    '/',
-    authorizationMiddleware.ensureAuthenticated(),
-    authorizationMiddleware.ensureUserIsPatient(),
-    (req: Request, res: Response) => {
-        getUserProfileController.execute(req, res);
-    },
-);
+userProfileRouter.get('/', authorizationMiddleware.ensureAuthenticated(), (req: Request, res: Response) => {
+    getUserProfileController.execute(req, res);
+});
 export { userProfileRouter };

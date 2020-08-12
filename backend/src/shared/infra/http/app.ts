@@ -11,6 +11,8 @@ import compression from 'compression';
 import { userRouter } from '../../../modules/user/infra/http/routes/index';
 import { startDatabase } from '../database/mongoose/config/config';
 import { authConfig } from '../../config/authConfig';
+import { doctorRouter } from '../../../modules/queue/infra/http/routes';
+import { redisSessionClient } from '../../services/caching/session/redisSessionClient';
 
 const origin = {
     origin: ['http://localhost:5500', 'http://localhost:3000'],
@@ -18,11 +20,6 @@ const origin = {
 };
 const app = express();
 const redisStore = redisConnect(session);
-const redisClient = redis.createClient();
-
-redisClient.on('connect', () => {
-    console.log(`[Redis]: Connected to redis server`);
-});
 
 startDatabase(authConfig.databaseConnectionUrl);
 
@@ -31,7 +28,7 @@ app.use(
         store: new redisStore({
             host: authConfig.redisServerUrl,
             port: authConfig.redisServerPort,
-            client: redisClient,
+            client: redisSessionClient,
             ttl: authConfig.sessionExpiryTime,
         }),
         secret: authConfig.sessionSecret,
@@ -57,6 +54,7 @@ app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(userRouter);
+app.use(doctorRouter);
 
 app.listen(3000, () => {
     console.log('server started:.:.:.');
