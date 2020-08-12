@@ -1,12 +1,11 @@
 import { CacheRepo } from '../../../shared/infra/CacheRepo';
-import { DoctorStatusDTO } from '../mappers/DoctorStatusMap';
 import { RedisClient } from 'redis';
 import { DoctorStatusCacheDTO, DoctorStatusCacheMap } from '../mappers/DoctorStatusCacheMap';
 import { Guard } from '../../../shared/core/logic/Guard';
-import { Result } from '../../../shared/core/logic/Result';
+import { Result, ReturnResult } from '../../../shared/core/logic/Result';
 
 export interface IDoctorStatusCacheRepo extends CacheRepo<DoctorStatusCacheDTO> {
-    findDoctorStatusById(id: string): Promise<DoctorStatusDTO>;
+    findDoctorStatusById(id: string): Promise<ReturnResult>;
 }
 
 export class DoctorStatusCacheRepo implements IDoctorStatusCacheRepo {
@@ -28,7 +27,7 @@ export class DoctorStatusCacheRepo implements IDoctorStatusCacheRepo {
     async exists(): Promise<boolean> {
         return;
     }
-    async findDoctorStatusById(id: string): Promise<DoctorStatusCacheDTO> {
+    async findDoctorStatusById(id: string): Promise<ReturnResult> {
         const doctorId = this.minifyDoctorId(id);
         try {
             const findDoctorStatusPromise = new Promise((resolve, reject) => {

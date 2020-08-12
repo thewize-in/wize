@@ -1,4 +1,9 @@
+export interface ReturnResult {
+    succeeded: boolean;
+    value?: any;
+}
 export class Result<T> {
+    public succeeded: boolean;
     public isSuccess: boolean;
     public isFailure: boolean;
     public error: T | string;

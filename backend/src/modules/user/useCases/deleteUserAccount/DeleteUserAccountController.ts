@@ -19,7 +19,7 @@ export class DeleteUserAccountController extends BaseController {
     async executeImpl(): Promise<any> {
         const dto: DeleteUserAccountDTO = this.request.session['user'];
 
-        const result: any = await this.useCase.execute(dto);
+        const result: boolean = await this.useCase.execute(dto);
 
         if (!result) {
             return this.notFound('user not found');

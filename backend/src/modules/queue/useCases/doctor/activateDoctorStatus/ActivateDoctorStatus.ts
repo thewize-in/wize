@@ -2,9 +2,10 @@ import { UseCase } from '../../../../../shared/domain/UseCase';
 import { IDoctorStatusRepo } from '../../../repos/DoctorStatusRepo';
 import { IDoctorStatusCacheRepo } from '../../../repos/DoctorStatusCacheRepo';
 import { Doctor } from '../../../domain/doctor';
+import { ReturnResult } from '../../../../../shared/core/logic/Result';
 
 type ActivateDoctorStatusRequest = { id: string };
-type ActivateDoctorStatusResponse = any;
+type ActivateDoctorStatusResponse = ReturnResult;
 
 export class ActivateDoctorStatus implements UseCase<ActivateDoctorStatusRequest, ActivateDoctorStatusResponse> {
     private doctorStatusRepo: IDoctorStatusRepo;
@@ -27,7 +28,7 @@ export class ActivateDoctorStatus implements UseCase<ActivateDoctorStatusRequest
             active: true,
             pause: false,
         };
-        const doctorStatusResult: any = await this.doctorStatusRepo.findDoctorByIdAndUpdateStatus(
+        const doctorStatusResult: ReturnResult = await this.doctorStatusRepo.findDoctorByIdAndUpdateStatus(
             id,
             doctorActiveStatus,
         );

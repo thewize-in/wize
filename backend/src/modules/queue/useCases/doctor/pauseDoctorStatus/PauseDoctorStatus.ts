@@ -1,9 +1,10 @@
 import { UseCase } from '../../../../../shared/domain/UseCase';
 import { IDoctorStatusRepo } from '../../../repos/DoctorStatusRepo';
 import { IDoctorStatusCacheRepo } from '../../../repos/DoctorStatusCacheRepo';
+import { ReturnResult } from '../../../../../shared/core/logic/Result';
 
 type PauseDoctorStatusRequest = { id: string };
-type PauseDoctorStatusResponse = any;
+type PauseDoctorStatusResponse = ReturnResult;
 
 export class PauseDoctorStatus implements UseCase<PauseDoctorStatusRequest, PauseDoctorStatusResponse> {
     private doctorStatusRepo: IDoctorStatusRepo;
@@ -18,7 +19,7 @@ export class PauseDoctorStatus implements UseCase<PauseDoctorStatusRequest, Paus
             active: true,
             pause: true,
         };
-        const doctorStatusResult: any = await this.doctorStatusRepo.findDoctorByIdAndUpdateStatus(
+        const doctorStatusResult: ReturnResult = await this.doctorStatusRepo.findDoctorByIdAndUpdateStatus(
             id,
             doctorPauseStatus,
         );

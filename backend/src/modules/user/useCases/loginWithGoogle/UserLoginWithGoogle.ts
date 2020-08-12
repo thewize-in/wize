@@ -1,14 +1,14 @@
 import { UseCase } from '../../../../shared/domain/UseCase';
 import { AuthProviderProfileInfo } from '../../../../shared/services/authProviders/models/authProviderProfileInfo';
 import { IGoogleService } from '../../../../shared/services/authProviders/provider/googleProvider';
-import { Result } from '../../../../shared/core/logic/Result';
+import { Result, ReturnResult } from '../../../../shared/core/logic/Result';
 import { User } from '../../domain/user';
 import { UserMap } from '../../mappers/UserMap';
 import { userRepo } from '../../repos';
 import { UserLoginWithGoogleDTO } from './UserLoginWithGoogleDTO';
 
 type UserLoginWithGoogleRequest = UserLoginWithGoogleDTO;
-type UserLoginWithGoogleResponse = boolean | object;
+type UserLoginWithGoogleResponse = ReturnResult;
 
 export class UserLoginWithGoogle implements UseCase<UserLoginWithGoogleRequest, Promise<UserLoginWithGoogleResponse>> {
     private googleService: IGoogleService;
@@ -21,7 +21,7 @@ export class UserLoginWithGoogle implements UseCase<UserLoginWithGoogleRequest, 
         const isAuthTokenValid = await this.googleService.checkValidAuthToken(googleAuthToken);
         if (!isAuthTokenValid) {
             Result.fail<any>('token is not valid');
-            return false;
+            return Result.success(false);
         }
         const googleProfileInfo: AuthProviderProfileInfo = await this.googleService.getProfileInfo(googleAuthToken);
 
@@ -29,14 +29,14 @@ export class UserLoginWithGoogle implements UseCase<UserLoginWithGoogleRequest, 
 
         if (user.isFailure) {
             console.log(user.errorValue());
-            return;
+            return Result.success(false);
         }
-        const result: any = await userRepo.existsAndReturn(user.getValue());
+        const result: ReturnResult = await userRepo.existsAndReturn(user.getValue());
 
         if (!result.succeeded) {
             await userRepo.save(user.getValue());
         }
 
-        return result.value;
+        return result;
     }
 }

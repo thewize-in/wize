@@ -1,6 +1,7 @@
 import { BaseController } from '../../../../shared/infra/BaseController';
 import { UserLoginWithGoogle } from './UserLoginWithGoogle';
 import { UserLoginWithGoogleDTO } from './UserLoginWithGoogleDTO';
+import { ReturnResult } from '../../../../shared/core/logic/Result';
 
 export class UserLoginController extends BaseController {
     private useCase: UserLoginWithGoogle;
@@ -11,12 +12,12 @@ export class UserLoginController extends BaseController {
     async executeImpl(): Promise<any> {
         const dto: UserLoginWithGoogleDTO = this.request.body;
 
-        const result: any = await this.useCase.execute(dto);
+        const result: ReturnResult = await this.useCase.execute(dto);
 
-        if (!result) return this.unauthorized('unvalid token');
+        if (!result.succeeded) return this.unauthorized('unvalid token');
 
-        this.request.session['user'] = result;
+        this.request.session['user'] = result.value;
 
-        return this.ok(this.response);
+        return this.ok(this.response.status(200));
     }
 }

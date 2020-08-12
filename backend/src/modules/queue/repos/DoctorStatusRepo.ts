@@ -2,12 +2,12 @@ import { Repo } from '../../../shared/infra/Repo';
 import { Doctor } from '../domain/doctor';
 import { Model, Document } from 'mongoose';
 import { DoctorStatusMap, DoctorStatusDTO } from '../mappers/DoctorStatusMap';
-import { Result } from '../../../shared/core/logic/Result';
+import { Result, ReturnResult } from '../../../shared/core/logic/Result';
 import { Guard } from '../../../shared/core/logic/Guard';
 
 export interface IDoctorStatusRepo extends Repo<Doctor> {
-    findDoctorByIdAndUpdateStatus(id: string, status: DoctorStatusDTO): Promise<boolean>;
-    findDoctorStatusById(id: string): Promise<DoctorStatusDTO | boolean>;
+    findDoctorByIdAndUpdateStatus(id: string, status: DoctorStatusDTO): Promise<ReturnResult>;
+    findDoctorStatusById(id: string): Promise<ReturnResult>;
 }
 
 export class DoctorStatusRepo implements IDoctorStatusRepo {
@@ -35,10 +35,8 @@ export class DoctorStatusRepo implements IDoctorStatusRepo {
             return Result.success(false);
         }
     }
-    async findDoctorByIdAndUpdateStatus(id: string, status: DoctorStatusDTO): Promise<boolean> {
+    async findDoctorByIdAndUpdateStatus(id: string, status: DoctorStatusDTO): Promise<ReturnResult> {
         try {
-            console.log(status);
-
             const statusUpdateOrError = await this.model.findOneAndUpdate({ doctor_id: id }, { $set: { status } });
             const guardResult = Guard.againstNullOrUndefined(statusUpdateOrError, 'statusUpdateOrError');
             if (!guardResult.succeeded) return Result.success(false);
@@ -48,7 +46,7 @@ export class DoctorStatusRepo implements IDoctorStatusRepo {
             return Result.success(false);
         }
     }
-    async findDoctorStatusById(id: string): Promise<DoctorStatusDTO | boolean> {
+    async findDoctorStatusById(id: string): Promise<ReturnResult> {
         try {
             const doctorStatusOrError: any = await this.model.findOne({ doctor_id: id }, { status: 1 });
             const guardResult = Guard.againstNullOrUndefined(doctorStatusOrError, 'doctorStatusOrError');

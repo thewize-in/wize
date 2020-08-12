@@ -1,9 +1,10 @@
 import { UseCase } from '../../../../../shared/domain/UseCase';
 import { IDoctorStatusRepo } from '../../../repos/DoctorStatusRepo';
 import { IDoctorStatusCacheRepo } from '../../../repos/DoctorStatusCacheRepo';
+import { ReturnResult } from '../../../../../shared/core/logic/Result';
 
 type GetDoctorByIdRequest = { id: string };
-type GetDoctorByIdResponse = any;
+type GetDoctorByIdResponse = ReturnResult;
 
 export class GetDoctorStatusById implements UseCase<GetDoctorByIdRequest, GetDoctorByIdResponse> {
     private doctorStatusRepo: IDoctorStatusRepo;
@@ -12,10 +13,10 @@ export class GetDoctorStatusById implements UseCase<GetDoctorByIdRequest, GetDoc
         this.doctorStatusRepo = doctorStatusRepo;
         this.doctorStatusCacheRepo = doctorStatusCacheRepo;
     }
-    async execute(request: GetDoctorByIdRequest): Promise<GetDoctorByIdRequest> {
+    async execute(request: GetDoctorByIdRequest): Promise<GetDoctorByIdResponse> {
         const { id } = request;
 
-        let doctorStatusResult: any = await this.doctorStatusCacheRepo.findDoctorStatusById(id);
+        let doctorStatusResult: ReturnResult = await this.doctorStatusCacheRepo.findDoctorStatusById(id);
 
         if (!doctorStatusResult.succeeded) {
             doctorStatusResult = await this.doctorStatusRepo.findDoctorStatusById(id);

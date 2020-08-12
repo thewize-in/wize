@@ -1,6 +1,7 @@
 import { UseCase } from '../../../../shared/domain/UseCase';
 import { IUserRepo } from '../../repos/UserRepo';
 import { DeleteUserAccountDTO } from './DeleteUserAccountDTO';
+import { ReturnResult } from '../../../../shared/core/logic/Result';
 
 type DeleteUserAccountRequest = DeleteUserAccountDTO;
 type DeleteUserAccountResponse = boolean;
@@ -12,9 +13,8 @@ export class DeleteUserAccount implements UseCase<DeleteUserAccountRequest, Prom
     }
     async execute(request: DeleteUserAccountRequest): Promise<DeleteUserAccountResponse> {
         const userId = request.id;
-        const result: any = await this.userRepo.findUserByIdAndDelete(userId);
+        const result: ReturnResult = await this.userRepo.findUserByIdAndDelete(userId);
 
-        if (!result.succeeded) return false;
-        return true;
+        return result.succeeded;
     }
 }

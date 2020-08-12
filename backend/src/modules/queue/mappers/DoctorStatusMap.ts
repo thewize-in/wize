@@ -16,12 +16,6 @@ export class DoctorStatusMap implements Mapper<Doctor> {
             },
         };
     }
-    public static statusToDomain(doctor: Doctor) {
-        return {
-            active: doctor.status.props.active,
-            pause: doctor.status.props.pause,
-        };
-    }
     public static toDomain(raw: any) {
         return {
             status: raw,

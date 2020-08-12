@@ -2,16 +2,16 @@ import { Repo } from '../../../shared/infra/Repo';
 import { User } from '../domain/user';
 import { Model, Document } from 'mongoose';
 import { UserMap } from '../mappers/UserMap';
-import { Result } from '../../../shared/core/logic/Result';
+import { Result, ReturnResult } from '../../../shared/core/logic/Result';
 import { Guard } from '../../../shared/core/logic/Guard';
 
 export interface IUserRepo extends Repo<User> {
     findUserByEmail(email: string): Promise<User>;
     findUserById(id: string): Promise<User>;
-    findUserByIdAndReturnAll(id: string): Promise<User>;
-    findUserByUsername(username: string): Promise<User>;
-    existsAndReturn(user: User): Promise<object>;
-    findUserByIdAndDelete(id: string): Promise<boolean>;
+    findUserByIdAndReturnAll(id: string): Promise<ReturnResult>;
+    findUserByUsername(username: string): Promise<ReturnResult>;
+    existsAndReturn(user: User): Promise<ReturnResult>;
+    findUserByIdAndDelete(id: string): Promise<ReturnResult>;
 }
 export class UserRepo implements IUserRepo {
     private model: Model<Document>;
@@ -40,7 +40,7 @@ export class UserRepo implements IUserRepo {
         const rawUser: any = await this.model.findById(id, { username: 1, email: 1 });
         return UserMap.toDTO(rawUser);
     }
-    async findUserByUsername(username: string): Promise<User> {
+    async findUserByUsername(username: string): Promise<ReturnResult> {
         try {
             const userOrError: any = await this.model.findOne({ username }, { username: 1, display_name: 1, email: 1 });
             const guardResult = Guard.againstNullOrUndefined(userOrError, 'userOrError');
@@ -53,7 +53,7 @@ export class UserRepo implements IUserRepo {
             return Result.success(false);
         }
     }
-    async existsAndReturn(user: User): Promise<object> {
+    async existsAndReturn(user: User): Promise<ReturnResult> {
         try {
             const userOrError: any = await this.model.findOne({ email: user.email }, { _id: 1, user_role: 1 });
             const guardResult = Guard.againstNullOrUndefined(userOrError, 'userOrError');
@@ -65,7 +65,7 @@ export class UserRepo implements IUserRepo {
             return Result.success(false);
         }
     }
-    async findUserByIdAndReturnAll(id: string): Promise<User> {
+    async findUserByIdAndReturnAll(id: string): Promise<ReturnResult> {
         try {
             const userOrError: any = await this.model.findById(id, {
                 username: 1,
@@ -84,7 +84,7 @@ export class UserRepo implements IUserRepo {
             return Result.success(false);
         }
     }
-    async findUserByIdAndDelete(id: string): Promise<boolean> {
+    async findUserByIdAndDelete(id: string): Promise<ReturnResult> {
         try {
             await this.model.findByIdAndDelete(id);
             return Result.success(true);
