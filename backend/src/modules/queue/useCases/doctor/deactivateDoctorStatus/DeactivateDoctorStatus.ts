@@ -1,6 +1,6 @@
 import { UseCase } from '../../../../../shared/domain/UseCase';
-import { IDoctorStatusRepo } from '../../../repos/DoctorStatusRepo';
-import { IDoctorStatusCacheRepo } from '../../../repos/DoctorStatusCacheRepo';
+import { IDoctorStatusRepo } from '../../../repos/doctorRepo/DoctorStatusRepo';
+import { IDoctorStatusCacheRepo } from '../../../repos/doctorRepo/DoctorStatusCacheRepo';
 import { ReturnResult } from '../../../../../shared/core/logic/Result';
 
 type DeactivateDoctorStatusRequest = { id: string };

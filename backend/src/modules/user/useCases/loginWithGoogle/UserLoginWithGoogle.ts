@@ -25,15 +25,10 @@ export class UserLoginWithGoogle implements UseCase<UserLoginWithGoogleRequest, 
         }
         const googleProfileInfo: AuthProviderProfileInfo = await this.googleService.getProfileInfo(googleAuthToken);
 
-        const user: Result<User> = User.create(UserMap.toDomain(googleProfileInfo));
-
-        if (user.isFailure) {
-            console.log(user.errorValue());
-            return Result.success(false);
-        }
-        const result: ReturnResult = await userRepo.existsAndReturn(user.getValue());
+        const result: ReturnResult = await userRepo.findUserByEmail(googleProfileInfo.email);
 
         if (!result.succeeded) {
+            const user: Result<User> = User.create(UserMap.toDomain(googleProfileInfo));
             await userRepo.save(user.getValue());
         }
 

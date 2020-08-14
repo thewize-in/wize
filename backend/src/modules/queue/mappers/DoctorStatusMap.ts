@@ -9,7 +9,7 @@ export type DoctorStatusDTO = {
 export class DoctorStatusMap implements Mapper<Doctor> {
     public static toPersistence(doctor: Doctor) {
         return {
-            doctor_id: doctor.doctorId,
+            doctor_id: doctor.doctorId.id.toString(),
             status: {
                 active: doctor.status.props.active,
                 pause: doctor.status.props.pause,

@@ -3,8 +3,11 @@ import { Result } from '../../../shared/core/logic/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
 import { Role } from './Role';
 import { Username } from './Username';
+import { UserId } from './UserId';
+import { UserCreated } from './events/UserCreated';
 
 interface UserProps {
+    userId: UserId;
     role: Role;
     username: Username;
     displayName?: string;
@@ -17,8 +20,8 @@ interface UserProps {
 }
 
 export class User extends AggregateRoot<UserProps> {
-    get id(): UniqueEntityID {
-        return this._id;
+    get userId(): UserId {
+        return UserId.create(this._id).getValue();
     }
     get googleId(): string {
         return this.props.googleId;
@@ -53,15 +56,23 @@ export class User extends AggregateRoot<UserProps> {
     set role(role: Role) {
         this.props.role = role;
     }
-    private constructor(props: UserProps) {
-        super(props);
+    private constructor(props: UserProps, id?: UniqueEntityID) {
+        super(props, id);
     }
-    public static create(props: UserProps): Result<User> {
-        const user = new User({
-            ...props,
-            username: Username.create(props.email).getValue(),
-            displayName: `${props.firstName ? props.firstName : props.username.value}`,
-        });
+    public static create(props: UserProps, id?: UniqueEntityID): Result<User> {
+        const isNewUser = id ? false : true;
+
+        const user = new User(
+            {
+                ...props,
+                username: Username.create(props.email).getValue(),
+                displayName: `${props.firstName ? props.firstName : props.username.value}`,
+            },
+            id,
+        );
+        if (isNewUser) {
+            user.addDomainEvent(new UserCreated(user));
+        }
         return Result.ok<User>(user);
     }
 }

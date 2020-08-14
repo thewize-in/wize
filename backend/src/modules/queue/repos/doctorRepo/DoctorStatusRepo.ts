@@ -1,9 +1,9 @@
-import { Repo } from '../../../shared/infra/Repo';
-import { Doctor } from '../domain/doctor';
+import { Repo } from '../../../../shared/infra/Repo';
+import { Doctor } from '../../domain/doctor';
 import { Model, Document } from 'mongoose';
-import { DoctorStatusMap, DoctorStatusDTO } from '../mappers/DoctorStatusMap';
-import { Result, ReturnResult } from '../../../shared/core/logic/Result';
-import { Guard } from '../../../shared/core/logic/Guard';
+import { DoctorStatusMap, DoctorStatusDTO } from '../../mappers/DoctorStatusMap';
+import { Result, ReturnResult } from '../../../../shared/core/logic/Result';
+import { Guard } from '../../../../shared/core/logic/Guard';
 
 export interface IDoctorStatusRepo extends Repo<Doctor> {
     findDoctorByIdAndUpdateStatus(id: string, status: DoctorStatusDTO): Promise<ReturnResult>;
@@ -21,7 +21,6 @@ export class DoctorStatusRepo implements IDoctorStatusRepo {
             await new this.model(rawDoctor).save();
             console.log('new doctor saved');
         } catch (error) {
-            console.log(error);
             Result.fail<Doctor>(error);
         }
     }

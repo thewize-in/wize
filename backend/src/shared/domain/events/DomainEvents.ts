@@ -1,19 +1,22 @@
-import { IDomainEvent } from "./IDomainEvents";
-import { AggregateRoot } from "../AggregateRoot";
-import { UniqueEntityID } from "../UniqueEntityID";
+import { IDomainEvent } from './IDomainEvents';
+import { AggregateRoot } from '../AggregateRoot';
+import { UniqueEntityID } from '../UniqueEntityID';
 
 export class DomainEvents {
-    private static handlers = new Map();
+    private static handlers = {};
     private static markedAggregates: AggregateRoot<any>[] = [];
 
     public static markAggregateForDispatch(aggregate: AggregateRoot<any>): void {
         const aggregateFound = this.findMarkedAggregateByID(aggregate.id);
+
         if (!aggregateFound) {
             this.markedAggregates.push(aggregate);
         }
     }
     private static dispatchAggregateEvents(aggregate: AggregateRoot<any>): void {
-        aggregate.domainEvents.forEach((event: IDomainEvent) => { this.dispatch(event); });
+        aggregate.domainEvents.forEach((event: IDomainEvent) => {
+            this.dispatch(event);
+        });
     }
     private static removeAggregateFromMarkedDispatchList(aggregate: AggregateRoot<any>): void {
         const index = this.markedAggregates.findIndex((a) => {
@@ -32,6 +35,7 @@ export class DomainEvents {
     }
     public static dispatchEventsForAggregate(id: UniqueEntityID): void {
         const aggregate = this.findMarkedAggregateByID(id);
+
         if (aggregate) {
             this.dispatchAggregateEvents(aggregate);
             aggregate.clearEvents();
@@ -39,25 +43,25 @@ export class DomainEvents {
         }
     }
     public static register(callback: (event: IDomainEvent) => void, eventClassName: string): void {
-        if (!this.handlers.has(eventClassName)) {
+        if (!this.handlers[eventClassName]) {
             this.handlers[eventClassName] = [];
         }
         this.handlers[eventClassName].push(callback);
     }
     public static clearHandlers(): void {
-        this.handlers.clear();
+        this.handlers = {};
     }
     public static clearMarkedAggregates(): void {
         this.markedAggregates = [];
     }
     private static dispatch(event: IDomainEvent): void {
         const eventClassName: string = event.constructor.name;
-        if (this.handlers.has(eventClassName)) {
+
+        if (this.handlers[eventClassName]) {
             const handlers: any[] = this.handlers[eventClassName];
             for (let handler of handlers) {
                 handler(event);
             }
         }
     }
-
 }

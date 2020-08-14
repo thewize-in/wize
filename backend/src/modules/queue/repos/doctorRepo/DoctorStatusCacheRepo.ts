@@ -1,8 +1,8 @@
-import { CacheRepo } from '../../../shared/infra/CacheRepo';
+import { CacheRepo } from '../../../../shared/infra/CacheRepo';
 import { RedisClient } from 'redis';
-import { DoctorStatusCacheDTO, DoctorStatusCacheMap } from '../mappers/DoctorStatusCacheMap';
-import { Guard } from '../../../shared/core/logic/Guard';
-import { Result, ReturnResult } from '../../../shared/core/logic/Result';
+import { DoctorStatusCacheDTO, DoctorStatusCacheMap } from '../../mappers/DoctorStatusCacheMap';
+import { Guard } from '../../../../shared/core/logic/Guard';
+import { Result, ReturnResult } from '../../../../shared/core/logic/Result';
 
 export interface IDoctorStatusCacheRepo extends CacheRepo<DoctorStatusCacheDTO> {
     findDoctorStatusById(id: string): Promise<ReturnResult>;

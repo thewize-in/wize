@@ -1,8 +1,10 @@
 import { UseCase } from '../../../../../shared/domain/UseCase';
-import { IDoctorStatusRepo } from '../../../repos/DoctorStatusRepo';
-import { IDoctorStatusCacheRepo } from '../../../repos/DoctorStatusCacheRepo';
+import { IDoctorStatusRepo } from '../../../repos/doctorRepo/DoctorStatusRepo';
+import { IDoctorStatusCacheRepo } from '../../../repos/doctorRepo/DoctorStatusCacheRepo';
 import { Doctor } from '../../../domain/doctor';
 import { ReturnResult } from '../../../../../shared/core/logic/Result';
+import { DoctorId } from '../../../domain/DoctorId';
+import { UniqueEntityID } from '../../../../../shared/domain/UniqueEntityID';
 
 type ActivateDoctorStatusRequest = { id: string };
 type ActivateDoctorStatusResponse = ReturnResult;
@@ -21,7 +23,8 @@ export class ActivateDoctorStatus implements UseCase<ActivateDoctorStatusRequest
         const doctorExistResult: any = await this.doctorStatusRepo.exists(id);
 
         if (!doctorExistResult.succeeded) {
-            const doctor: Doctor = Doctor.create({ doctorId: id }).getValue();
+            const doctorId = DoctorId.create(new UniqueEntityID(id)).getValue();
+            const doctor: Doctor = Doctor.create({ doctorId }).getValue();
             await this.doctorStatusRepo.save(doctor);
         }
         const doctorActiveStatus = {

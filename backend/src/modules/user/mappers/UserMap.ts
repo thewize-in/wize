@@ -4,6 +4,7 @@ import { User } from '../domain/user';
 export class UserMap implements Mapper<User> {
     public static toPersistence(user: User): any {
         return {
+            user_id: user.userId.id.toString(),
             google_id: user.googleId,
             username: user.username.value,
             display_name: user.displayName,
@@ -42,6 +43,12 @@ export class UserMap implements Mapper<User> {
             lastName: raw.last_name,
             email: raw.email,
             profilePic: raw.profile_pic,
+        };
+    }
+    public static toUserSession(user: any) {
+        return {
+            id: user.user_id,
+            role: user.user_role,
         };
     }
 }

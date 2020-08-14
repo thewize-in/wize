@@ -1,1 +1,6 @@
-import { app } from './shared/infra/http/app';
+// Infra
+import './shared/infra/http/app';
+
+//Subdomains
+import './modules/queue/index';
+import './modules/user/index';

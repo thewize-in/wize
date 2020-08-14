@@ -1,10 +1,9 @@
 import { UseCase } from '../../../../shared/domain/UseCase';
 import { IUserRepo } from '../../repos/UserRepo';
-import { GetUserProfileDTO } from './GetUserProfileDTO';
 import { ReturnResult } from '../../../../shared/core/logic/Result';
 
-type GetUserProfileRequest = GetUserProfileDTO;
-type GetUserProfileResponse = any;
+type GetUserProfileRequest = { id: string };
+type GetUserProfileResponse = ReturnResult;
 
 export class GetUserProfile implements UseCase<GetUserProfileRequest, Promise<GetUserProfileResponse>> {
     private userRepo: IUserRepo;
@@ -12,8 +11,9 @@ export class GetUserProfile implements UseCase<GetUserProfileRequest, Promise<Ge
         this.userRepo = userRepo;
     }
     async execute(request: GetUserProfileRequest): Promise<GetUserProfileResponse> {
-        const userId = request.id;
-        const result: ReturnResult = await this.userRepo.findUserByIdAndReturnAll(userId);
+        const { id } = request;
+
+        const result: ReturnResult = await this.userRepo.findUserByIdAndReturnAll(id);
         return result;
     }
 }

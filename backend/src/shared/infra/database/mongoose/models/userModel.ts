@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
+    user_id: {
+        type: String,
+        required: true,
+    },
     username: {
         type: String,
         select: false,
@@ -51,6 +55,6 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-userSchema.index({ email: -1 });
+userSchema.index({ email: -1, user_id: -1 });
 const userModel = mongoose.model('users', userSchema);
-export { userModel };
+export { userModel, userSchema };
