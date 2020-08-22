@@ -1,8 +1,8 @@
 import { DeactivateDoctorStatus } from './DeactivateDoctorStatus';
 import { DeactivateDoctorStatusController } from './DeactivateDoctorStatusController';
-import { doctorStatusRepo, doctorStatusCacheRepo } from '../../../repos';
+import { doctorRepo, doctorStatusCacheRepo } from '../../../repos';
 
-const deactiveDoctorStatus = new DeactivateDoctorStatus(doctorStatusRepo, doctorStatusCacheRepo);
+const deactiveDoctorStatus = new DeactivateDoctorStatus(doctorRepo, doctorStatusCacheRepo);
 const deactivateDoctorStatusController = new DeactivateDoctorStatusController(deactiveDoctorStatus);
 
 export { deactivateDoctorStatusController, deactiveDoctorStatus };

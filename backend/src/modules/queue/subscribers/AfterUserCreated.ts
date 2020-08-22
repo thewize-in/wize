@@ -15,7 +15,7 @@ export class AfterUserCreated implements IHandle<UserCreated> {
     private async onUserCreated(event: UserCreated): Promise<void> {
         const { user } = event;
         try {
-            const userId = { id: user.userId.id };
+            const userId = { id: user.userId.id.toString() };
             await this.createPatient.execute(userId);
             console.log(`[AfterUserCreated]: Successfully executed CreatePatient useCase AfterUserCreated`);
         } catch (error) {

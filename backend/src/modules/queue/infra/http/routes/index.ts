@@ -1,48 +1,48 @@
 import express, { Request, Response } from 'express';
+import { userAccountRouter } from '../../../../user/infra/http/routes/setting/account';
+import { doctorStatusRouter } from './status';
 import { authorizationMiddleware } from '../../../../../shared/infra/http/middlewares';
-import { activateDoctorStatusController } from '../../../useCases/doctor/activateDoctorStatus';
-import { deactivateDoctorStatusController } from '../../../useCases/doctor/deactivateDoctorStatus';
-import { pauseDoctorStatusController } from '../../../useCases/doctor/pauseDoctorStatus';
-import { resumeDoctorStatusController } from '../../../useCases/doctor/resumeDoctorStatus';
+import { joinDoctorController } from '../../../useCases/patient/joinDoctor';
+import {
+    createPatientEntryControllerForPatient,
+    createPatientEntryControllerForDoctor,
+} from '../../../useCases/entryBook/createPatientEntry';
 import { getDoctorStatusByIdController } from '../../../useCases/doctor/getDoctorStatusById';
+import { leaveDoctorController } from '../../../useCases/patient/leaveDoctor';
+import { updateCurrentPatientNumberController } from '../../../useCases/entryBook/updateCurrentPatientNumber';
+
+// import { getDoctorStatusByIdController } from '../../../useCases/doctor/getDoctorStatusById';
+// import { joinDoctorQueueByDoctorIdController } from '../../../useCases/patient/joinDoctorQueue';
 
 const doctorRouter = express.Router();
 
-doctorRouter.post(
-    '/activate',
-    authorizationMiddleware.ensureAuthenticated(),
-    authorizationMiddleware.ensureUserIsDoctor(),
-    (req: Request, res: Response) => {
-        activateDoctorStatusController.execute(req, res);
-    },
-);
-
-doctorRouter.post(
-    '/deactivate',
-    authorizationMiddleware.ensureAuthenticated(),
-    authorizationMiddleware.ensureUserIsDoctor(),
-    (req: Request, res: Response) => {
-        deactivateDoctorStatusController.execute(req, res);
-    },
-);
-doctorRouter.post(
-    '/pause',
-    authorizationMiddleware.ensureAuthenticated(),
-    authorizationMiddleware.ensureUserIsDoctor(),
-    (req: Request, res: Response) => {
-        pauseDoctorStatusController.execute(req, res);
-    },
-);
-
-doctorRouter.post(
-    '/resume',
-    authorizationMiddleware.ensureAuthenticated(),
-    authorizationMiddleware.ensureUserIsDoctor(),
-    (req: Request, res: Response) => {
-        resumeDoctorStatusController.execute(req, res);
-    },
-);
-doctorRouter.get('/doctor/:id', authorizationMiddleware.ensureAuthenticated(), (req: Request, res: Response) => {
+// userAccountRouter.use('/status', doctorStatusRouter);
+doctorRouter.get('/doctor/:doctorId', authorizationMiddleware.ensureAuthenticated(), (req: Request, res: Response) => {
     getDoctorStatusByIdController.execute(req, res);
 });
+
+doctorRouter.post('/doctor/:id/join', authorizationMiddleware.ensureAuthenticated(), (req: Request, res: Response) => {
+    joinDoctorController.execute(req, res);
+});
+doctorRouter.post('/doctor/:id/leave', authorizationMiddleware.ensureAuthenticated(), (req: Request, res: Response) => {
+    leaveDoctorController.execute(req, res);
+});
+doctorRouter.post(
+    '/doctor/patient',
+    authorizationMiddleware.ensureAuthenticated(),
+    authorizationMiddleware.ensureUserIsDoctor(),
+    (req: Request, res: Response) => {
+        createPatientEntryControllerForDoctor.execute(req, res);
+    },
+);
+
+doctorRouter.post(
+    '/doctor/next',
+    authorizationMiddleware.ensureAuthenticated(),
+    authorizationMiddleware.ensureUserIsDoctor(),
+    (req: Request, res: Response) => {
+        updateCurrentPatientNumberController.execute(req, res);
+    },
+);
+
 export { doctorRouter };

@@ -1,1 +1,1 @@
-export type GetDoctorStatusByIdDTO = { id: string };
+export type GetDoctorStatusByIdDTO = { doctorId: string };

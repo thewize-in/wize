@@ -11,8 +11,8 @@ import compression from 'compression';
 import { userRouter } from '../../../modules/user/infra/http/routes/index';
 import { startDatabase } from '../database/mongoose/config/config';
 import { authConfig } from '../../config/authConfig';
-import { doctorRouter } from '../../../modules/queue/infra/http/routes';
 import { redisSessionClient } from '../../services/caching/session/redisSessionClient';
+import { doctorRouter } from '../../../modules/queue/infra/http/routes';
 
 const origin = {
     origin: ['http://localhost:5500', 'http://localhost:3000'],

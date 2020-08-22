@@ -1,11 +1,11 @@
 import { UseCase } from '../../../../shared/domain/UseCase';
 import { LogoutUserDTO } from './LogoutUserDTO';
 
-type LogoutUserRequest = LogoutUserDTO;
-type LogoutUserResponse = void;
+type Request = LogoutUserDTO;
+type Response = void;
 
-export class LogoutUser implements UseCase<LogoutUserRequest, Promise<LogoutUserResponse>> {
-    async execute(request: LogoutUserRequest): Promise<LogoutUserResponse> {
+export class LogoutUser implements UseCase<Request, Promise<Response>> {
+    async execute(request: Request): Promise<Response> {
         request.session.cookie.expires = new Date();
         request.session.destroy(() => {});
     }

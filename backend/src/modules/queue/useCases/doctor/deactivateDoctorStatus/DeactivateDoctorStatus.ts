@@ -1,33 +1,38 @@
 import { UseCase } from '../../../../../shared/domain/UseCase';
-import { IDoctorStatusRepo } from '../../../repos/doctorRepo/DoctorStatusRepo';
-import { IDoctorStatusCacheRepo } from '../../../repos/doctorRepo/DoctorStatusCacheRepo';
-import { ReturnResult } from '../../../../../shared/core/logic/Result';
+import { IDoctorRepo } from '../../../repos/doctorRepos/DoctorRepo';
+import { IDoctorStatusCacheRepo } from '../../../repos/doctorRepos/DoctorStatusCacheRepo';
+import { Doctor } from '../../../domain/doctor';
+import { DoctorStatus } from '../../../domain/doctorStatus';
+import { Result } from '../../../../../shared/core/logic/Result';
 
-type DeactivateDoctorStatusRequest = { id: string };
-type DeactivateDoctorStatusResponse = ReturnResult;
+type Request = { id: string };
+type Response = boolean;
 
-export class DeactivateDoctorStatus implements UseCase<DeactivateDoctorStatusRequest, DeactivateDoctorStatusResponse> {
-    private doctorStatusRepo: IDoctorStatusRepo;
+export class DeactivateDoctorStatus implements UseCase<Request, Response> {
+    private doctorRepo: IDoctorRepo;
     private doctorStatusCacheRepo: IDoctorStatusCacheRepo;
-    constructor(doctorStatusRepo: IDoctorStatusRepo, doctorStatusCacheRepo: IDoctorStatusCacheRepo) {
-        this.doctorStatusRepo = doctorStatusRepo;
+    constructor(doctorRepo: IDoctorRepo, doctorStatusCacheRepo: IDoctorStatusCacheRepo) {
+        this.doctorRepo = doctorRepo;
         this.doctorStatusCacheRepo = doctorStatusCacheRepo;
     }
-    async execute(request: DeactivateDoctorStatusRequest): Promise<DeactivateDoctorStatusResponse> {
+    async execute(request: Request): Promise<Response> {
         const { id } = request;
+        let doctorResult: Result<Doctor>, doctor: Doctor;
 
-        const doctorDeactiveStatus = {
-            active: false,
-            pause: false,
-        };
-        const doctorStatusResult: ReturnResult = await this.doctorStatusRepo.findDoctorByIdAndUpdateStatus(
-            id,
-            doctorDeactiveStatus,
-        );
-        if (doctorStatusResult.succeeded) {
-            await this.doctorStatusCacheRepo.save(id, doctorDeactiveStatus);
+        try {
+            doctorResult = await this.doctorRepo.getDoctorByDoctorId(id);
+            doctor = doctorResult.getValue();
+        } catch (error) {
+            console.log(`[DeactivateDoctorStatus]: ${doctorResult.errorValue()}`);
+            return false;
         }
+        const doctorInactiveStatus = DoctorStatus.createInactiveStatus().getValue();
 
-        return doctorStatusResult;
+        doctor.updateStatus(doctorInactiveStatus);
+
+        await this.doctorRepo.save(doctor);
+        await this.doctorStatusCacheRepo.save(id, doctorInactiveStatus);
+
+        return true;
     }
 }

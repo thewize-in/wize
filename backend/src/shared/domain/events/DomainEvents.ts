@@ -19,9 +19,7 @@ export class DomainEvents {
         });
     }
     private static removeAggregateFromMarkedDispatchList(aggregate: AggregateRoot<any>): void {
-        const index = this.markedAggregates.findIndex((a) => {
-            a.equals(aggregate);
-        });
+        const index = this.markedAggregates.findIndex((a) => a.equals(aggregate));
         this.markedAggregates.splice(index, 1);
     }
     private static findMarkedAggregateByID(id: UniqueEntityID): AggregateRoot<any> {

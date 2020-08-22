@@ -1,26 +1,30 @@
 import { UseCase } from '../../../../../shared/domain/UseCase';
-import { IPatientStatusRepo } from '../../../repos/patientRepo/PatientStatusRepo';
 import { Patient } from '../../../domain/patient';
-import { Result } from '../../../../../shared/core/logic/Result';
 import { UniqueEntityID } from '../../../../../shared/domain/UniqueEntityID';
+import { IPatientRepo } from '../../../repos/patientRepos/PatientRepo';
+import { PatientStatus } from '../../../domain/patientStatus';
 
-type CreatePatientRequest = { id: UniqueEntityID };
-type CreatePatientResponse = any;
+type Request = { id: string };
+type Response = any;
 
-export class CreatePatient implements UseCase<CreatePatientRequest, CreatePatientResponse> {
-    private patientStatusRepo: IPatientStatusRepo;
-    constructor(patientStatusRepo: IPatientStatusRepo) {
-        this.patientStatusRepo = patientStatusRepo;
+export class CreatePatient implements UseCase<Request, Response> {
+    private patientRepo: IPatientRepo;
+    constructor(patientRepo: IPatientRepo) {
+        this.patientRepo = patientRepo;
     }
-    async execute(request: CreatePatientRequest): Promise<CreatePatientResponse> {
+    async execute(request: Request): Promise<Response> {
         const { id } = request;
 
-        const patientExistResult: any = await this.patientStatusRepo.exists(id.toString());
+        const patientExist = await this.patientRepo.exists(id);
 
-        if (!patientExistResult.succeeded) {
-            const patient: Patient = Patient.create(null, id).getValue();
-            await this.patientStatusRepo.save(patient);
+        if (!patientExist) {
+            const patientId = new UniqueEntityID(id);
+            const patientDefaultStatus = PatientStatus.createDefaultStatus().getValue();
+            const patient: Patient = Patient.create({ status: patientDefaultStatus }, patientId).getValue();
+
+            await this.patientRepo.save(patient);
+            return true;
         }
-        return Result.success(true);
+        return false;
     }
 }

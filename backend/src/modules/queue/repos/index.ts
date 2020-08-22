@@ -1,12 +1,16 @@
-import { DoctorStatusRepo } from './doctorRepo/DoctorStatusRepo';
-import { doctorStatusModel } from '../../../shared/infra/database/mongoose/models/doctorStatusModel';
-import { DoctorStatusCacheRepo } from './doctorRepo/DoctorStatusCacheRepo';
+import { DoctorRepo } from './doctorRepos/DoctorRepo';
+import { doctorModel } from '../../../shared/infra/database/mongoose/models/';
+import { DoctorStatusCacheRepo } from './doctorRepos/DoctorStatusCacheRepo';
 import { redisApplicationClient } from '../../../shared/services/caching/application/redisApplicationClient';
-import { PatientStatusRepo } from './patientRepo/PatientStatusRepo';
-import { patientStatusModel } from '../../../shared/infra/database/mongoose/models/patientStatusModel';
+import { PatientStatusRepo } from './patientRepos/PatientStatusRepo';
+import { patientModel, patientEntryBookModel } from '../../../shared/infra/database/mongoose/models';
+import { PatientRepo } from './patientRepos/PatientRepo';
+import { PatientEntryBookRepo } from './patientEntryBookRepos/PatientEntryBookRepo';
 
-const doctorStatusRepo = new DoctorStatusRepo(doctorStatusModel);
+const doctorRepo = new DoctorRepo(doctorModel);
 const doctorStatusCacheRepo = new DoctorStatusCacheRepo(redisApplicationClient);
-const patientStatusRepo = new PatientStatusRepo(patientStatusModel);
+const patientEntryBookRepo = new PatientEntryBookRepo(patientEntryBookModel);
+const patientRepo = new PatientRepo(patientModel);
+const patientStatusRepo = new PatientStatusRepo(patientModel);
 
-export { doctorStatusRepo, doctorStatusCacheRepo, patientStatusRepo };
+export { doctorRepo, doctorStatusCacheRepo, patientStatusRepo, patientRepo, patientEntryBookRepo };

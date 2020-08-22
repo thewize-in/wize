@@ -1,31 +1,41 @@
 import { UseCase } from '../../../../../shared/domain/UseCase';
-import { IDoctorStatusRepo } from '../../../repos/doctorRepo/DoctorStatusRepo';
-import { IDoctorStatusCacheRepo } from '../../../repos/doctorRepo/DoctorStatusCacheRepo';
-import { ReturnResult } from '../../../../../shared/core/logic/Result';
+import { IDoctorRepo } from '../../../repos/doctorRepos/DoctorRepo';
+import { IDoctorStatusCacheRepo } from '../../../repos/doctorRepos/DoctorStatusCacheRepo';
+import { Doctor } from '../../../domain/doctor';
+import { DoctorStatus } from '../../../domain/doctorStatus';
+import { Result } from '../../../../../shared/core/logic/Result';
 
-type ResumeDoctorStatusRequest = { id: string };
-type ResumeDoctorStatusResponse = ReturnResult;
+type Request = { id: string };
+type Response = boolean;
 
-export class ResumeDoctorStatus implements UseCase<ResumeDoctorStatusRequest, ResumeDoctorStatusResponse> {
-    private doctorStatusRepo: IDoctorStatusRepo;
+export class ResumeDoctorStatus implements UseCase<Request, Response> {
+    private doctorRepo: IDoctorRepo;
     private doctorStatusCacheRepo: IDoctorStatusCacheRepo;
-    constructor(doctorStatusRepo: IDoctorStatusRepo, doctorStatusCacheRepo: IDoctorStatusCacheRepo) {
-        this.doctorStatusRepo = doctorStatusRepo;
+    constructor(doctorRepo: IDoctorRepo, doctorStatusCacheRepo: IDoctorStatusCacheRepo) {
+        this.doctorRepo = doctorRepo;
         this.doctorStatusCacheRepo = doctorStatusCacheRepo;
     }
-    async execute(request: ResumeDoctorStatusRequest): Promise<ResumeDoctorStatusResponse> {
+    async execute(request: Request): Promise<Response> {
         const { id } = request;
-        const doctorResumeStatus = {
-            active: true,
-            pause: false,
-        };
-        const doctorStatusResult: ReturnResult = await this.doctorStatusRepo.findDoctorByIdAndUpdateStatus(
-            id,
-            doctorResumeStatus,
-        );
-        if (doctorStatusResult.succeeded) {
-            await this.doctorStatusCacheRepo.save(id, doctorResumeStatus);
+        let doctorResult: Result<Doctor>, doctor: Doctor;
+
+        try {
+            doctorResult = await this.doctorRepo.getDoctorByDoctorId(id);
+            doctor = doctorResult.getValue();
+        } catch (error) {
+            console.log(`[ResumeDoctorStatus]: ${doctorResult.errorValue()}`);
+            return false;
         }
-        return doctorStatusResult;
+
+        if (!doctor.status.isActive()) return false;
+
+        const doctorResumeStatus = DoctorStatus.createResumeStatus().getValue();
+
+        doctor.updateStatus(doctorResumeStatus);
+
+        await this.doctorRepo.save(doctor);
+        await this.doctorStatusCacheRepo.save(id, doctorResumeStatus);
+
+        return true;
     }
 }

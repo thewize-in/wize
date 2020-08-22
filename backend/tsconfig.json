@@ -1,16 +1,16 @@
 {
-  "compilerOptions": {
-    "allowJs": true,
-    "module": "commonjs",
-    "moduleResolution": "Node",
-    "inlineSourceMap": true,
-    "target": "ES2015",
-    "outDir": "./dist",
-    "lib": ["ESNext"],
-    "resolveJsonModule": true,
-    "typeRoots": ["./node_modules/@types", "./src/@types"],
-    "esModuleInterop": true
-  },
-  "include": ["./src/**/*.ts", "./src/**/*.js"],
-  "exclude": ["node_modules", "!node_modules/@types", "./dist"]
+    "compilerOptions": {
+        "allowJs": true,
+        "module": "commonjs",
+        "moduleResolution": "Node",
+        "inlineSourceMap": true,
+        "target": "ES2019",
+        "outDir": "./dist",
+        "lib": ["ESNext"],
+        "resolveJsonModule": true,
+        "typeRoots": ["./node_modules/@types", "./src/@types"],
+        "esModuleInterop": true
+    },
+    "include": ["./src/**/*.ts", "./src/**/*.js"],
+    "exclude": ["node_modules", "!node_modules/@types", "./dist"]
 }

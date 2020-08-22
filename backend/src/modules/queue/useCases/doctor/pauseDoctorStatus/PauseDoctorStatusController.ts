@@ -1,7 +1,6 @@
 import { BaseController } from '../../../../../shared/infra/BaseController';
 import { PauseDoctorStatus } from './PauseDoctorStatus';
 import { PauseDoctorStatusDTO } from './PauseDoctorStatusDTO';
-import { ReturnResult } from '../../../../../shared/core/logic/Result';
 
 export class PauseDoctorStatusController extends BaseController {
     private useCase: PauseDoctorStatus;
@@ -12,9 +11,9 @@ export class PauseDoctorStatusController extends BaseController {
     async executeImpl(): Promise<any> {
         const dto: PauseDoctorStatusDTO = this.request.session['user'];
 
-        const result: ReturnResult = await this.useCase.execute(dto);
+        const result = await this.useCase.execute(dto);
 
-        if (!result.succeeded) return this.fail('oops something went wrong');
-        return this.ok(this.response.status(200), 'status pause');
+        if (!result) return this.forbidden('status is not active');
+        return this.ok(this.response.status(200), 'status paused');
     }
 }

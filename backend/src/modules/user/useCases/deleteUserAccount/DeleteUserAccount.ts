@@ -3,15 +3,15 @@ import { IUserRepo } from '../../repos/UserRepo';
 import { DeleteUserAccountDTO } from './DeleteUserAccountDTO';
 import { ReturnResult } from '../../../../shared/core/logic/Result';
 
-type DeleteUserAccountRequest = DeleteUserAccountDTO;
-type DeleteUserAccountResponse = boolean;
+type Request = DeleteUserAccountDTO;
+type Response = boolean;
 
-export class DeleteUserAccount implements UseCase<DeleteUserAccountRequest, Promise<DeleteUserAccountResponse>> {
+export class DeleteUserAccount implements UseCase<Request, Promise<Response>> {
     private userRepo: IUserRepo;
     constructor(userRepo: IUserRepo) {
         this.userRepo = userRepo;
     }
-    async execute(request: DeleteUserAccountRequest): Promise<DeleteUserAccountResponse> {
+    async execute(request: Request): Promise<Response> {
         const userId = request.id;
         const result: ReturnResult = await this.userRepo.findUserByIdAndDelete(userId);
 

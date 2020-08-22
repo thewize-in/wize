@@ -1,7 +1,8 @@
 import { BaseController } from '../../../../../shared/infra/BaseController';
 import { GetDoctorStatusById } from './GetDoctorStatusById';
 import { GetDoctorStatusByIdDTO } from './GetDoctorStatusByIdDTO';
-import { ReturnResult } from '../../../../../shared/core/logic/Result';
+import { DoctorStatusCacheMap } from '../../../mappers/doctorMaps/DoctorStatusCacheMap';
+import { DoctorStatus } from '../../../domain/doctorStatus';
 
 export class GetDoctorStatusByIdController extends BaseController {
     private useCase: GetDoctorStatusById;
@@ -11,9 +12,11 @@ export class GetDoctorStatusByIdController extends BaseController {
     }
     async executeImpl(): Promise<any> {
         const dto: GetDoctorStatusByIdDTO = this.request.params as GetDoctorStatusByIdDTO;
-        const result: ReturnResult = await this.useCase.execute(dto);
+        const result = await this.useCase.execute(dto);
 
-        if (!result.succeeded) return this.notFound('doctor not found');
-        return this.ok(this.response.status(200), result.value);
+        if (!result) return this.notFound('doctor not found');
+
+        const doctorStatus = result as DoctorStatus;
+        return this.ok(this.response.status(200), DoctorStatusCacheMap.toDTO(doctorStatus));
     }
 }

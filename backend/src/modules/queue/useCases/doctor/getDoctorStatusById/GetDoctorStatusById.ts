@@ -1,29 +1,42 @@
 import { UseCase } from '../../../../../shared/domain/UseCase';
-import { IDoctorStatusRepo } from '../../../repos/doctorRepo/DoctorStatusRepo';
-import { IDoctorStatusCacheRepo } from '../../../repos/doctorRepo/DoctorStatusCacheRepo';
-import { ReturnResult } from '../../../../../shared/core/logic/Result';
+import { IDoctorRepo } from '../../../repos/doctorRepos/DoctorRepo';
+import { IDoctorStatusCacheRepo } from '../../../repos/doctorRepos/DoctorStatusCacheRepo';
+import { Doctor } from '../../../domain/doctor';
+import { DoctorStatus } from '../../../domain/doctorStatus';
+import { Result } from '../../../../../shared/core/logic/Result';
 
-type GetDoctorByIdRequest = { id: string };
-type GetDoctorByIdResponse = ReturnResult;
+type Request = { doctorId: string };
+type Response = boolean | DoctorStatus;
 
-export class GetDoctorStatusById implements UseCase<GetDoctorByIdRequest, GetDoctorByIdResponse> {
-    private doctorStatusRepo: IDoctorStatusRepo;
+export class GetDoctorStatusById implements UseCase<Request, Response> {
+    private doctorRepo: IDoctorRepo;
     private doctorStatusCacheRepo: IDoctorStatusCacheRepo;
-    constructor(doctorStatusRepo: IDoctorStatusRepo, doctorStatusCacheRepo: IDoctorStatusCacheRepo) {
-        this.doctorStatusRepo = doctorStatusRepo;
+
+    constructor(doctorRepo: IDoctorRepo, doctorStatusCacheRepo: IDoctorStatusCacheRepo) {
+        this.doctorRepo = doctorRepo;
         this.doctorStatusCacheRepo = doctorStatusCacheRepo;
     }
-    async execute(request: GetDoctorByIdRequest): Promise<GetDoctorByIdResponse> {
-        const { id } = request;
+    async execute(request: Request): Promise<Response> {
+        const { doctorId } = request;
+        let doctorResult: Result<Doctor>,
+            doctorStatusResult: Result<DoctorStatus>,
+            doctor: Doctor,
+            doctorStatus: DoctorStatus;
 
-        let doctorStatusResult: ReturnResult = await this.doctorStatusCacheRepo.findDoctorStatusById(id);
+        doctorStatusResult = await this.doctorStatusCacheRepo.getDoctorStatusById(doctorId);
+        doctorStatus = doctorStatusResult.getValue();
 
-        if (!doctorStatusResult.succeeded) {
-            doctorStatusResult = await this.doctorStatusRepo.findDoctorStatusById(id);
-            if (doctorStatusResult.succeeded) {
-                this.doctorStatusCacheRepo.save(id, doctorStatusResult.value);
-            }
-        }
-        return doctorStatusResult;
+        if (doctorStatusResult.isSuccess) return doctorStatus;
+
+        doctorResult = await this.doctorRepo.getDoctorByDoctorId(doctorId);
+
+        if (doctorResult.isFailure) return false;
+
+        doctor = doctorResult.getValue();
+        doctorStatus = doctor.status;
+
+        await this.doctorStatusCacheRepo.save(doctorId, doctorStatus);
+
+        return doctorStatus;
     }
 }

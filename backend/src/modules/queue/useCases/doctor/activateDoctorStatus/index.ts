@@ -1,8 +1,8 @@
 import { ActivateDoctorStatusController } from './ActivateDoctorStatusController';
 import { ActivateDoctorStatus } from './ActivateDoctorStatus';
-import { doctorStatusRepo, doctorStatusCacheRepo } from '../../../repos';
+import { doctorRepo, doctorStatusCacheRepo, patientEntryBookRepo } from '../../../repos';
 
-const activateDoctorStatus = new ActivateDoctorStatus(doctorStatusRepo, doctorStatusCacheRepo);
+const activateDoctorStatus = new ActivateDoctorStatus(doctorRepo, doctorStatusCacheRepo, patientEntryBookRepo);
 const activateDoctorStatusController = new ActivateDoctorStatusController(activateDoctorStatus);
 
 export { activateDoctorStatusController, activateDoctorStatus };

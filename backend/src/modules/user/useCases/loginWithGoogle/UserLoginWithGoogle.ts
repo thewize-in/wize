@@ -7,15 +7,15 @@ import { UserMap } from '../../mappers/UserMap';
 import { userRepo } from '../../repos';
 import { UserLoginWithGoogleDTO } from './UserLoginWithGoogleDTO';
 
-type UserLoginWithGoogleRequest = UserLoginWithGoogleDTO;
-type UserLoginWithGoogleResponse = ReturnResult;
+type Request = UserLoginWithGoogleDTO;
+type Response = ReturnResult;
 
-export class UserLoginWithGoogle implements UseCase<UserLoginWithGoogleRequest, Promise<UserLoginWithGoogleResponse>> {
+export class UserLoginWithGoogle implements UseCase<Request, Promise<Response>> {
     private googleService: IGoogleService;
     constructor(googleService: IGoogleService) {
         this.googleService = googleService;
     }
-    async execute(request: UserLoginWithGoogleRequest): Promise<UserLoginWithGoogleResponse> {
+    async execute(request: Request): Promise<Response> {
         const googleAuthToken = request.googleAuthToken;
 
         const isAuthTokenValid = await this.googleService.checkValidAuthToken(googleAuthToken);

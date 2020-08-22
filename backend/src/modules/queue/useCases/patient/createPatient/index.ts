@@ -1,6 +1,6 @@
 import { CreatePatient } from './CreatePatient';
-import { patientStatusRepo } from '../../../repos';
+import { patientRepo } from '../../../repos';
 
-const createPatient = new CreatePatient(patientStatusRepo);
+const createPatient = new CreatePatient(patientRepo);
 
 export { createPatient };

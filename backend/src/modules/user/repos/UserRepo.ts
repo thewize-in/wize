@@ -24,7 +24,6 @@ export class UserRepo implements IUserRepo {
 
         try {
             await new this.model(rawUser).save();
-            DomainEvents.dispatchEventsForAggregate(user.userId.id);
             console.log('new user saved');
         } catch (err) {
             Result.fail<User>(err);
