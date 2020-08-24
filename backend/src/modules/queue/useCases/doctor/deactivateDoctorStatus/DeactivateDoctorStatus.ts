@@ -21,6 +21,7 @@ export class DeactivateDoctorStatus implements UseCase<Request, Response> {
         try {
             doctorResult = await this.doctorRepo.getDoctorByDoctorId(id);
             doctor = doctorResult.getValue();
+            if (!doctor.status.isActive()) return true;
         } catch (error) {
             console.log(`[DeactivateDoctorStatus]: ${doctorResult.errorValue()}`);
             return false;

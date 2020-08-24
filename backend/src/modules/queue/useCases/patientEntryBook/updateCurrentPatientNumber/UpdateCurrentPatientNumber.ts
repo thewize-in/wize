@@ -36,4 +36,3 @@ export class UpdateCurrentPatientNumber implements UseCase<Request, Response> {
         return true;
     }
 }
-// need refactoring
