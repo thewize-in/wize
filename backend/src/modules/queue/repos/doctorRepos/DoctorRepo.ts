@@ -4,7 +4,6 @@ import { Model, Document } from 'mongoose';
 import { DoctorMap } from '../../mappers/doctorMaps/DoctorMap';
 import { Result } from '../../../../shared/core/logic/Result';
 import { Guard } from '../../../../shared/core/logic/Guard';
-import { DomainEvents } from '../../../../shared/domain/events/DomainEvents';
 
 export interface IDoctorRepo extends Repo<Doctor> {
     getDoctorByDoctorId(doctorId: string): Promise<Result<Doctor>>;

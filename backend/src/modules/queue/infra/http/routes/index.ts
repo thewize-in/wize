@@ -1,15 +1,10 @@
 import express, { Request, Response } from 'express';
-import { userAccountRouter } from '../../../../user/infra/http/routes/setting/account';
-import { doctorStatusRouter } from './status';
 import { authorizationMiddleware } from '../../../../../shared/infra/http/middlewares';
-import { joinDoctorController } from '../../../useCases/patient/joinDoctor';
-import {
-    createPatientEntryControllerForPatient,
-    createPatientEntryControllerForDoctor,
-} from '../../../useCases/entryBook/createPatientEntry';
+import { createOfflinePatientEntryController } from '../../../useCases/patientEntryBook/createOfflinePatientEntry';
 import { getDoctorStatusByIdController } from '../../../useCases/doctor/getDoctorStatusById';
 import { leaveDoctorController } from '../../../useCases/patient/leaveDoctor';
-import { updateCurrentPatientNumberController } from '../../../useCases/entryBook/updateCurrentPatientNumber';
+import { updateCurrentPatientNumberController } from '../../../useCases/patientEntryBook/updateCurrentPatientNumber';
+import { createOnlinePatientEntryController } from '../../../useCases/patientEntryBook/createOnlinePatientEntry';
 
 // import { getDoctorStatusByIdController } from '../../../useCases/doctor/getDoctorStatusById';
 // import { joinDoctorQueueByDoctorIdController } from '../../../useCases/patient/joinDoctorQueue';
@@ -22,7 +17,7 @@ doctorRouter.get('/doctor/:doctorId', authorizationMiddleware.ensureAuthenticate
 });
 
 doctorRouter.post('/doctor/:id/join', authorizationMiddleware.ensureAuthenticated(), (req: Request, res: Response) => {
-    joinDoctorController.execute(req, res);
+    createOnlinePatientEntryController.execute(req, res);
 });
 doctorRouter.post('/doctor/:id/leave', authorizationMiddleware.ensureAuthenticated(), (req: Request, res: Response) => {
     leaveDoctorController.execute(req, res);
@@ -32,7 +27,7 @@ doctorRouter.post(
     authorizationMiddleware.ensureAuthenticated(),
     authorizationMiddleware.ensureUserIsDoctor(),
     (req: Request, res: Response) => {
-        createPatientEntryControllerForDoctor.execute(req, res);
+        createOfflinePatientEntryController.execute(req, res);
     },
 );
 

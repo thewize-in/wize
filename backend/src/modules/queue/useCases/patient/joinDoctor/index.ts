@@ -1,8 +1,6 @@
 import { JoinDoctor } from './JoinDoctor';
-import { JoinDoctorController } from './JoinDoctorController';
-import { patientRepo, doctorRepo } from '../../../repos';
+import { patientRepo } from '../../../repos';
 
-const joinDoctor = new JoinDoctor(patientRepo, doctorRepo);
-const joinDoctorController = new JoinDoctorController(joinDoctor);
+const joinDoctor = new JoinDoctor(patientRepo);
 
-export { joinDoctorController, joinDoctor };
+export { joinDoctor };

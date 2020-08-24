@@ -1,29 +1,27 @@
 import { IHandle } from '../../../shared/domain/events/IHandle';
 import { DomainEvents } from '../../../shared/domain/events/DomainEvents';
 import { PatientEntryCreated } from '../domain/events/PatientEntryCreated';
-import { UpdatePatientStatus } from '../useCases/patient/updatePatientStatus/UpdatePatientStatus';
+import { JoinDoctor } from '../useCases/patient/joinDoctor/JoinDoctor';
 
 export class AfterPatientEntryCreated implements IHandle<PatientEntryCreated> {
-    private updatePatientStatus: UpdatePatientStatus;
-    constructor(updatePatientStatus: UpdatePatientStatus) {
+    private joinDoctor: JoinDoctor;
+    constructor(joinDoctor: JoinDoctor) {
         this.setupSubscriptions();
-        this.updatePatientStatus = updatePatientStatus;
+        this.joinDoctor = joinDoctor;
     }
     setupSubscriptions(): void {
         DomainEvents.register(this.onPatientEntryCreated.bind(this), PatientEntryCreated.name);
     }
     private async onPatientEntryCreated(event: PatientEntryCreated): Promise<void> {
         const { patient } = event;
-        const dto = { patient };
+
         try {
-            this.updatePatientStatus.execute(dto);
+            this.joinDoctor.execute(patient);
             console.log(
-                `[AfterPatientEntryCreated]: Successfully executed updatePatientStatus useCase AfterPatientEntryCreated`,
+                `[AfterPatientEntryCreated]: Successfully executed joinDoctor useCase AfterPatientEntryCreated`,
             );
         } catch (error) {
-            console.log(
-                `[AfterPatientEntryCreated]: Failed to executed updatePatientStatus useCase AfterPatientEntryCreated`,
-            );
+            console.log(`[AfterPatientEntryCreated]: Failed to executed joinDoctor useCase AfterPatientEntryCreated`);
             console.log(error);
         }
     }

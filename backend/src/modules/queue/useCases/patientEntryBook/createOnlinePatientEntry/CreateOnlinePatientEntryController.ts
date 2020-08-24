@@ -1,10 +1,10 @@
 import { BaseController } from '../../../../../shared/infra/BaseController';
-import { CreatePatientEntry } from './CreatePatientEntry';
-import { CreatePatientEntryDTO } from './CreatePatientEntryDTO';
+import { CreateOnlinePatientEntry } from './CreateOnlinePatientEntry';
+import { CreateOnlinePatientEntryDTO } from './CreateOnlinePatientEntryDTO';
 
-export class CreatePatientEntryControllerForPatient extends BaseController {
-    private useCase: CreatePatientEntry;
-    constructor(useCase: CreatePatientEntry) {
+export class CreateOnlineEntryController extends BaseController {
+    private useCase: CreateOnlinePatientEntry;
+    constructor(useCase: CreateOnlinePatientEntry) {
         super();
         this.useCase = useCase;
     }
@@ -17,7 +17,7 @@ export class CreatePatientEntryControllerForPatient extends BaseController {
             tag: 'online',
         };
 
-        const dto: CreatePatientEntryDTO = {
+        const dto: CreateOnlinePatientEntryDTO = {
             doctorId,
             patientDetails,
         };
@@ -31,14 +31,3 @@ export class CreatePatientEntryControllerForPatient extends BaseController {
         return this.ok(this.response.status(200), 'successfully connected');
     }
 }
-/**
- * if route is used by doctor
- *  doctorId --> in request cookie
- *  patient name --> in request body
- *  tag as offline --> if there is no patient id then offline
- *
- * if route is used by patient
- *  doctorId --> in
- *  patient name
- *  tag as online
- */

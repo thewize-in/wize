@@ -1,17 +1,15 @@
 import { IDomainEvent } from '../../../../shared/domain/events/IDomainEvents';
 import { UniqueEntityID } from '../../../../shared/domain/UniqueEntityID';
-import { Patient } from '../patient';
+import { Doctor } from '../doctor';
 
-export class PatientJoined implements IDomainEvent {
+export class DoctorStatusDeactivated implements IDomainEvent {
     public dateTimeOccurred: Date;
-    public patient: Patient;
-    constructor(patient: Patient) {
+    public doctor: Doctor;
+    constructor(doctor: Doctor) {
         this.dateTimeOccurred = new Date();
-        this.patient = patient;
+        this.doctor = doctor;
     }
     getAggregateId(): UniqueEntityID {
-        console.log(this.patient.id);
-
-        return this.patient.id;
+        return this.doctor.id;
     }
 }

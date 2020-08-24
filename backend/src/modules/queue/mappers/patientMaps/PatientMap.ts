@@ -10,7 +10,6 @@ export class PatientMap implements Mapper<Patient> {
             patient_id: patient.patientId.id.toString(),
             status: {
                 joined: patient.status.props.joined,
-                joined_doctor_id: patient.status.props.joinedDoctorId,
             },
             waiting_number: patient.waitingNumber,
         };
@@ -21,7 +20,6 @@ export class PatientMap implements Mapper<Patient> {
                 patientId: PatientId.create(new UniqueEntityID(raw.patient_id)).getValue(),
                 status: PatientStatus.create({
                     joined: raw.status.joined,
-                    joinedDoctorId: raw.status.joined_doctor_id,
                 }).getValue(),
                 waitingNumber: raw.waiting_number,
             },

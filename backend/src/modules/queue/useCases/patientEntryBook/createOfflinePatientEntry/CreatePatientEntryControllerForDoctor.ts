@@ -1,10 +1,10 @@
 import { BaseController } from '../../../../../shared/infra/BaseController';
-import { CreatePatientEntry } from './CreatePatientEntry';
-import { CreatePatientEntryDTO } from './CreatePatientEntryDTO';
+import { CreateOfflinePatientEntry } from './CreateOfflinePatientEntry';
+import { CreateOfflinePatientEntryDTO } from './CreateOfflinePatientEntryDTO';
 
-export class CreatePatientEntryControllerForDoctor extends BaseController {
-    private useCase: CreatePatientEntry;
-    constructor(useCase: CreatePatientEntry) {
+export class CreateOfflinePatientEntryController extends BaseController {
+    private useCase: CreateOfflinePatientEntry;
+    constructor(useCase: CreateOfflinePatientEntry) {
         super();
         this.useCase = useCase;
     }
@@ -16,9 +16,9 @@ export class CreatePatientEntryControllerForDoctor extends BaseController {
             tag: 'offline',
         };
 
-        const dto: CreatePatientEntryDTO = {
-            doctorId,
+        const dto: CreateOfflinePatientEntryDTO = {
             patientDetails,
+            doctorId,
         };
         const result = this.useCase.execute(dto);
 

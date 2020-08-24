@@ -14,6 +14,10 @@ userSchema.post('save', (document: Document) => {
     const primaryKeyField = document['user_id'];
     dispatchEventsCallback(primaryKeyField);
 });
+doctorSchema.post('save', (document: Document) => {
+    const primaryKeyField = document['doctor_id'];
+    dispatchEventsCallback(primaryKeyField);
+});
 patienEntryBooktSchema.post('findOneAndUpdate', (document: Document) => {
     const primaryKeyField = document['book_id'];
     dispatchEventsCallback(primaryKeyField);
@@ -22,7 +26,3 @@ patientSchema.post('findOneAndUpdate', (document: Document) => {
     const primaryKeyField = document['patient_id'];
     dispatchEventsCallback(primaryKeyField);
 });
-// doctorSchema.post('findOneAndUpdate', (document: Document) => {
-//     const primaryKeyField = document['doctor_id'];
-//     dispatchEventsCallback(primaryKeyField);
-// });

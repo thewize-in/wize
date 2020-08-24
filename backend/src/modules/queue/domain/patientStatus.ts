@@ -3,7 +3,6 @@ import { Result } from '../../../shared/core/logic/Result';
 
 interface PatientStatusProps {
     joined: boolean;
-    joinedDoctorId: string;
 }
 
 export class PatientStatus extends ValueObject<PatientStatusProps> {
@@ -16,21 +15,18 @@ export class PatientStatus extends ValueObject<PatientStatusProps> {
     public static createDefaultStatus() {
         const patientDefaultStatusProps: PatientStatusProps = {
             joined: false,
-            joinedDoctorId: '',
         };
         return Result.ok<PatientStatus>(new PatientStatus(patientDefaultStatusProps));
     }
-    public static createJoinedStatus(doctorId: string): Result<PatientStatus> {
+    public static createJoinedStatus(): Result<PatientStatus> {
         const patientJoinedStatusProps: PatientStatusProps = {
             joined: true,
-            joinedDoctorId: doctorId,
         };
         return Result.ok<PatientStatus>(new PatientStatus(patientJoinedStatusProps));
     }
     public static createLeavedStatus() {
         const patientLeavedStatusProps: PatientStatusProps = {
             joined: false,
-            joinedDoctorId: '',
         };
         return Result.ok<PatientStatus>(new PatientStatus(patientLeavedStatusProps));
     }

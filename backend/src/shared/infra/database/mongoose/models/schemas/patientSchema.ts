@@ -10,11 +10,6 @@ const patientSchema = new mongoose.Schema({
             type: Boolean,
             required: true,
         },
-        joined_doctor_id: {
-            type: String,
-            default: '',
-            require: true,
-        },
     },
     waiting_number: {
         type: Number,

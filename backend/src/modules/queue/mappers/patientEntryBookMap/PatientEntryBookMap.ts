@@ -9,14 +9,14 @@ export class PatientEntryBookMap implements Mapper<PatientEntryBook> {
             book_id: patientEntryBook.bookId.id.toString(),
             patient_list: patientEntryBook.patientList,
             patient_stats: {
-                total_patient_number: patientEntryBook.patientStats.totalPatientNumber,
-                current_patient_number: patientEntryBook.patientStats.currentPatientNumber,
+                total_patient_number: patientEntryBook.totalPatientNumber,
+                current_patient_number: patientEntryBook.currentPatientNumber,
                 current_patient_details: patientEntryBook.currentPatientDetails,
             },
         };
     }
     public static toDomain(raw: any) {
-        const id = new UniqueEntityID(raw.book_id);
+        const bookId = new UniqueEntityID(raw.book_id);
         const patientEntryBookOrError = PatientEntryBook.create(
             {
                 patientList: raw.patient_list,
@@ -26,7 +26,7 @@ export class PatientEntryBookMap implements Mapper<PatientEntryBook> {
                     currentPatientDetails: raw.patient_stats.current_patient_details,
                 }).getValue(),
             },
-            id,
+            bookId,
         );
 
         if (patientEntryBookOrError.isFailure) throw patientEntryBookOrError.errorValue();

@@ -2,7 +2,6 @@ import { UseCase } from '../../../../../shared/domain/UseCase';
 import { IDoctorRepo } from '../../../repos/doctorRepos/DoctorRepo';
 import { IDoctorStatusCacheRepo } from '../../../repos/doctorRepos/DoctorStatusCacheRepo';
 import { Doctor } from '../../../domain/doctor';
-import { DoctorStatus } from '../../../domain/doctorStatus';
 import { Result } from '../../../../../shared/core/logic/Result';
 
 type Request = { id: string };
@@ -26,12 +25,11 @@ export class DeactivateDoctorStatus implements UseCase<Request, Response> {
             console.log(`[DeactivateDoctorStatus]: ${doctorResult.errorValue()}`);
             return false;
         }
-        const doctorInactiveStatus = DoctorStatus.createInactiveStatus().getValue();
 
-        doctor.updateStatus(doctorInactiveStatus);
+        doctor.deactivateStatus();
 
         await this.doctorRepo.save(doctor);
-        await this.doctorStatusCacheRepo.save(id, doctorInactiveStatus);
+        await this.doctorStatusCacheRepo.save(id, doctor.status);
 
         return true;
     }

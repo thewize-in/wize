@@ -10,21 +10,8 @@ interface PatientStatsProps {
 }
 
 export class PatientStats extends ValueObject<PatientStatsProps> {
-    get totalPatientNumber(): number {
-        return this.props.totalPatientNumber;
-    }
-    get currentPatientNumber(): number {
-        return this.props.currentPatientNumber;
-    }
-    get currentPatientDetails() {
-        return this.props.currentPatientDetails;
-    }
-
     private constructor(props: PatientStatsProps) {
         super(props);
-    }
-    public incrCurrentPatientNumber() {
-        this.props.currentPatientNumber++;
     }
     public static create(props: PatientStatsProps): Result<PatientStats> {
         const patientStatsOrError = new PatientStats({ ...props });
@@ -33,5 +20,9 @@ export class PatientStats extends ValueObject<PatientStatsProps> {
         if (!guardResult.succeeded) return Result.fail<PatientStats>(`[PatientStats]: creation failed`);
 
         return Result.ok<PatientStats>(patientStatsOrError);
+    }
+
+    public incrCurrentPatientNumber() {
+        this.props.currentPatientNumber++;
     }
 }

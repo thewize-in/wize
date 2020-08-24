@@ -3,8 +3,6 @@ import { PatientStatus } from './patientStatus';
 import { Result } from '../../../shared/core/logic/Result';
 import { PatientId } from './patientId';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
-import { PatientDetail } from './patientEntryBook';
-import { JoinRequestCreated } from './events/JoinRequestCreated';
 
 interface PatientProps {
     patientId?: PatientId;
@@ -27,9 +25,6 @@ export class Patient extends AggregateRoot<PatientProps> {
     }
     private constructor(props?: PatientProps, id?: UniqueEntityID) {
         super(props, id);
-    }
-    public createJoinRequest(doctorId: string, patientDetails: PatientDetail) {
-        this.addDomainEvent(new JoinRequestCreated(this, patientDetails, doctorId));
     }
 
     public hasJoined(): boolean {

@@ -1,12 +1,11 @@
 import { AfterUserCreated } from './AfterUserCreated';
-import { createPatient } from '../useCases/patient/createPatient';
+import { AfterDoctorCreated } from './AfterDoctorCreated';
 import { AfterPatientEntryCreated } from './AfterPatientEntryCreated';
-import { AfterPatientJoined } from './AfterPatientJoined';
-import { updatePatientStatus } from '../useCases/patient/updatePatientStatus';
-import { AfterJoinRequestCreated } from './AfterJoinRequestCreated';
-import { createPatientEntry } from '../useCases/entryBook/createPatientEntry';
+
+import { createPatient } from '../useCases/patient/createPatient';
+import { createPatientEntryBook } from '../useCases/patientEntryBook/createPatientEntryBook';
+import { joinDoctor } from '../useCases/patient/joinDoctor';
 
 new AfterUserCreated(createPatient);
-new AfterPatientEntryCreated(updatePatientStatus);
-new AfterPatientJoined(updatePatientStatus);
-new AfterJoinRequestCreated(createPatientEntry);
+new AfterDoctorCreated(createPatientEntryBook);
+new AfterPatientEntryCreated(joinDoctor);
