@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.participantLoginController = exports.participantLogin = void 0;
+const ParticipantLogin_1 = require("./ParticipantLogin");
+const ParticipantLoginController_1 = require("./ParticipantLoginController");
+const participantLogin = new ParticipantLogin_1.ParticipantLogin();
+exports.participantLogin = participantLogin;
+const participantLoginController = new ParticipantLoginController_1.ParticipantLoginController(participantLogin);
+exports.participantLoginController = participantLoginController;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy91c2VyL3BhcnRpY2lwYW50L3VzZUNhc2VzL2xvZ2luL2luZGV4LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7OztBQUFBLHlEQUFzRDtBQUN0RCw2RUFBMEU7QUFFMUUsTUFBTSxnQkFBZ0IsR0FBRyxJQUFJLG1DQUFnQixFQUFFLENBQUM7QUFJNUMsNENBQWdCO0FBSHBCLE1BQU0sMEJBQTBCLEdBQUcsSUFBSSx1REFBMEIsQ0FBQyxnQkFBZ0IsQ0FBQyxDQUFDO0FBSWhGLGdFQUEwQiJ9
