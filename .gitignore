@@ -1,6 +1,5 @@
 /node_modules
-/dist
 /coverage
+/build
 .env
-.DS_Store
 npm-debug.log*
