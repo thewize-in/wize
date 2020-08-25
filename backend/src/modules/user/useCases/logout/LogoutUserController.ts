@@ -12,7 +12,6 @@ export class LogoutUserController extends BaseController {
         const dto: LogoutUserDTO = this.request;
 
         await this.useCase.execute(dto);
-
-        this.ok(this.response.clearCookie('user'));
+        return this.response.clearCookie('user').redirect('/');
     }
 }

@@ -1,109 +1,56 @@
 import { Repo } from '../../../shared/infra/Repo';
-import { User } from '../domain/user';
 import { Model, Document } from 'mongoose';
-import { UserMap } from '../mappers/UserMap';
-import { Result, ReturnResult } from '../../../shared/core/logic/Result';
+import { User } from '../domain/user';
 import { Guard } from '../../../shared/core/logic/Guard';
-import { DomainEvents } from '../../../shared/domain/events/DomainEvents';
+import { UserMap } from '../mappers/UserMap';
+import { UserSessionDTO } from '../domain/dtos/UserSessionDTO';
+import { Result } from '../../../shared/core/logic/Result';
+import { UserProfileDTO } from '../domain/dtos/UserProfileDTO';
 
 export interface IUserRepo extends Repo<User> {
-    findUserByEmail(email: string): Promise<ReturnResult>;
-    findUserById(id: string): Promise<User>;
-    findUserByIdAndReturnAll(id: string): Promise<ReturnResult>;
-    findUserByUsername(username: string): Promise<ReturnResult>;
-    existsAndReturn(user: User): Promise<ReturnResult>;
-    findUserByIdAndDelete(id: string): Promise<ReturnResult>;
+    getUserSessionDetails(email: string): Promise<UserSessionDTO>;
+    getProfileByUserId(userId: string): Promise<Result<UserProfileDTO>>;
 }
 export class UserRepo implements IUserRepo {
     private model: Model<Document>;
-    constructor(model: any) {
+    constructor(model: Model<Document>) {
         this.model = model;
     }
     async save(user: User): Promise<void> {
         const rawUser = UserMap.toPersistence(user);
+        const userExist = this.exists(user.email);
 
-        try {
+        if (userExist) {
             await new this.model(rawUser).save();
             console.log('new user saved');
-        } catch (err) {
-            Result.fail<User>(err);
+        } else {
+            await this.model.findOneAndUpdate({ user_id: user.userId.id.toString() }, rawUser);
         }
     }
-    async exists(user: User): Promise<boolean> {
-        const isUserExist = await this.model.findOne({ email: user.email });
-        return isUserExist ? true : false;
-    }
-    async findUserByEmail(email: string): Promise<ReturnResult> {
-        try {
-            const userOrError: any = await this.model.findOne({ email }, { user_id: 1, user_role: 1 });
-            const guardResult = Guard.againstNullOrUndefined(userOrError, 'userOrError');
+    async exists(email: string): Promise<boolean> {
+        const isExist = await this.model.findOne({ email: email });
+        const guardResult = Guard.againstNullOrUndefined(isExist, 'isExist');
 
-            if (!guardResult.succeeded) return Result.success(false);
-
-            return Result.success(true, UserMap.toUserSession(userOrError));
-        } catch (error) {
-            Result.fail<User>(error);
-            return Result.success(false);
-        }
+        if (!guardResult.succeeded) return false;
+        return true;
     }
-    async findUserById(id: string): Promise<User> {
-        const rawUser: any = await this.model.findOne({ user_id: id }, { username: 1, email: 1 });
-        return UserMap.toDTO(rawUser);
-    }
-    async findUserByUsername(username: string): Promise<ReturnResult> {
-        try {
-            const userOrError: any = await this.model.findOne({ username }, { username: 1, display_name: 1, email: 1 });
-            const guardResult = Guard.againstNullOrUndefined(userOrError, 'userOrError');
 
-            if (!guardResult.succeeded) return Result.success(false);
-
-            const userDTO = UserMap.toDTO(userOrError);
-            return Result.success(true, userDTO);
-        } catch (err) {
-            return Result.success(false);
-        }
+    async getUserSessionDetails(email: string) {
+        const user: any = await this.model.findOne({ email: email }, { user_id: 1, user_role: 1 });
+        const userSessionDetails: UserSessionDTO = { id: user.user_id, role: user.user_role };
+        return userSessionDetails;
     }
-    async existsAndReturn(user: User): Promise<ReturnResult> {
-        try {
-            const userOrError: any = await this.model.findOne({ email: user.email }, { user_id: 1, user_role: 1 });
-            const guardResult = Guard.againstNullOrUndefined(userOrError, 'userOrError');
+    async getProfileByUserId(userId: string): Promise<Result<UserProfileDTO>> {
+        const user: any = await this.model.findOne(
+            { user_id: userId },
+            { username: 1, display_name: 1, profile_pic: 1 },
+        );
 
-            if (!guardResult.succeeded) return Result.success(false);
-            const userDTO = { id: userOrError.user_id, role: userOrError.user_role };
-            return Result.success(true, userDTO);
-        } catch (err) {
-            return Result.success(false);
-        }
-    }
-    async findUserByIdAndReturnAll(id: string): Promise<ReturnResult> {
-        try {
-            const userOrError: any = await this.model.findOne(
-                { user_id: id },
-                {
-                    username: 1,
-                    display_name: 1,
-                    first_name: 1,
-                    last_name: 1,
-                    email: 1,
-                    profile_pic: 1,
-                    id: -1,
-                },
-            );
-            const guardResult = Guard.againstNullOrUndefined(userOrError, 'userOrError');
-
-            if (!guardResult) return Result.success(false);
-            const userProfileDTO = UserMap.userProfileFromPersistenceToDTO(userOrError);
-            return Result.success(true, userProfileDTO);
-        } catch (err) {
-            return Result.success(false);
-        }
-    }
-    async findUserByIdAndDelete(id: string): Promise<ReturnResult> {
-        try {
-            await this.model.findOneAndDelete({ user_id: id });
-            return Result.success(true);
-        } catch (err) {
-            return Result.success(false);
-        }
+        const userProfile: UserProfileDTO = {
+            username: user.username,
+            displayName: user.display_name,
+            profilePic: user.profile_pic,
+        };
+        return Result.ok<UserProfileDTO>(userProfile);
     }
 }

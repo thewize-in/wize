@@ -7,7 +7,8 @@ export class AuthorizationMiddleware {
     public ensureAuthenticated() {
         return async (req: Request, res: Response, next: NextFunction) => {
             if (!req.session || !req.session.user) {
-                return this.endRequest(401, 'you need to login', res);
+                //  this.endRequest(401, 'you need to login', res);
+                return res.redirect('/');
             }
             return next();
         };

@@ -1,7 +1,7 @@
 import { BaseController } from '../../../../shared/infra/BaseController';
 import { UserLoginWithGoogle } from './UserLoginWithGoogle';
 import { UserLoginWithGoogleDTO } from './UserLoginWithGoogleDTO';
-import { ReturnResult } from '../../../../shared/core/logic/Result';
+import { UserSessionDTO } from '../../domain/dtos/UserSessionDTO';
 
 export class UserLoginController extends BaseController {
     private useCase: UserLoginWithGoogle;
@@ -10,14 +10,17 @@ export class UserLoginController extends BaseController {
         this.useCase = useCase;
     }
     async executeImpl(): Promise<any> {
-        const dto: UserLoginWithGoogleDTO = this.request.body;
+        const code = this.request.query['code'];
+        const dto: UserLoginWithGoogleDTO = { code } as UserLoginWithGoogleDTO;
 
-        const result: ReturnResult = await this.useCase.execute(dto);
+        const result = await this.useCase.execute(dto);
 
-        if (!result.succeeded) return this.unauthorized('unvalid token');
+        if (result.isFailure) return this.unauthorized('unvalid token');
 
-        this.request.session['user'] = result.value;
+        const userSessionDetails: UserSessionDTO = result.getValue();
 
-        return this.ok(this.response.status(200));
+        this.request.session['user'] = userSessionDetails;
+
+        return this.response.redirect('/setting/profile');
     }
 }

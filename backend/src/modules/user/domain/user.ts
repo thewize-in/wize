@@ -7,9 +7,9 @@ import { UserId } from './UserId';
 import { UserCreated } from './events/UserCreated';
 
 interface UserProps {
-    userId: UserId;
-    role: Role;
-    username: Username;
+    userId?: UserId;
+    role?: Role;
+    username?: Username;
     displayName?: string;
     firstName: string;
     lastName: string;
@@ -67,6 +67,7 @@ export class User extends AggregateRoot<UserProps> {
                 ...props,
                 username: Username.create(props.email).getValue(),
                 displayName: `${props.firstName ? props.firstName : props.username.value}`,
+                role: Role.patient,
             },
             id,
         );

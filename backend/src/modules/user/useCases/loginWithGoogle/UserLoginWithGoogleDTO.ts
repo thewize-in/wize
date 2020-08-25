@@ -1,3 +1,1 @@
-export interface UserLoginWithGoogleDTO {
-    googleAuthToken: string;
-}
+export type UserLoginWithGoogleDTO = { code: string };

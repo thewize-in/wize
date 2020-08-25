@@ -1,9 +1,10 @@
 import { UseCase } from '../../../../shared/domain/UseCase';
 import { IUserRepo } from '../../repos/UserRepo';
-import { ReturnResult } from '../../../../shared/core/logic/Result';
+import { GetUserProfileDTO } from './GetUserProfileDTO';
+import { UserProfileDTO } from '../../domain/dtos/UserProfileDTO';
 
-type Request = { id: string };
-type Response = ReturnResult;
+type Request = GetUserProfileDTO;
+type Response = UserProfileDTO;
 
 export class GetUserProfile implements UseCase<Request, Promise<Response>> {
     private userRepo: IUserRepo;
@@ -11,9 +12,10 @@ export class GetUserProfile implements UseCase<Request, Promise<Response>> {
         this.userRepo = userRepo;
     }
     async execute(request: Request): Promise<Response> {
-        const { id } = request;
+        const { userId } = request;
 
-        const result: ReturnResult = await this.userRepo.findUserByIdAndReturnAll(id);
-        return result;
+        const userProfile = (await this.userRepo.getProfileByUserId(userId)).getValue();
+
+        return userProfile;
     }
 }

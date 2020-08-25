@@ -13,8 +13,9 @@ export class DeleteUserAccount implements UseCase<Request, Promise<Response>> {
     }
     async execute(request: Request): Promise<Response> {
         const userId = request.id;
-        const result: ReturnResult = await this.userRepo.findUserByIdAndDelete(userId);
+        // const result: ReturnResult = await this.userRepo.findUserByIdAndDelete(userId);
 
-        return result.succeeded;
+        // return result.succeeded;
+        return;
     }
 }

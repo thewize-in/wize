@@ -3,10 +3,13 @@ import { AuthProviderProfileInfo } from '../models/authProviderProfileInfo';
 import { AuthProvider } from '../models/authProvider';
 import { OAuth2Client } from 'google-auth-library';
 import { authConfig } from '../../../config/authConfig';
+import { GetTokenResponse, GenerateAuthUrlOpts } from 'google-auth-library/build/src/auth/oauth2client';
 
 export interface IGoogleService extends AuthProvider {
     getProfileInfo(token: string): Promise<AuthProviderProfileInfo>;
     checkValidAuthToken(token: string): Promise<boolean | object>;
+    getAuthToken(code: string): Promise<any>;
+    getAuthUrl(): string;
 }
 type googleProfieDTO = {
     name: string;
@@ -20,7 +23,25 @@ type googleProfieDTO = {
 export class GoogleService implements IGoogleService {
     private client: OAuth2Client;
     constructor() {
-        this.client = new OAuth2Client(authConfig.googleClientId);
+        this.client = new OAuth2Client({
+            clientId: authConfig.googleClientId,
+            clientSecret: authConfig.googleClientSecret,
+            redirectUri: authConfig.googleCallbackUrl,
+        });
+    }
+    public getAuthUrl(): string {
+        const generateAuthUrlOpts: GenerateAuthUrlOpts = {
+            scope: [
+                'https://www.googleapis.com/auth/userinfo.email',
+                ' https://www.googleapis.com/auth/userinfo.profile',
+            ],
+            access_type: 'offline',
+        };
+        return this.client.generateAuthUrl(generateAuthUrlOpts);
+    }
+    public async getAuthToken(code: string): Promise<any> {
+        const { tokens }: GetTokenResponse = await this.client.getToken(code);
+        return tokens.id_token;
     }
     public async getProfileInfo(token: string): Promise<AuthProviderProfileInfo> {
         const data: googleProfieDTO = await this.getTicketPaylod(token);

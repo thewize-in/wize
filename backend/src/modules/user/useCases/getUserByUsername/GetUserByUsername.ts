@@ -14,9 +14,10 @@ export class GetUserByUsername implements UseCase<Request, Promise<Response>> {
     public async execute(request: Request): Promise<Response> {
         const username = request.username;
 
-        const result: any = await this.userRepo.findUserByUsername(username);
+        // const result: any = await this.userRepo.findUserByUsername(username);
 
-        if (!result.succeeded) return false;
-        return result.value as User;
+        // if (!result.succeeded) return false;
+        // return result.value as User;
+        return;
     }
 }
