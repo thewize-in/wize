@@ -40,7 +40,7 @@
         "ts-jest": "^26.2.0",
         "ts-node": "^8.10.2",
         "typescript": "^3.9.7",
-        "uuid": "^8.3.0"
+        "uuidv4": "^6.2.3"
     },
     "devDependencies": {}
 }
