@@ -1,9 +1,9 @@
 # dependencies
 **/node_modules/
 # testing
-**/coverage/
+**/coverage
 # production
-**/dist/
+**/dist
 
 # misc
 .DS_Store
