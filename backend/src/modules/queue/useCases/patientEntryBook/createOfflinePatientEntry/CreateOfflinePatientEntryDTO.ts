@@ -1,7 +1,9 @@
 export type CreateOfflinePatientEntryDTO = {
     patientDetails: {
         name: string;
-        tag: string;
+        address?: string;
+        phone?: number;
+        type?: string;
     };
-    doctorId: string;
+    bookId: string;
 };

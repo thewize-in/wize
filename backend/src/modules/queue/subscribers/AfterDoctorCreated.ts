@@ -16,7 +16,7 @@ export class AfterDoctorCreated implements IHandle<DoctorCreated> {
         const { doctor } = event;
 
         try {
-            this.createPatientEntryBook.execute(doctor);
+            // this.createPatientEntryBook.execute({ doctorId: doctor.doctorId.id.toString() });
             console.log(
                 `[AfterDoctorCreated]: Successfully executed createPatientEntryBook useCase AfterDoctorCreated (:`,
             );

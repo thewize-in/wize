@@ -5,7 +5,7 @@ import { CreateOfflinePatientEntryDTO } from './CreateOfflinePatientEntryDTO';
 import { Result } from '../../../../../shared/core/logic/Result';
 
 type Request = CreateOfflinePatientEntryDTO;
-type Response = boolean;
+type Response = Result<boolean>;
 
 export class CreateOfflinePatientEntry implements UseCase<Request, Response> {
     private patientEntryBookRepo: IPatientEntryBookRepo;
@@ -14,22 +14,25 @@ export class CreateOfflinePatientEntry implements UseCase<Request, Response> {
         this.patientEntryBookRepo = patientEntryBookRepo;
     }
     async execute(request: Request): Promise<Response> {
-        const { patientDetails, doctorId } = request;
+        const { patientDetails, bookId } = request;
         let patientEntryBookResult: Result<PatientEntryBook>, patientEntryBook: PatientEntryBook;
 
+        const entryBookExist = await this.patientEntryBookRepo.exists(bookId);
+
+        if (!entryBookExist) return Result.ok<boolean>(false);
+
         try {
-            const bookId = doctorId;
             patientEntryBookResult = await this.patientEntryBookRepo.getPatientEntryBookByBookId(bookId);
             patientEntryBook = patientEntryBookResult.getValue();
         } catch (error) {
             console.log(`[CreatePatientEntry]: here ${patientEntryBookResult.errorValue()}`);
-            return false;
+            return Result.ok<boolean>(false);
         }
 
         patientEntryBook.createOfflineEntry(patientDetails);
 
         await this.patientEntryBookRepo.save(patientEntryBook);
 
-        return true;
+        return Result.ok<boolean>(true);
     }
 }

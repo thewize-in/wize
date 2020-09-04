@@ -3,8 +3,14 @@ import { authorizationMiddleware } from '../../../../../shared/infra/http/middle
 import { createOfflinePatientEntryController } from '../../../useCases/patientEntryBook/createOfflinePatientEntry';
 import { getDoctorStatusByIdController } from '../../../useCases/doctor/getDoctorStatusById';
 import { leaveDoctorController } from '../../../useCases/patient/leaveDoctor';
-import { updateCurrentPatientNumberController } from '../../../useCases/patientEntryBook/updateCurrentPatientNumber';
+import { updateCurrentPatientNumberController } from '../../../useCases/patientEntryBook/nextEntry';
 import { createOnlinePatientEntryController } from '../../../useCases/patientEntryBook/createOnlinePatientEntry';
+import {
+    createPatientEntryBook,
+    createPatientEntryBookController,
+} from '../../../useCases/patientEntryBook/createPatientEntryBook';
+import { deletePatientEntryBookController } from '../../../useCases/patientEntryBook/deletePatientEntryBook';
+import { getPatientEntryBookController } from '../../../useCases/patientEntryBook/getPatientEntryBook';
 
 // import { getDoctorStatusByIdController } from '../../../useCases/doctor/getDoctorStatusById';
 // import { joinDoctorQueueByDoctorIdController } from '../../../useCases/patient/joinDoctorQueue';
@@ -23,7 +29,7 @@ doctorRouter.post('/doctor/:id/leave', authorizationMiddleware.ensureAuthenticat
     leaveDoctorController.execute(req, res);
 });
 doctorRouter.post(
-    '/doctor/patient',
+    '/patiententrybook/newentry',
     authorizationMiddleware.ensureAuthenticated(),
     authorizationMiddleware.ensureUserIsDoctor(),
     (req: Request, res: Response) => {
@@ -32,7 +38,33 @@ doctorRouter.post(
 );
 
 doctorRouter.post(
-    '/doctor/next',
+    '/patiententrybook/new',
+    authorizationMiddleware.ensureAuthenticated(),
+    authorizationMiddleware.ensureUserIsDoctor(),
+    (req: Request, res: Response) => {
+        createPatientEntryBookController.execute(req, res);
+    },
+);
+doctorRouter.delete(
+    '/patiententrybook',
+    authorizationMiddleware.ensureAuthenticated(),
+    authorizationMiddleware.ensureUserIsDoctor(),
+    (req: Request, res: Response) => {
+        deletePatientEntryBookController.execute(req, res);
+    },
+);
+
+doctorRouter.get(
+    '/patiententrybook',
+    authorizationMiddleware.ensureAuthenticated(),
+    authorizationMiddleware.ensureUserIsDoctor(),
+    (req: Request, res: Response) => {
+        getPatientEntryBookController.execute(req, res);
+    },
+);
+
+doctorRouter.post(
+    '/patiententrybook/next',
     authorizationMiddleware.ensureAuthenticated(),
     authorizationMiddleware.ensureUserIsDoctor(),
     (req: Request, res: Response) => {

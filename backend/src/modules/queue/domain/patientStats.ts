@@ -5,6 +5,8 @@ import { PatientDetail } from './patientEntryBook';
 
 interface PatientStatsProps {
     totalPatientNumber?: number;
+    totalDonePatientNumber?: number;
+    totalUndonePatientNumber?: number;
     currentPatientNumber?: number;
     currentPatientDetails?: PatientDetail;
 }
@@ -20,6 +22,16 @@ export class PatientStats extends ValueObject<PatientStatsProps> {
         if (!guardResult.succeeded) return Result.fail<PatientStats>(`[PatientStats]: creation failed`);
 
         return Result.ok<PatientStats>(patientStatsOrError);
+    }
+    public static createDefault(): Result<PatientStats> {
+        const defaultPatientStats: PatientStatsProps = {
+            totalPatientNumber: 0,
+            currentPatientNumber: 0,
+            totalDonePatientNumber: 0,
+            totalUndonePatientNumber: 0,
+            currentPatientDetails: null,
+        };
+        return Result.ok<PatientStats>(new PatientStats(defaultPatientStats));
     }
 
     public incrCurrentPatientNumber() {

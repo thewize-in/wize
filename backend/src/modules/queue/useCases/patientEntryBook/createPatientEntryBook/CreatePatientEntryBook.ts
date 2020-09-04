@@ -1,11 +1,11 @@
-import { Doctor } from '../../../domain/doctor';
 import { UseCase } from '../../../../../shared/domain/UseCase';
 import { IPatientEntryBookRepo } from '../../../repos/patientEntryBookRepos/PatientEntryBookRepo';
 import { Result } from '../../../../../shared/core/logic/Result';
 import { PatientEntryBook } from '../../../domain/patientEntryBook';
+import { CreatePatientEntryBookDTO } from './CreatePatientEntryBookDTO';
 
-type Request = Doctor;
-type Response = boolean;
+type Request = CreatePatientEntryBookDTO;
+type Response = Result<boolean>;
 
 export class CreatePatientEntryBook implements UseCase<Request, Response> {
     private patientEntryBookRepo: IPatientEntryBookRepo;
@@ -13,21 +13,23 @@ export class CreatePatientEntryBook implements UseCase<Request, Response> {
         this.patientEntryBookRepo = patientEntryBookRepo;
     }
     async execute(request: Request): Promise<Response> {
-        const doctor = request;
+        const { bookId } = request;
         let patientEntryBookResult: Result<PatientEntryBook>, patientEntryBook: PatientEntryBook;
 
-        try {
-            const bookId = doctor.doctorId.id;
+        const entryBookExist = await this.patientEntryBookRepo.exists(bookId);
 
+        if (entryBookExist) return Result.ok<boolean>(false);
+
+        try {
             patientEntryBookResult = PatientEntryBook.createDefault(bookId);
             patientEntryBook = patientEntryBookResult.getValue();
         } catch (error) {
             console.log(error);
-            return false;
+            return Result.ok<boolean>(false);
         }
 
         await this.patientEntryBookRepo.save(patientEntryBook);
 
-        return;
+        return Result.ok<boolean>(true);
     }
 }

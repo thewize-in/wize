@@ -7,6 +7,10 @@ import { Guard } from '../../../../shared/core/logic/Guard';
 
 export interface IPatientEntryBookRepo extends Repo<PatientEntryBook> {
     getPatientEntryBookByBookId(bookId: string): Promise<Result<PatientEntryBook>>;
+    getAllPatients(bookId: string): Promise<Result<any>>;
+    getDonePatients(bookId: string): Promise<Result<any>>;
+    getUndonePatients(bookId: string): Promise<Result<any>>;
+    delete(bookId: string): Promise<void>;
 }
 
 export class PatientEntryBookRepo implements IPatientEntryBookRepo {
@@ -43,6 +47,13 @@ export class PatientEntryBookRepo implements IPatientEntryBookRepo {
             return false;
         }
     }
+    async delete(bookId: string): Promise<void> {
+        try {
+            await this.model.findOneAndDelete({ book_id: bookId });
+        } catch (error) {
+            console.log('[PatientEntryBookRepo]: failed to delete patientEntryBook');
+        }
+    }
     async getPatientEntryBookByBookId(bookId: string): Promise<Result<PatientEntryBook>> {
         const rawPatientEntryBook = await this.model.findOne({ book_id: bookId });
         const guardResult = Guard.againstNullOrUndefined(rawPatientEntryBook, 'rawPatientEntryBook');
@@ -50,5 +61,29 @@ export class PatientEntryBookRepo implements IPatientEntryBookRepo {
         if (!guardResult.succeeded) return Result.fail<PatientEntryBook>('[getPatientEntryBookByBookId]: not found');
 
         return Result.ok<PatientEntryBook>(PatientEntryBookMap.toDomain(rawPatientEntryBook));
+    }
+    async getAllPatients(bookId: string): Promise<Result<any>> {
+        const patientListResult: any = await this.model.findOne({ book_id: bookId }, { patient_list: 1 });
+
+        const guardResult = Guard.againstNullOrUndefined(patientListResult, 'patientListResult');
+        if (!guardResult.succeeded) return Result.fail<any>('patientList not found');
+
+        return Result.ok<any>({ allPatients: patientListResult.patient_list });
+    }
+    async getDonePatients(bookId: string): Promise<Result<any>> {
+        const donePatientListResult: any = await this.model.findOne({ book_id: bookId }, { done_patient_list: 1 });
+
+        const guardResult = Guard.againstNullOrUndefined(donePatientListResult, 'donePatientListResult');
+        if (!guardResult.succeeded) return Result.fail<any>('donePatientList not found');
+
+        return Result.ok<any>({ donePatients: donePatientListResult.done_patient_list });
+    }
+    async getUndonePatients(bookId: string): Promise<Result<any>> {
+        const undonePatientListResult: any = await this.model.findOne({ book_id: bookId }, { undone_patient_list: 1 });
+
+        const guardResult = Guard.againstNullOrUndefined(undonePatientListResult, 'undonePatientListResult');
+        if (!guardResult.succeeded) return Result.fail<any>('undonePatientList not found');
+
+        return Result.ok<any>({ undonePatients: undonePatientListResult.undone_patient_list });
     }
 }

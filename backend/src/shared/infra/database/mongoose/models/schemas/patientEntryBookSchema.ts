@@ -1,11 +1,23 @@
 import mongoose from 'mongoose';
 
 const patienEntryBooktSchema = new mongoose.Schema({
+    date: {
+        type: Date,
+        default: new Date().toISOString(),
+    },
     book_id: {
         type: String,
         required: true,
     },
     patient_list: {
+        type: Array,
+        default: [],
+    },
+    done_patient_list: {
+        type: Array,
+        default: [],
+    },
+    undone_patient_list: {
         type: Array,
         default: [],
     },
@@ -18,14 +30,28 @@ const patienEntryBooktSchema = new mongoose.Schema({
             type: Number,
             default: 0,
         },
+        total_done_patient_number: {
+            type: Number,
+            default: 0,
+        },
+        total_undone_patient_number: {
+            type: Number,
+            default: 0,
+        },
         current_patient_details: {
             name: {
                 type: String,
             },
+            address: {
+                type: String,
+            },
+            phone: {
+                type: Number,
+            },
             id: {
                 type: String,
             },
-            tag: {
+            type: {
                 type: String,
             },
         },

@@ -1,13 +1,10 @@
 import { IHandle } from '../../../shared/domain/events/IHandle';
 import { DomainEvents } from '../../../shared/domain/events/DomainEvents';
 import { DoctorStatusDeactivated } from '../domain/events/DoctorStatusDeactivated';
-import { ClearPatientEntryBook } from '../useCases/patientEntryBook/clearPatientEntryBook/ClearPatientEntryBook';
 
 export class AfterDoctorStatusDeactivated implements IHandle<DoctorStatusDeactivated> {
-    private clearPatientEntryBook: ClearPatientEntryBook;
-    constructor(clearPatientEntryBook: ClearPatientEntryBook) {
+    constructor() {
         this.setupSubscriptions();
-        this.clearPatientEntryBook = clearPatientEntryBook;
     }
     setupSubscriptions(): void {
         DomainEvents.register(this.onDoctorStatusDeactivated.bind(this), DoctorStatusDeactivated.name);
@@ -16,7 +13,7 @@ export class AfterDoctorStatusDeactivated implements IHandle<DoctorStatusDeactiv
         const { doctor } = event;
 
         try {
-            this.clearPatientEntryBook.execute(doctor);
+            // this.clearPatientEntryBook.execute(doctor);
             console.log(
                 `[AfterDoctorStatusDeactivated]: Successfully executed clearPatientEntryBook useCase AfterDoctorStatusDeactivated`,
             );

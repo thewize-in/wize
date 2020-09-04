@@ -8,6 +8,8 @@ export class PatientEntryBookMap implements Mapper<PatientEntryBook> {
         return {
             book_id: patientEntryBook.bookId.id.toString(),
             patient_list: patientEntryBook.patientList,
+            done_patient_list: patientEntryBook.donePatientList,
+            undone_patient_list: patientEntryBook.undonePatientList,
             patient_stats: {
                 total_patient_number: patientEntryBook.totalPatientNumber,
                 current_patient_number: patientEntryBook.currentPatientNumber,
@@ -20,6 +22,8 @@ export class PatientEntryBookMap implements Mapper<PatientEntryBook> {
         const patientEntryBookOrError = PatientEntryBook.create(
             {
                 patientList: raw.patient_list,
+                donePatientList: raw.done_patient_list,
+                undonePatientList: raw.undone_patient_list,
                 patientStats: PatientStats.create({
                     totalPatientNumber: raw.patient_stats.total_patient_number,
                     currentPatientNumber: raw.patient_stats.current_patient_number,

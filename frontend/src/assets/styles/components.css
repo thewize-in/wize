@@ -1,0 +1,15 @@
+@import './colors.css';
+
+.v-app-bar-icon-button,
+.drawer-profile {
+  border: 2px solid #b3b4c8;
+  width: 35px !important;
+  height: 35px !important;
+}
+.v-app-bar {
+  background-color: var(--main-color) !important;
+  border-bottom: 1px solid var(--outline-color) !important;
+}
+.v-main {
+  background-color: var(--main-color);
+}

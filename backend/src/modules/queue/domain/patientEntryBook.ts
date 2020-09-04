@@ -10,11 +10,16 @@ import { PatientStats } from './patientStats';
 export interface PatientDetail {
     name: string;
     id?: string;
-    tag: string;
+    address?: string;
+    phone?: number;
+    type?: string;
 }
+
 interface PatientEntryBookProps {
     bookId?: BookId;
     patientList: PatientDetail[];
+    donePatientList: PatientDetail[];
+    undonePatientList: PatientDetail[];
     patientStats?: PatientStats;
 }
 
@@ -25,8 +30,21 @@ export class PatientEntryBook extends AggregateRoot<PatientEntryBookProps> {
     get patientList(): PatientDetail[] {
         return this.props.patientList;
     }
+    get donePatientList(): PatientDetail[] {
+        return this.props.donePatientList;
+    }
+    get undonePatientList(): PatientDetail[] {
+        return this.props.undonePatientList;
+    }
+
     get totalPatientNumber(): number {
         return (this.props.patientStats.props.totalPatientNumber = this.patientList.length);
+    }
+    get totalDonePatientNumber(): number {
+        return (this.props.patientStats.props.totalDonePatientNumber = this.donePatientList.length);
+    }
+    get totalUndonePatientNumber(): number {
+        return (this.props.patientStats.props.totalUndonePatientNumber = this.undonePatientList.length);
     }
     get currentPatientNumber(): number {
         return this.props.patientStats.props.currentPatientNumber;
@@ -49,26 +67,46 @@ export class PatientEntryBook extends AggregateRoot<PatientEntryBookProps> {
 
         return Result.ok<PatientEntryBook>(patientEntryBook);
     }
-    public static createDefault(id: UniqueEntityID): Result<PatientEntryBook> {
-        const patientStats = PatientStats.create({
-            totalPatientNumber: 0,
-            currentPatientNumber: 0,
-            currentPatientDetails: null,
-        }).getValue();
-        const patientEntryBook = new PatientEntryBook({ patientList: [], patientStats }, id);
+    public static createDefault(id: string): Result<PatientEntryBook> {
+        const bookId = new UniqueEntityID(id);
+        const defaultPatientStats = PatientStats.createDefault().getValue();
 
-        const guardResult = Guard.againstNullOrUndefined(patientEntryBook, 'patientEntryBook');
+        const defaultPatientEntryBookProps: PatientEntryBookProps = {
+            patientList: [],
+            donePatientList: [],
+            undonePatientList: [],
+            patientStats: defaultPatientStats,
+        };
+
+        const defaultPatientEntryBook = new PatientEntryBook(defaultPatientEntryBookProps, bookId);
+
+        const guardResult = Guard.againstNullOrUndefined(defaultPatientEntryBook, 'defaultPatientEntryBook');
         if (!guardResult.succeeded) throw Result.fail<PatientEntryBook>(guardResult.message);
 
-        return Result.ok<PatientEntryBook>(patientEntryBook);
+        return Result.ok<PatientEntryBook>(defaultPatientEntryBook);
     }
+    public nextEntry(previousEntryDone: boolean): void {
+        this.updateCurrentPatientNumber();
 
-    public updateCurrentPatientNumber(): void {
+        if (previousEntryDone) {
+            this.addToDone(this.currentPatientDetails);
+        } else {
+            this.addToUndone(this.currentPatientDetails);
+        }
+    }
+    private updateCurrentPatientNumber(): void {
         this.props.patientStats.incrCurrentPatientNumber();
     }
 
-    public createOfflineEntry(patientDetails: PatientDetail): void {
-        this.patientList.push(patientDetails);
+    private addToDone(patientDetail: PatientDetail): void {
+        this.donePatientList.push(patientDetail);
+    }
+    private addToUndone(patientDetail: PatientDetail): void {
+        this.undonePatientList.push(patientDetail);
+    }
+
+    public createOfflineEntry(patientDetail: PatientDetail): void {
+        this.patientList.push(patientDetail);
     }
 
     public createOnlineEntry(patientDetails: PatientDetail, patient: Patient): void {

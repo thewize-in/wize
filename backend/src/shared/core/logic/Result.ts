@@ -38,10 +38,7 @@ export class Result<T> {
     public static fail<U>(error: any): Result<U> {
         return new Result(false, error);
     }
-    public static success(flag: boolean, value: any | false = false): any {
-        if (value) return { succeeded: flag, value: { ...value } };
-        return { succeeded: flag };
-    }
+
     public static combine(results: Result<any>[]): Result<any> {
         for (let result of results) {
             if (result.isFailure) return result;
