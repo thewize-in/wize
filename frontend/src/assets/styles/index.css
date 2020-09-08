@@ -48,13 +48,24 @@
 .flex-row-start-center {
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
-
+.flex-row-end-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
 .flex-column-evenly-center {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+}
+.flex-column-center-between {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: space-between;
 }

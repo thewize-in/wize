@@ -12,7 +12,6 @@
         </v-btn>
       </v-app-bar-nav-icon>
       <v-spacer></v-spacer>
-      <NewEntryDialog />
     </v-app-bar>
     <Drawer />
 
@@ -27,12 +26,12 @@
 <script >
 import { mapGetters, mapState, mapActions } from "vuex";
 import Drawer from "./components/ui/Drawer.vue";
-import NewEntryDialog from "./components/ui/NewEntryDialog";
+// import NewEntryDialog from "./components/ui/NewEntryDialog";
 export default {
   name: "App",
   components: {
-    Drawer,
-    NewEntryDialog
+    Drawer
+    // NewEntryDialog
   },
   methods: {
     ...mapActions(["updateDrawer"])

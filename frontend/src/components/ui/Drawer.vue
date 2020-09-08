@@ -44,11 +44,11 @@ export default {
       try {
         await this.$router.replace(route);
       } catch (error) {
-        console.log("same route");
+        console.log("");
       }
     },
     logout() {
-      window.location.href = "http://localhost:3000/logout";
+      window.location.href = "http://192.168.43.215:3000/api/v1/auth/logout";
     }
   },
   computed: {

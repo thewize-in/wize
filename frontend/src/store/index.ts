@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { entrybook } from './modules/entrybook';
+import { entrybook } from './modules/entrybook/index';
 
 Vue.use(Vuex);
 
@@ -9,6 +9,7 @@ export default new Vuex.Store({
     dialog: false,
     drawer: false,
     group: null,
+    selected: 'all',
   },
   mutations: {
     UPDATE_DRAWER(state: any, value: boolean) {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     UPDATE_DIALOG(state: any, value: boolean) {
       state.dialog = value;
     },
+    UPDATE_SELECTED(state: any, value: string) {
+      state.selected = value;
+    },
   },
   actions: {},
   getters: {
@@ -28,6 +32,9 @@ export default new Vuex.Store({
     },
     group: (state: any) => {
       return state.group;
+    },
+    selected: (state: any) => {
+      return state.selected;
     },
   },
 

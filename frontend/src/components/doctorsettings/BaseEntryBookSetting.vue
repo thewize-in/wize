@@ -12,34 +12,27 @@
       <v-tabs v-model="tab" background-color="base">
         <v-tab>Entrybook Setting</v-tab>
       </v-tabs>
-      <v-tabs-items
-        v-model="tab"
-        class="v-tab-itmes-container"
-        background-color="base"
-      >
+      <v-tabs-items v-model="tab" class="v-tab-itmes-container" background-color="base">
         <EntryBookSetting />
       </v-tabs-items>
     </v-col>
   </v-row>
 </template>
 
-<script lang="ts">
-import '../../assets/styles/colors.css';
-import { Component, Vue } from 'vue-property-decorator';
-import EntryBookSetting from './componets/EntryBookSetting.vue';
+<script>
+import "../../assets/styles/colors.css";
+import EntryBookSetting from "./componets/EntryBookSetting.vue";
 
-@Component({
-  components: {
-    EntryBookSetting,
-  },
-})
-export default class BaseEntryBookSetting extends Vue {
+export default {
   data() {
     return {
-      tab: 'entrybooksetting',
+      tab: "entrybooksetting"
     };
+  },
+  components: {
+    EntryBookSetting
   }
-}
+};
 </script>
 
 <style scoped>

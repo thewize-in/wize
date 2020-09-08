@@ -1,42 +1,51 @@
 <template>
-  <v-col
-    cols="12"
-    xs="12"
-    sm="8"
-    md="6"
-    lg="4"
-    xl="4"
-    class="flex-row-evenly-center entrybook-next-container"
-  >
-    <v-container class="main-container">
-      <v-row class="flex-column-center-center next-entry-container">
-        <v-col cols="12" class="done-container">Done</v-col>
+  <v-dialog v-model="dialog" max-width="350">
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn v-bind="attrs" v-on="on" small color="primary">Done</v-btn>
+    </template>
+    <v-card class="flex-column-start-center">
+      <v-card-title>
+        <span class="headline">Done</span>
+      </v-card-title>
+      <v-card-text class="flex-row-start-center">
         <v-row>
-          <v-col cols="8" class="flex-row-start-center">
-            <DoneRadioBox />
-          </v-col>
-
-          <v-col cols="4">
-            <v-btn depressed color="primary" medium>next</v-btn>
-          </v-col>
+          <v-radio-group v-model="isDone" row>
+            <v-radio label="Yes" :value="yes"></v-radio>
+            <v-radio label="No" :value="no"></v-radio>
+          </v-radio-group>
         </v-row>
-      </v-row>
-    </v-container>
-  </v-col>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+        <v-btn color="blue darken-1" text @click="this.callNextEntry">Next</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import DoneRadioBox from "./DoneRadioBox.vue";
+<script>
 import "../../../assets/styles/colors.css";
-
-@Component({
-  components: {
-    DoneRadioBox
+import { mapActions } from "vuex";
+export default {
+  name: "BaseNexEntry",
+  data() {
+    return {
+      dialog: false,
+      yes: true,
+      no: false,
+      isDone: true
+    };
+  },
+  methods: {
+    ...mapActions("entrybook", ["nextEntry", "getEntryBook"]),
+    async callNextEntry() {
+      await this.nextEntry(this.isDone);
+      await this.getEntryBook();
+      this.dialog = false;
+    }
   }
-})
-export default class BaseNexEntry extends Vue {}
+};
 </script>
 
 <style scoped>
@@ -49,10 +58,7 @@ export default class BaseNexEntry extends Vue {}
 .main-container {
   padding: 0px 12px;
 }
-
-.done-container {
-  color: var(--light-text-color);
-  font-size: 14px;
-  padding: 10px 10px 0px 10px;
+.v-card__text {
+  padding: 0px 12px !important;
 }
 </style>

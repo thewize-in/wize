@@ -1,14 +1,11 @@
 <template>
-  <v-row style="height: 75vh;">
+  <Loading v-if="pageLoading" />
+  <v-row v-else>
     <v-col v-if="isCreated" class="main-entrybook-container">
       <v-row class="flex-row-center-center">
-        <StatsCard :stats="stats" />
-      </v-row>
-      <v-row class="flex-row-center-center">
-        <BasePatientList />
-      </v-row>
-      <v-row class="flex-row-center-center">
-        <BaseNextEntry />
+        <PatientListTable v-if="selected === 'undone'" :list="undonePatients" />
+        <PatientListTable v-else-if="selected === 'done'" :list="donePatients" />
+        <PatientListTable v-else :list="allPatients" />
       </v-row>
     </v-col>
     <v-col v-else class="main-entry-container flex-column-center-center">
@@ -20,30 +17,30 @@
   </v-row>
 </template>
 
-<script lang="ts">
+<script>
 import "../../assets/styles/colors.css";
-import Vue from "vue";
-import Component from "vue-class-component";
-import { namespace } from "vuex-class";
-import StatsCard from "../entrybook/components/StatsCard.vue";
-import BasePatientList from "../patientlist/BasePatientList.vue";
-import BaseNextEntry from "./components/BaseNextEntry.vue";
-import { mapGetters } from "vuex";
+import Loading from "../ui/Loading.vue";
+import PatientListTable from "./components/PatientListTable.vue";
+import { mapGetters, mapActions, mapState } from "vuex";
 
-const entrybook = namespace("entrybook");
-
-interface StatsProps {
-  total: number;
-  current: number;
-  done: number;
-  undone: number;
-}
-
-@Component({
+export default {
+  name: "EntryBook",
   components: {
-    StatsCard,
-    BasePatientList,
-    BaseNextEntry
+    PatientListTable,
+    Loading
+  },
+  data() {
+    return {
+      pageLoading: false
+    };
+  },
+  async mounted() {
+    this.pageLoading = true;
+    await this.isEntryBookExist();
+    if (this.isCreated) {
+      await this.getEntryBook();
+    }
+    this.pageLoading = false;
   },
   computed: {
     ...mapGetters("entrybook", [
@@ -52,10 +49,13 @@ interface StatsProps {
       "donePatients",
       "undonePatients",
       "isCreated"
-    ])
+    ]),
+    ...mapGetters(["selected"])
+  },
+  methods: {
+    ...mapActions("entrybook", ["isEntryBookExist", "getEntryBook"])
   }
-})
-export default class EntryBook extends Vue {}
+};
 </script>
 
 <style scoped>

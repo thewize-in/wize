@@ -56,6 +56,6 @@
   "_id": "frontend@1.0.0",
   "keywords": [],
   "license": "ISC",
-  "proxy": "http://localhost:3000",
-  "readme": "ERROR: No README data found!"
+  "readme": "ERROR: No README data found!",
+  "proxy": "http://localhost:3000/api/v1"
 }

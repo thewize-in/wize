@@ -2,20 +2,32 @@
   <v-row>
     <v-col cols="12" class="flex-row-start-center">
       <v-row v-if="!isCreated" class="flex-row-start-center">
-        <v-col cols="3" class="col-container">
-          <v-btn depressed color="primary" small v-on:click="createEntryBook">Create</v-btn>
+        <v-col cols="4" class="col-container">
+          <v-btn
+            depressed
+            color="primary"
+            medium
+            v-on:click="createEntryBook"
+            :loading="loading"
+            outlined
+          >Create</v-btn>
         </v-col>
-
-        <v-col cols="6" class="col-container">
-          <span>New Entrybook</span>
+        <v-col cols="5">
+          <span>Entrybook</span>
         </v-col>
       </v-row>
       <v-row v-else class="flex-row-start-center">
-        <v-col cols="3" class="col-container">
-          <v-btn depressed color="error" small v-on:click="deleteEntryBook">Delete</v-btn>
+        <v-col cols="4" class="col-container">
+          <v-btn
+            depressed
+            color="error"
+            medium
+            v-on:click="deleteEntryBook"
+            :loading="loading"
+            outlined
+          >Delete</v-btn>
         </v-col>
-
-        <v-col cols="6" class="col-container">
+        <v-col cols="5">
           <span>Entrybook</span>
         </v-col>
       </v-row>
@@ -30,18 +42,22 @@
 </template>
 
 <script>
-import { Component, Vue } from "vue-property-decorator";
+import "../../../assets/styles/colors.css";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "EntryBookSetting",
   data() {
     return {
+      loading: false,
       snackbar: false,
       text: "",
       timeout: 6000,
       color: ""
     };
+  },
+  async mounted() {
+    await this.isEntryBookExist();
   },
   computed: {
     ...mapGetters("entrybook", ["isCreated"])
@@ -49,15 +65,20 @@ export default {
   methods: {
     ...mapActions("entrybook", [
       "createNewEntryBook",
-      "deleteCreatedEntryBook"
+      "deleteCreatedEntryBook",
+      "isEntryBookExist"
     ]),
-    createEntryBook() {
-      this.createNewEntryBook();
+    async createEntryBook() {
+      this.loading = true;
+      await this.createNewEntryBook();
+      this.loading = false;
       this.displaySnackbar(true, "Entrybook Created", "success");
     },
-    deleteEntryBook() {
+    async deleteEntryBook() {
+      this.loading = true;
+      await this.deleteCreatedEntryBook();
+      this.loading = false;
       this.displaySnackbar(true, "Entrybook Deleted", "success");
-      this.deleteCreatedEntryBook();
     },
     displaySnackbar(show, text, color) {
       this.snackbar = show;

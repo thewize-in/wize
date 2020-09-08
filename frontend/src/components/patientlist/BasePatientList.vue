@@ -1,71 +1,48 @@
 <template>
   <v-col
     cols="12"
+    xl="6"
+    lg="6"
+    md="10"
+    sm="12"
     xs="12"
-    sm="8"
-    md="6"
-    lg="4"
-    xl="4"
     class="flex-row-evenly-center entrybook-list-container"
   >
-    <v-container>
-      <v-row>
-        <v-row align="center">
-          <v-col class="d-flex" cols="6" sm="6">
-            <v-select :items="items" label="Patient List" v-bind="$attrs" v-model="value" flat></v-select>
-          </v-col>
-        </v-row>
-      </v-row>
-      <v-row v-if="value === 'all'" class="patient-details-container">
-        <PatientDetails v-for="patient in allPatients" :patient="patient" :key="patient.name" />
-      </v-row>
-      <v-row v-if="value === 'done'" class="patient-details-container">
-        <PatientDetails v-for="patient in donePatients" :patient="patient" :key="patient.name" />
-      </v-row>
-      <v-row v-if="value === 'undone'" class="patient-details-container">
-        <PatientDetails v-for="patient in undonePatients" :patient="patient" :key="patient.name" />
-      </v-row>
-    </v-container>
+    <v-row v-if="value === 'all'" class="patient-details-container">
+      <PatientListTable :list="allPatients" />
+    </v-row>
+    <v-row v-if="value === 'done'" class="patient-details-container">
+      <PatientListTable :list="donePatients" />
+    </v-row>
+    <v-row v-if="value === 'undone'" class="patient-details-container">
+      <PatientListTable :list="undonePatients" />
+    </v-row>
   </v-col>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import PatientDetails from "./components/PatientDetails.vue";
-import Component from "vue-class-component";
+<script>
+import Axios from "axios";
+import PatientListTable from "./components/PatientListTable.vue";
 import { mapGetters, mapActions } from "vuex";
 
-@Component({
+export default {
+  name: "BasePatientList",
+  props: ["allPatients", "donePatients", "undonePatients"],
   components: {
-    PatientDetails
+    PatientListTable
   },
-  computed: {
-    ...mapGetters("entrybook", ["allPatients", "donePatients", "undonePatient"])
-  }
-})
-export default class BasePatientList extends Vue {
-  constructor() {
-    super();
-  }
-
   data() {
     return {
       value: "all",
       items: ["all", "done", "undone"]
     };
   }
-}
+};
 </script>
 
 <style scoped>
-.container {
-  width: 100%;
-  padding: 12px 0px !important;
-}
-.patient-details-container {
-  max-height: 280px !important;
-  overflow: hidden scroll;
-  scroll-behavior: smooth;
+.patient-details-container,
+.entrybook-list-container {
   padding: 0px !important;
   margin: 0px !important;
 }
