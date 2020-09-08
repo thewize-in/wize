@@ -1,16 +1,10 @@
-import { GetAllPatients } from './GetAllPatients';
 import { patientEntryBookRepo } from '../../../repos';
 import { GetPatientEntryBookController } from './GetPatientEntryBookController';
-import { GetDonePatients } from './GetDonePatients';
-import { GetUndonePatients } from './GetUndonePatients';
+import { GetPatientEntryBook } from './GetPatientEntryBook';
 
-const getAllPatients = new GetAllPatients(patientEntryBookRepo);
-const getDonePatients = new GetDonePatients(patientEntryBookRepo);
-const getUndonePatients = new GetUndonePatients(patientEntryBookRepo);
+const getPatientEntryBook = new GetPatientEntryBook(patientEntryBookRepo);
 const getPatientEntryBookController = new GetPatientEntryBookController(
-    getAllPatients,
-    getDonePatients,
-    getUndonePatients,
+  getPatientEntryBook
 );
 
-export { getAllPatients, getDonePatients, getUndonePatients, getPatientEntryBookController };
+export { getPatientEntryBook, getPatientEntryBookController };

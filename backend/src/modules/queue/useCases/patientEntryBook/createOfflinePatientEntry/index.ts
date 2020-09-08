@@ -1,9 +1,13 @@
 import { CreateOfflinePatientEntry } from './CreateOfflinePatientEntry';
 import { patientEntryBookRepo } from '../../../repos';
-import { CreateOfflinePatientEntryController } from './CreatePatientEntryControllerForDoctor';
+import { CreateOfflinePatientEntryController } from './CreateOfflinePatientEntryController';
 
-const createOfflinePatientEntry = new CreateOfflinePatientEntry(patientEntryBookRepo);
+const createOfflinePatientEntry = new CreateOfflinePatientEntry(
+  patientEntryBookRepo
+);
 
-const createOfflinePatientEntryController = new CreateOfflinePatientEntryController(createOfflinePatientEntry);
+const createOfflinePatientEntryController = new CreateOfflinePatientEntryController(
+  createOfflinePatientEntry
+);
 
 export { createOfflinePatientEntry, createOfflinePatientEntryController };

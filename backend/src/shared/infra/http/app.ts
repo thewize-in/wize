@@ -1,6 +1,5 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import redis from 'redis';
 import redisConnect from 'connect-redis';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
@@ -9,14 +8,13 @@ import morgan from 'morgan';
 import cors from 'cors';
 import path from 'path';
 import compression from 'compression';
-import { userRouter } from '../../../modules/user/infra/http/routes/index';
 import { startDatabase } from '../database/mongoose/config/config';
 import { authConfig } from '../../config/authConfig';
 import { redisSessionClient } from '../../services/caching/session/redisSessionClient';
-import { doctorRouter } from '../../../modules/queue/infra/http/routes';
+import { v1Router } from './api/v1';
 
 const origin = {
-  origin: ['http://localhost:5500', 'http://localhost:3000'],
+  origin: ['http://localhost:8080', 'http://localhost:3000'],
   credentials: true,
 };
 const app = express();
@@ -51,17 +49,14 @@ app.use(compression());
 app.use(helmet());
 // app.use(morgan('combined'));
 app.use(cookieParser());
-app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, '../../../../../frontend/dist/')));
 
-app.use(userRouter);
-app.use(doctorRouter);
+app.use('/api/v1', v1Router);
 
 app.get('*', (req, res) => {
-  res.sendFile(
-    path.join(__dirname, '../../../../../frontend/public/index.html')
-  );
-  console.log(__dirname);
+  res.sendFile(path.join(__dirname, '../../../../../frontend/dist/index.html'));
 });
 
 app.listen(3000, () => {

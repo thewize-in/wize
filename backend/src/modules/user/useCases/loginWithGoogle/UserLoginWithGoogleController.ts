@@ -2,6 +2,7 @@ import { BaseController } from '../../../../shared/infra/BaseController';
 import { UserLoginWithGoogle } from './UserLoginWithGoogle';
 import { UserLoginWithGoogleDTO } from './UserLoginWithGoogleDTO';
 import { UserSessionDTO } from '../../domain/dtos/UserSessionDTO';
+import { Role } from '../../domain/Role';
 
 export class UserLoginController extends BaseController {
   private useCase: UserLoginWithGoogle;
@@ -20,7 +21,9 @@ export class UserLoginController extends BaseController {
     const userSessionDetails: UserSessionDTO = result.getValue();
 
     this.request.session['user'] = userSessionDetails;
-
+    if (userSessionDetails.role === Role.doctor) {
+      return this.response.redirect('http://localhost:8080/entrybook');
+    }
     return this.response.redirect('http://localhost:8080/');
   }
 }
