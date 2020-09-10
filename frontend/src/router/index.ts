@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import EntryBookPage from '../views/EntryBookPage.vue';
 import DoctorSettingsPage from '../views/DoctorSettingsPage.vue';
+import DashboardPage from '../views/DashboardPage.vue';
+import PatientListPage from '../views/PatientListPage.vue';
 import Home from '../views/Home.vue';
 import Axios from 'axios';
 Vue.use(VueRouter);
@@ -12,16 +13,22 @@ const routes: Array<RouteConfig> = [
     name: 'Home',
     component: Home,
   },
-  {
-    path: '/entrybook',
-    name: 'EntryBookPage',
-    component: EntryBookPage,
-    meta: { requiresAuth: true, toBeDoctor: true },
-  },
+
   {
     path: '/settings',
     name: 'DoctorSettingsPage',
     component: DoctorSettingsPage,
+    meta: { requiresAuth: true, toBeDoctor: true },
+  },
+  {
+    path: '/dashboard',
+    name: 'DashboardPage',
+    component: DashboardPage,
+  },
+  {
+    path: '/patientlist',
+    name: 'PatientListPage',
+    component: PatientListPage,
     meta: { requiresAuth: true, toBeDoctor: true },
   },
 ];

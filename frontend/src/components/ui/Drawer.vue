@@ -25,7 +25,7 @@
     <template v-slot:append>
       <div class="pa-2">
         <v-list nav dense>
-          <v-list-item v-on:click="logout()">
+          <v-list-item v-on:click="logout">
             <v-list-item-title>Logout</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -36,17 +36,13 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { sendToRouteMixin } from "../../mixins/sendToRouteMixin";
 export default {
   name: "Drawer",
+  mixins: [sendToRouteMixin],
   methods: {
     ...mapActions(["updateDrawer", "updateGroup"]),
-    async sendTo(route) {
-      try {
-        await this.$router.replace(route);
-      } catch (error) {
-        console.log("");
-      }
-    },
+
     logout() {
       window.location.href = "http://192.168.43.215:3000/api/v1/auth/logout";
     }
@@ -77,5 +73,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

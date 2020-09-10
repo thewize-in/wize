@@ -1,7 +1,9 @@
 <template>
-  <v-dialog v-if="isCreated" v-model="dialog" max-width="350">
+  <v-dialog v-model="dialog" max-width="350">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn v-bind="attrs" v-on="on" small color="primary">New</v-btn>
+      <v-btn v-bind="attrs" v-on="on" class="btn-float-1" color="primary" fab medium>
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
     </template>
     <v-card>
       <v-card-title>
@@ -46,7 +48,6 @@
 </template>
 
 <script>
-import { watch } from "fs";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "NewEntryDialog",
@@ -72,6 +73,7 @@ export default {
   },
   methods: {
     ...mapActions("entrybook", ["createNewEntry", "getEntryBook"]),
+    ...mapActions(["displaySnackbarForFailure", "displaySnackbarForSuccess"]),
     async createEntry() {
       await this.createNewEntry({
         name: this.name,
@@ -79,6 +81,7 @@ export default {
         phone: this.address || ""
       });
       await this.getEntryBook();
+      this.displaySnackbarForSuccess("Entry Created");
       this.dialog = false;
     },
     trimAll(string) {
@@ -88,4 +91,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.btn-float-1 {
+  position: fixed;
+  right: 10px;
+  bottom: 90px;
+}
+</style>

@@ -8,6 +8,7 @@ export default new Vuetify({
     themes: {
       light: {
         base: '#faf9fa',
+        outline: '#DEDEDE',
       },
     },
   },

@@ -2,17 +2,16 @@
   <EntryBook />
 </template>
 
-<script lang="ts">
-import '../assets/styles/colors.css';
-import EntryBook from '../components/entrybook/EntryBook.vue';
-import { Component, Vue } from 'vue-property-decorator';
+<script>
+import "../assets/styles/colors.css";
+import EntryBook from "../components/entrybook/EntryBook.vue";
 
-@Component({
+export default {
+  name: "EntryBookPage",
   components: {
-    EntryBook,
-  },
-})
-export default class EntryBookPage extends Vue {}
+    EntryBook
+  }
+};
 </script>
 
 <style>

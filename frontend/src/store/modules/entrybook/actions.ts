@@ -35,13 +35,14 @@ const actions = {
     });
   },
   async nextEntry({ commit }: any, isDone: boolean): Promise<void> {
-    await Axios.post(
+    const response = await Axios.post(
       '/patiententrybook/next',
       {
         isPreviousEntryDone: isDone,
       },
       { withCredentials: true }
     );
+    console.log(response);
   },
 };
 

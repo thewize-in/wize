@@ -2,41 +2,44 @@
   <v-app>
     <v-app-bar class="v-app-bar" flat app>
       <v-app-bar-nav-icon>
-        <v-btn
-          class="v-app-bar-icon-button flex-row-center-center"
-          @click.stop="drawer=!drawer"
-          fab
-          outlined
-        >
-          <img src="./assets/images/profile.svg" width="20" height="20" alt="menu" />
+        <v-btn icon fab @click.stop="drawer = !drawer">
+          <v-icon color="accent">mdi-account-outline</v-icon>
         </v-btn>
       </v-app-bar-nav-icon>
       <v-spacer></v-spacer>
+      <v-btn icon>
+        <v-icon color="accent">mdi-cog-outline</v-icon>
+      </v-btn>
     </v-app-bar>
     <Drawer />
-
     <v-main class="v-main">
       <v-container fluid>
         <router-view></router-view>
       </v-container>
     </v-main>
+
+    <BottomNav />
   </v-app>
 </template>
 
-<script >
+<script>
 import { mapGetters, mapState, mapActions } from "vuex";
 import Drawer from "./components/ui/Drawer.vue";
-// import NewEntryDialog from "./components/ui/NewEntryDialog";
+import BottomNav from "./components/ui/BottomNav.vue";
 export default {
   name: "App",
+  data() {
+    return {};
+  },
   components: {
-    Drawer
-    // NewEntryDialog
+    Drawer,
+    BottomNav
   },
   methods: {
     ...mapActions(["updateDrawer"])
   },
   computed: {
+    ...mapGetters(["settings"]),
     drawer: {
       get() {
         return this.$store.state.drawer;
@@ -48,7 +51,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 * {
   padding: 0px;
   margin: 0px;

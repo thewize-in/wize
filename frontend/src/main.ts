@@ -11,9 +11,11 @@ import './assets/styles/components.css';
 
 Vue.config.productionTip = false;
 
-new Vue({
+const vue = new Vue({
   router,
   store,
   vuetify,
   render: (h) => h(App),
 }).$mount('#app');
+
+export { vue };

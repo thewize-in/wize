@@ -1,7 +1,9 @@
 <template>
   <v-dialog v-model="dialog" max-width="350">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn v-bind="attrs" v-on="on" small color="primary">Done</v-btn>
+      <v-btn v-bind="attrs" v-on="on" class="btn-float-2" color="primary" fab medium>
+        <v-icon>mdi-arrow-right</v-icon>
+      </v-btn>
     </template>
     <v-card class="flex-column-start-center">
       <v-card-title>
@@ -25,10 +27,10 @@
 </template>
 
 <script>
-import "../../../assets/styles/colors.css";
+import "../../assets/styles/colors.css";
 import { mapActions } from "vuex";
 export default {
-  name: "BaseNexEntry",
+  name: "NextEntryDialog",
   data() {
     return {
       dialog: false,
@@ -60,5 +62,13 @@ export default {
 }
 .v-card__text {
   padding: 0px 12px !important;
+}
+.row {
+  padding: 16px 10px !important;
+}
+.btn-float-2 {
+  position: fixed;
+  right: 10px;
+  bottom: 160px;
 }
 </style>

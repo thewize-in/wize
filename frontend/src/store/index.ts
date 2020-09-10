@@ -9,7 +9,13 @@ export default new Vuex.Store({
     dialog: false,
     drawer: false,
     group: null,
+    settings: true,
     selected: 'all',
+    snackbar: {
+      display: false,
+      color: '',
+      text: '',
+    },
   },
   mutations: {
     UPDATE_DRAWER(state: any, value: boolean) {
@@ -24,8 +30,29 @@ export default new Vuex.Store({
     UPDATE_SELECTED(state: any, value: string) {
       state.selected = value;
     },
+    UPDATE_SETTINGS(state: any, value: boolean) {
+      state.settings = value;
+    },
+    UPDATE_SNACKBAR(state: any, value: any) {
+      state.snackbar = { ...value, timeout: 3000 };
+    },
   },
-  actions: {},
+  actions: {
+    displaySnackbarForSuccess({ commit }, message: string): void {
+      commit('UPDATE_SNACKBAR', {
+        display: true,
+        color: 'success',
+        text: message,
+      });
+    },
+    displaySnackbarForFailure({ commit }, message: string): void {
+      commit('UPDATE_SNACKBAR', {
+        display: true,
+        color: 'error',
+        text: message,
+      });
+    },
+  },
   getters: {
     drawer: (state: any) => {
       return state.drawer;
@@ -35,6 +62,12 @@ export default new Vuex.Store({
     },
     selected: (state: any) => {
       return state.selected;
+    },
+    settings: (state: any) => {
+      return state.settings;
+    },
+    snackbar: (state: any) => {
+      return state.snackbar;
     },
   },
 

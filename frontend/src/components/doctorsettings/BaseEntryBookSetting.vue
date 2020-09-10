@@ -24,6 +24,7 @@ import "../../assets/styles/colors.css";
 import EntryBookSetting from "./componets/EntryBookSetting.vue";
 
 export default {
+  name: "BaseEntryBookSetting",
   data() {
     return {
       tab: "entrybooksetting"

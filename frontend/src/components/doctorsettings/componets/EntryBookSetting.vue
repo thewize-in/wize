@@ -1,10 +1,9 @@
 <template>
   <v-row>
-    <v-col cols="12" class="flex-row-start-center">
+    <v-col cols="12" class="flex-row-center-center">
       <v-row v-if="!isCreated" class="flex-row-start-center">
         <v-col cols="4" class="col-container">
           <v-btn
-            depressed
             color="primary"
             medium
             v-on:click="createEntryBook"
@@ -19,7 +18,6 @@
       <v-row v-else class="flex-row-start-center">
         <v-col cols="4" class="col-container">
           <v-btn
-            depressed
             color="error"
             medium
             v-on:click="deleteEntryBook"
@@ -32,28 +30,22 @@
         </v-col>
       </v-row>
     </v-col>
-    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout">
-      {{ text }}
-      <template v-slot:action="{ attrs }">
-        <v-btn text v-bind="attrs" @click="snackbar = false">Close</v-btn>
-      </template>
-    </v-snackbar>
+    <Snackbar />
   </v-row>
 </template>
 
 <script>
 import "../../../assets/styles/colors.css";
 import { mapGetters, mapActions } from "vuex";
-
+import Snackbar from "../../ui/Snackbar";
 export default {
   name: "EntryBookSetting",
+  components: {
+    Snackbar
+  },
   data() {
     return {
-      loading: false,
-      snackbar: false,
-      text: "",
-      timeout: 6000,
-      color: ""
+      loading: false
     };
   },
   async mounted() {
@@ -68,29 +60,22 @@ export default {
       "deleteCreatedEntryBook",
       "isEntryBookExist"
     ]),
+    ...mapActions(["displaySnackbarForFailure", "displaySnackbarForSuccess"]),
     async createEntryBook() {
       this.loading = true;
       await this.createNewEntryBook();
+      this.displaySnackbarForSuccess("Entrybook Created");
       this.loading = false;
-      this.displaySnackbar(true, "Entrybook Created", "success");
     },
     async deleteEntryBook() {
       this.loading = true;
       await this.deleteCreatedEntryBook();
+      this.displaySnackbarForSuccess("Entrybook Deleted");
       this.loading = false;
-      this.displaySnackbar(true, "Entrybook Deleted", "success");
-    },
-    displaySnackbar(show, text, color) {
-      this.snackbar = show;
-      this.text = text;
-      this.color = color;
     }
   }
 };
 </script>
 
 <style scoped>
-.col-container {
-  padding: 10px 0px !important;
-}
 </style>
