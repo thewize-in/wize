@@ -16,6 +16,8 @@ export default new Vuex.Store({
       color: '',
       text: '',
     },
+    bottomNav: 'somethingElse',
+    appBar: true,
   },
   mutations: {
     UPDATE_DRAWER(state: any, value: boolean) {
@@ -36,6 +38,12 @@ export default new Vuex.Store({
     UPDATE_SNACKBAR(state: any, value: any) {
       state.snackbar = { ...value, timeout: 3000 };
     },
+    UPDATE_BOTTOM_NAV(state: any, value: any) {
+      state.bottomNav = value;
+    },
+    UPDATE_APP_BAR(state: any, value: boolean) {
+      state.appBar = value;
+    },
   },
   actions: {
     displaySnackbarForSuccess({ commit }, message: string): void {
@@ -49,6 +57,13 @@ export default new Vuex.Store({
       commit('UPDATE_SNACKBAR', {
         display: true,
         color: 'error',
+        text: message,
+      });
+    },
+    displaySnackbarForInfo({ commit }, message: string): void {
+      commit('UPDATE_SNACKBAR', {
+        display: true,
+        color: 'info',
         text: message,
       });
     },
@@ -68,6 +83,12 @@ export default new Vuex.Store({
     },
     snackbar: (state: any) => {
       return state.snackbar;
+    },
+    bottomNav: (state: any) => {
+      return state.bottomNav;
+    },
+    appBar: (state: any) => {
+      return state.appBar;
     },
   },
 

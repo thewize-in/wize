@@ -13,3 +13,9 @@
 .v-main {
   background-color: var(--main-color);
 }
+.card {
+  padding: 1rem;
+  background-color: #f3f3f3;
+  border-radius: 6px;
+  margin: 0.4rem 0rem;
+}

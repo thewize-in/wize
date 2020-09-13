@@ -34,6 +34,10 @@ export abstract class BaseController {
     if (dto) return res.status(201).json(dto);
     return res.sendStatus(201);
   }
+  public noContent<T>(res: Response, dto?: T) {
+    if (dto) return res.status(204).json(dto);
+    return res.sendStatus(204);
+  }
   public fail(error: Error | string) {
     console.log(error);
     return this.response?.status(500).json({

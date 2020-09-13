@@ -1,22 +1,11 @@
 <template>
-  <v-bottom-navigation
-    :value="activeBtn"
-    v-model="activeBtn"
-    color="primary"
-    horizontal
-    fixed
-    minHeight="56"
-    max-height="66"
-    grow
-    shift
-    app
-  >
-    <v-btn @click="sendTo('/dashboard')">
+  <v-bottom-navigation color="primary" :value="bottomNav" horizontal fixed grow shift>
+    <v-btn @click="sendTo('/dashboard')" value="dashboard">
       <span>dashboard</span>
-      <v-icon>mdi-view-dashboard</v-icon>
+      <v-icon>mdi-view-dashboard-outline</v-icon>
     </v-btn>
 
-    <v-btn @click="sendTo('/patientlist')">
+    <v-btn @click="sendTo('/patientlist')" value="patientlist">
       <span>list</span>
       <v-icon>mdi-format-list-numbered</v-icon>
     </v-btn>
@@ -24,15 +13,22 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import "../../assets/styles/colors.css";
-import { sendToRouteMixin } from "../../mixins/sendToRouteMixin";
+import { routerMixin } from "../../mixins/routerMixin";
 export default {
   name: "BottomNav",
-  mixins: [sendToRouteMixin],
-  data() {
-    return {
-      activeBtn: 0
-    };
+  mixins: [routerMixin],
+
+  computed: {
+    bottomNav: {
+      get() {
+        return this.$store.state.bottomNav;
+      },
+      set(value) {
+        this.$store.commit("UPDATE_BOTTOM_NAV", value);
+      }
+    }
   }
 };
 </script>
@@ -47,5 +43,9 @@ export default {
 .v-bottom-navigation {
   box-shadow: none !important;
   border-top: 1px solid var(--outline-color) !important;
+}
+.v-btn__content {
+  height: 100% !important;
+  align-content: space-around;
 }
 </style>

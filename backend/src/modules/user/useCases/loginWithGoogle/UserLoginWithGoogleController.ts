@@ -22,7 +22,7 @@ export class UserLoginController extends BaseController {
 
     this.request.session['user'] = userSessionDetails;
     if (userSessionDetails.role === Role.doctor) {
-      return this.response.redirect('http://localhost:8080/entrybook');
+      return this.response.redirect('http://localhost:8080/dashboard/');
     }
     return this.response.redirect('http://localhost:8080/');
   }

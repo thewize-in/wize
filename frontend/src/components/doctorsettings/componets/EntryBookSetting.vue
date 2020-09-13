@@ -9,7 +9,8 @@
             v-on:click="createEntryBook"
             :loading="loading"
             outlined
-          >Create</v-btn>
+            >Create</v-btn
+          >
         </v-col>
         <v-col cols="5">
           <span>Entrybook</span>
@@ -23,7 +24,8 @@
             v-on:click="deleteEntryBook"
             :loading="loading"
             outlined
-          >Delete</v-btn>
+            >Delete</v-btn
+          >
         </v-col>
         <v-col cols="5">
           <span>Entrybook</span>
@@ -35,47 +37,44 @@
 </template>
 
 <script>
-import "../../../assets/styles/colors.css";
-import { mapGetters, mapActions } from "vuex";
-import Snackbar from "../../ui/Snackbar";
+import '../../../assets/styles/colors.css';
+import { mapGetters, mapActions } from 'vuex';
+import Snackbar from '../../ui/Snackbar';
+import { buttonMixin } from '../../../mixins/ui/buttonMixin';
 export default {
-  name: "EntryBookSetting",
+  name: 'EntryBookSetting',
+  mixins: [buttonMixin],
   components: {
-    Snackbar
+    Snackbar,
   },
-  data() {
-    return {
-      loading: false
-    };
-  },
+
   async mounted() {
     await this.isEntryBookExist();
   },
   computed: {
-    ...mapGetters("entrybook", ["isCreated"])
+    ...mapGetters('entrybook', ['isCreated']),
   },
   methods: {
-    ...mapActions("entrybook", [
-      "createNewEntryBook",
-      "deleteCreatedEntryBook",
-      "isEntryBookExist"
+    ...mapActions('entrybook', [
+      'createNewEntryBook',
+      'deleteCreatedEntryBook',
+      'isEntryBookExist',
     ]),
-    ...mapActions(["displaySnackbarForFailure", "displaySnackbarForSuccess"]),
+    ...mapActions(['displaySnackbarForFailure', 'displaySnackbarForSuccess']),
     async createEntryBook() {
       this.loading = true;
       await this.createNewEntryBook();
-      this.displaySnackbarForSuccess("Entrybook Created");
+      this.displaySnackbarForSuccess('Entrybook Created');
       this.loading = false;
     },
     async deleteEntryBook() {
       this.loading = true;
       await this.deleteCreatedEntryBook();
-      this.displaySnackbarForSuccess("Entrybook Deleted");
+      this.displaySnackbarForSuccess('Entrybook Deleted');
       this.loading = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

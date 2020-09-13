@@ -16,9 +16,8 @@ export class NextEntryController extends BaseController {
 
     const result = await this.useCase.execute(dto);
 
-    if (!result.getValue())
-      return this.ok(this.response.status(200), 'no more patient');
+    if (!result.getValue()) return this.noContent(this.response);
 
-    return this.ok(this.response.status(200));
+    return this.ok(this.response);
   }
 }

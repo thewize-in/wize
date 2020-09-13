@@ -1,20 +1,20 @@
 import { mapGetters } from 'vuex';
-import { vue } from '@/main';
+import store from '@/store';
 
 const snackbarMixin = {
   data() {
     return {
-      timeout: 3000,
+      timeout: 2500,
     };
   },
   computed: {
     ...mapGetters(['snackbar']),
     display: {
       get() {
-        return vue.$store.state.snackbar.display;
+        return store.state.snackbar.display;
       },
       set(value: boolean) {
-        vue.$store.commit('UPDATE_SNACKBAR', {
+        store.commit('UPDATE_SNACKBAR', {
           display: value,
           color: '',
           text: '',

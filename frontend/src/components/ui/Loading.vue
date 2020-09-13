@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row style="height: 80vh;">
     <v-col class="flex-column-center-center loading-container">
       <div class="load">
         <div class="spinner">
@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import "../../assets/styles/colors.css";
+import '../../assets/styles/colors.css';
 export default {
-  name: "Loading"
+  name: 'Loading',
 };
 </script>
 

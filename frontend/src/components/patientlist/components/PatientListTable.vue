@@ -23,7 +23,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import "../../../assets/styles/colors.css";
 export default {
   name: "PatientListTable",
   props: ["list"],
@@ -31,7 +30,7 @@ export default {
   data() {
     return {
       search: "",
-      itemsPerPage: 4,
+      itemsPerPage: 5,
 
       headers: [
         {
@@ -41,7 +40,7 @@ export default {
         },
         {
           text: "Number",
-          sortable: false,
+          sortable: true,
           value: "number"
         }
       ]
@@ -62,5 +61,8 @@ tr {
 .sticky-btn {
   top: 50%;
   position: fixed;
+}
+.v-data-table .v-data-footer .v-data-footer {
+  justify-content: flex-start !important;
 }
 </style>

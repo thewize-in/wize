@@ -24,6 +24,7 @@ const routes: Array<RouteConfig> = [
     path: '/dashboard',
     name: 'DashboardPage',
     component: DashboardPage,
+    meta: { requiresAuth: true, toBeDoctor: true },
   },
   {
     path: '/patientlist',
@@ -40,11 +41,11 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const user: any = await Axios.get('/auth/isLoggedIn');
+    const user: any = await Axios.get('/api/v1/auth/isLoggedIn');
 
     if (user.data.isAuthorize) {
       if (to.matched.some((record) => record.meta.toBeDoctor)) {
-        const doctor: any = await Axios.get('/auth/isDoctor', {
+        const doctor: any = await Axios.get('/api/v1/auth/isDoctor', {
           withCredentials: true,
         });
 

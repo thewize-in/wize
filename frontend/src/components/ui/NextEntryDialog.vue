@@ -1,7 +1,15 @@
 <template>
   <v-dialog v-model="dialog" max-width="350">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn v-bind="attrs" v-on="on" class="btn-float-2" color="primary" fab medium>
+      <v-btn
+        v-bind="attrs"
+        v-on="on"
+        class="btn-float-2"
+        color="primary"
+        fab
+        medium
+        :loading="loading"
+      >
         <v-icon>mdi-arrow-right</v-icon>
       </v-btn>
     </template>
@@ -20,33 +28,45 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-        <v-btn color="blue darken-1" text @click="this.callNextEntry">Next</v-btn>
+        <v-btn color="blue darken-1" text @click="this.callNextEntry"
+          >Next</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import "../../assets/styles/colors.css";
-import { mapActions } from "vuex";
+import '../../assets/styles/colors.css';
+import { mapActions } from 'vuex';
+import { buttonMixin } from '../../mixins/ui/buttonMixin';
 export default {
-  name: "NextEntryDialog",
+  name: 'NextEntryDialog',
+  mixins: [buttonMixin],
   data() {
     return {
       dialog: false,
       yes: true,
       no: false,
-      isDone: true
+      isDone: true,
     };
   },
   methods: {
-    ...mapActions("entrybook", ["nextEntry", "getEntryBook"]),
+    ...mapActions('entrybook', ['nextEntry', 'getEntryBook']),
+    ...mapActions(['displaySnackbarForInfo', 'displaySnackbarForSuccess']),
     async callNextEntry() {
-      await this.nextEntry(this.isDone);
-      await this.getEntryBook();
+      this.loading = true;
+      const res = await this.nextEntry(this.isDone);
+      if (res) {
+        this.loading = false;
+        this.displaySnackbarForSuccess('Entry Updated');
+      } else {
+        this.loading = false;
+        this.displaySnackbarForInfo('No more entries.');
+      }
       this.dialog = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -70,5 +90,6 @@ export default {
   position: fixed;
   right: 10px;
   bottom: 160px;
+  transition: ease-in-out 0.5s;
 }
 </style>

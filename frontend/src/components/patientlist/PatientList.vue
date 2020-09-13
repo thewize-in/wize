@@ -1,57 +1,75 @@
 <template>
   <Loading v-if="pageLoading" />
-
-  <v-row v-else class="flex-row-center-center">
-    <v-col cols="12" xl="6" lg="6" md="12" sm="12" xm="12" class="flex-column-center-center">
-      <v-tabs
-        v-model="tab"
-        :centered="centered"
-        :grow="grow"
-        :vertical="vertical"
-        :icons-and-text="icons"
-        flat
+  <div v-else>
+    <v-row v-if="isCreated" class="flex-row-center-center">
+      <v-col
+        cols="12"
+        xl="6"
+        lg="6"
+        md="12"
+        sm="12"
+        xm="12"
+        class="flex-column-center-center"
       >
-        <v-tab v-for="i in tabs" :key="i" :href="`#${i}`">{{ i }}</v-tab>
+        <v-tabs
+          v-model="tab"
+          :centered="centered"
+          :grow="grow"
+          :vertical="vertical"
+          :icons-and-text="icons"
+          flat
+        >
+          <v-tab flat v-for="i in tabs" :key="i" :href="`#${i}`">{{ i }}</v-tab>
 
-        <v-tab-item value="all">
-          <PatientListTable :list="allPatients" />
-        </v-tab-item>
-        <v-tab-item value="done">
-          <PatientListTable :list="donePatients" />
-        </v-tab-item>
-        <v-tab-item value="notdone">
-          <PatientListTable :list="undonePatients" />
-        </v-tab-item>
-      </v-tabs>
-    </v-col>
-    <NextEntryDialog v-if="FAB" />
-    <NewEntryDialog v-if="FAB" />
-    <Snackbar />
-  </v-row>
+          <v-tab-item value="all">
+            <PatientListTable :list="allPatients" />
+          </v-tab-item>
+          <v-tab-item value="done">
+            <PatientListTable :list="donePatients" />
+          </v-tab-item>
+          <v-tab-item value="notdone">
+            <PatientListTable :list="undonePatients" />
+          </v-tab-item>
+        </v-tabs>
+      </v-col>
+      <NextEntryDialog v-if="FAB" />
+      <NewEntryDialog v-if="FAB" />
+      <Snackbar />
+    </v-row>
+
+    <v-row v-else class="flex-row-center-center" style="height: 80vh;">
+      <div class="flex-column-center-center">
+        <v-icon>mdi-alert-circle</v-icon>
+        <p>Create new entrybook</p>
+      </div>
+    </v-row>
+  </div>
 </template>
 
 <script>
-import Axios from "axios";
-import { mapGetters, mapActions } from "vuex";
-import Loading from "../ui/Loading";
-import Snackbar from "../ui/Snackbar";
-import PatientListTable from "./components/PatientListTable";
-import NextEntryDialog from "../ui/NextEntryDialog";
-import NewEntryDialog from "../ui/NewEntryDialog";
+import Axios from 'axios';
+import { mapGetters, mapActions } from 'vuex';
+import Loading from '../ui/Loading';
+import Snackbar from '../ui/Snackbar';
+import PatientListTable from './components/PatientListTable';
+import NextEntryDialog from '../ui/NextEntryDialog';
+import NewEntryDialog from '../ui/NewEntryDialog';
+import { routerMixin } from '../../mixins/routerMixin';
 
 export default {
-  name: "PatientList",
+  name: 'PatientList',
+  mixins: [routerMixin],
   components: {
     Loading,
     PatientListTable,
     NextEntryDialog,
     NewEntryDialog,
-    Snackbar
+    Snackbar,
   },
   created() {
     let timer = null;
     window.addEventListener(
-      "scroll",
+      'scroll',
       () => {
         this.hideFAB();
         if (timer !== null) {
@@ -61,6 +79,8 @@ export default {
       },
       false
     );
+    this.updateAppBar(true);
+    this.$store.commit('UPDATE_BOTTOM_NAV', 'patientlist');
   },
   async mounted() {
     this.pageLoading = true;
@@ -68,6 +88,7 @@ export default {
     if (this.isCreated) {
       await this.getEntryBook();
     }
+
     this.pageLoading = false;
   },
 
@@ -83,26 +104,27 @@ export default {
       prevIcon: false,
       nextIcon: false,
       left: true,
-      tabs: ["all", "done", "notdone"]
+      tabs: ['all', 'done', 'notdone'],
     };
   },
   computed: {
-    ...mapGetters("entrybook", [
-      "allPatients",
-      "donePatients",
-      "undonePatients",
-      "isCreated"
-    ])
+    ...mapGetters('entrybook', [
+      'allPatients',
+      'donePatients',
+      'undonePatients',
+      'isCreated',
+      'stats',
+    ]),
   },
   methods: {
-    ...mapActions("entrybook", ["isEntryBookExist", "getEntryBook"]),
+    ...mapActions('entrybook', ['isEntryBookExist', 'getEntryBook']),
     hideFAB() {
       this.FAB = false;
     },
     showFAB() {
       this.FAB = true;
-    }
-  }
+    },
+  },
 };
 </script>
 

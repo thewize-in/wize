@@ -1,7 +1,15 @@
 <template>
   <v-dialog v-model="dialog" max-width="350">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn v-bind="attrs" v-on="on" class="btn-float-1" color="primary" fab medium>
+      <v-btn
+        v-bind="attrs"
+        v-on="on"
+        class="btn-float-1"
+        color="primary"
+        fab
+        medium
+        :loading="loading"
+      >
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
@@ -13,7 +21,12 @@
         <v-container class="v-container">
           <v-row regular>
             <v-col cols="12" sm="12" md="12">
-              <v-text-field label="Name*" type="text" required v-model="name"></v-text-field>
+              <v-text-field
+                label="Name*"
+                type="text"
+                required
+                v-model="name"
+              ></v-text-field>
             </v-col>
 
             <v-col cols="12">
@@ -26,7 +39,11 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="12" md="12">
-              <v-text-field label="Address" type="text" v-model="address"></v-text-field>
+              <v-text-field
+                label="Address"
+                type="text"
+                v-model="address"
+              ></v-text-field>
             </v-col>
           </v-row>
         </v-container>
@@ -40,54 +57,62 @@
           text
           primary
           @click="createEntry"
-          :disabled="trimAll(name).length<4?true:false"
-        >Create</v-btn>
+          :disabled="trimAll(name).length < 4 ? true : false"
+          >Create</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
+import { buttonMixin } from '../../mixins/ui/buttonMixin';
 export default {
-  name: "NewEntryDialog",
+  name: 'NewEntryDialog',
+  mixins: [buttonMixin],
+
   data() {
     return {
-      name: "",
-      phone: "",
-      address: "",
-      phoneRule: [v => v.length <= 10 || "Number must be 10 digit"],
-      disabled: true
+      name: '',
+      phone: '',
+      address: '',
+      phoneRule: [(v) => v.length <= 10 || 'Number must be 10 digit'],
+      disabled: true,
     };
   },
   computed: {
-    ...mapGetters("entrybook", ["isCreated"]),
+    ...mapGetters('entrybook', ['isCreated']),
     dialog: {
       get() {
         return this.$store.state.dialog;
       },
       set(value) {
-        this.$store.commit("UPDATE_DIALOG", value);
-      }
-    }
+        this.$store.commit('UPDATE_DIALOG', value);
+      },
+    },
   },
   methods: {
-    ...mapActions("entrybook", ["createNewEntry", "getEntryBook"]),
-    ...mapActions(["displaySnackbarForFailure", "displaySnackbarForSuccess"]),
+    ...mapActions('entrybook', ['createNewEntry', 'getEntryBook']),
+    ...mapActions(['displaySnackbarForFailure', 'displaySnackbarForSuccess']),
     async createEntry() {
-      await this.createNewEntry({
+      this.loading = true;
+      const res = await this.createNewEntry({
         name: this.name,
-        address: this.address || "",
-        phone: this.address || ""
+        address: this.address || '',
+        phone: this.address || '',
       });
-      await this.getEntryBook();
-      this.displaySnackbarForSuccess("Entry Created");
+
+      this.loading = false;
+      if (res) {
+        this.displaySnackbarForSuccess('Entry Created');
+      }
       this.dialog = false;
     },
     trimAll(string) {
-      return string.split(" ").join("");
-    }
-  }
+      return string.split(' ').join('');
+    },
+  },
 };
 </script>
 
@@ -96,5 +121,6 @@ export default {
   position: fixed;
   right: 10px;
   bottom: 90px;
+  transition: ease-in-out 0.5s;
 }
 </style>

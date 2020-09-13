@@ -1,15 +1,23 @@
 <template>
   <v-app>
-    <v-app-bar class="v-app-bar" flat app>
+    <v-app-bar v-if="appBar" class="v-app-bar" flat app>
       <v-app-bar-nav-icon>
         <v-btn icon fab @click.stop="drawer = !drawer">
-          <v-icon color="accent">mdi-account-outline</v-icon>
+          <v-icon>mdi-account-outline</v-icon>
         </v-btn>
       </v-app-bar-nav-icon>
+
       <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon color="accent">mdi-cog-outline</v-icon>
+      <v-btn icon @click="sendTo('/settings')">
+        <v-icon>mdi-cog-outline</v-icon>
       </v-btn>
+    </v-app-bar>
+    <v-app-bar v-else class="v-app-bar" flat app>
+      <v-app-bar-nav-icon>
+        <v-btn icon @click="goBack">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+      </v-app-bar-nav-icon>
     </v-app-bar>
     <Drawer />
     <v-main class="v-main">
@@ -17,8 +25,7 @@
         <router-view></router-view>
       </v-container>
     </v-main>
-
-    <BottomNav />
+    <BottomNav v-if="appBar" />
   </v-app>
 </template>
 
@@ -26,8 +33,10 @@
 import { mapGetters, mapState, mapActions } from "vuex";
 import Drawer from "./components/ui/Drawer.vue";
 import BottomNav from "./components/ui/BottomNav.vue";
+import { routerMixin } from "./mixins/routerMixin";
 export default {
   name: "App",
+  mixins: [routerMixin],
   data() {
     return {};
   },
@@ -39,7 +48,7 @@ export default {
     ...mapActions(["updateDrawer"])
   },
   computed: {
-    ...mapGetters(["settings"]),
+    ...mapGetters(["settings", "appBar"]),
     drawer: {
       get() {
         return this.$store.state.drawer;

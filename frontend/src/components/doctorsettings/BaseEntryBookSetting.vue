@@ -9,10 +9,14 @@
       xl="5"
       class="flex-column-start-center entrybook-list-container"
     >
-      <v-tabs v-model="tab" background-color="base">
+      <v-tabs v-model="tab">
         <v-tab>Entrybook Setting</v-tab>
       </v-tabs>
-      <v-tabs-items v-model="tab" class="v-tab-itmes-container" background-color="base">
+      <v-tabs-items
+        v-model="tab"
+        class="v-tab-itmes-container"
+        background-color="base"
+      >
         <EntryBookSetting />
       </v-tabs-items>
     </v-col>
@@ -20,19 +24,22 @@
 </template>
 
 <script>
-import "../../assets/styles/colors.css";
-import EntryBookSetting from "./componets/EntryBookSetting.vue";
+import EntryBookSetting from './componets/EntryBookSetting.vue';
 
 export default {
-  name: "BaseEntryBookSetting",
+  name: 'BaseEntryBookSetting',
+  created() {
+    this.$store.commit('UPDATE_APP_BAR', false);
+  },
   data() {
     return {
-      tab: "entrybooksetting"
+      tab: 'entrybooksetting',
     };
   },
+
   components: {
-    EntryBookSetting
-  }
+    EntryBookSetting,
+  },
 };
 </script>
 
