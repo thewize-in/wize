@@ -1,45 +1,50 @@
 <template>
-  <v-row>
-    <v-col
-      cols="12"
-      xs="12"
-      sm="8"
-      md="6"
-      lg="5"
-      xl="5"
-      class="flex-column-start-center entrybook-list-container"
-    >
-      <v-tabs v-model="tab">
-        <v-tab>Entrybook Setting</v-tab>
-      </v-tabs>
-      <v-tabs-items
-        v-model="tab"
-        class="v-tab-itmes-container"
-        background-color="base"
+  <div>
+    <GoBack name="Settings" />
+    <v-row>
+      <v-col
+        cols="12"
+        xs="12"
+        sm="8"
+        md="6"
+        lg="5"
+        xl="5"
+        class="flex-column-start-center entrybook-list-container"
       >
-        <EntryBookSetting />
-      </v-tabs-items>
-    </v-col>
-  </v-row>
+        <v-tabs v-model="tab">
+          <v-tab>Entrybook Setting</v-tab>
+        </v-tabs>
+        <v-tabs-items
+          v-model="tab"
+          class="v-tab-itmes-container"
+          background-color="base"
+        >
+          <EntryBookSetting />
+        </v-tabs-items>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
-import EntryBookSetting from './componets/EntryBookSetting.vue';
+import EntryBookSetting from "./componets/EntryBookSetting.vue";
+import GoBack from "../ui/GoBack";
 
 export default {
-  name: 'BaseEntryBookSetting',
+  name: "BaseEntryBookSetting",
+  components: {
+    GoBack,
+    EntryBookSetting
+  },
   created() {
-    this.$store.commit('UPDATE_APP_BAR', false);
+    this.$store.commit("ui/UPDATE_APP_BAR", false);
+    this.$store.commit("ui/UPDATE_NAV_BAR", true);
   },
   data() {
     return {
-      tab: 'entrybooksetting',
+      tab: "entrybooksetting"
     };
-  },
-
-  components: {
-    EntryBookSetting,
-  },
+  }
 };
 </script>
 

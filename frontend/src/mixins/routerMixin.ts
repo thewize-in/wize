@@ -1,22 +1,22 @@
-import { vue } from '@/main';
-import store from '@/store';
+import { vue } from "@/main";
+import store from "@/store";
 
 const routerMixin = {
   methods: {
     async sendTo(route: string): Promise<void> {
       try {
-        store.commit('UPDATE_BOTTOM_NAV', route);
         await vue.$router.push(route);
       } catch (error) {
         return;
       }
     },
-    async goBack(): Promise<void> {
+    goBack(): void {
       vue.$router.go(-1);
     },
     updateAppBar(value: boolean) {
-      store.commit('UPDATE_APP_BAR', value);
-    },
-  },
+      store.commit("ui/UPDATE_APP_BAR", value);
+      store.commit("ui/UPDATE_NAV_BAR", false);
+    }
+  }
 };
 export { routerMixin };

@@ -1,12 +1,11 @@
 <template>
   <v-snackbar
     v-model="display"
-    :color="snackbar.color"
-    :min-height="1000"
+    :top="true"
+    color="dark"
     :timeout="timeout"
-    :bottom="true"
+    app
     flat
-    :app="true"
   >
     {{ snackbar.text }}
     <template v-slot:action="{ attrs }">

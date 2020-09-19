@@ -1,5 +1,6 @@
 export type UserProfileDTO = {
-    username: string;
-    displayName: string;
-    profilePic: string;
+  username: string;
+  displayName: string;
+  profilePic: string;
+  email: string;
 };

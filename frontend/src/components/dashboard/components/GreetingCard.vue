@@ -11,7 +11,7 @@
     <div class="greeting">
       <p>
         {{ greet() }}
-        <b>Dr.{{doctor}}!</b>
+        <b>{{ doctor }}</b>
       </p>
     </div>
   </v-col>

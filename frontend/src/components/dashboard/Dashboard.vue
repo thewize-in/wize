@@ -1,12 +1,15 @@
 <template>
-  <Loading v-if="pageLoading" />
-  <div v-else>
+  <div>
+    <AppNav />
+    <Drawer />
     <v-row
       v-if="isCreated"
       class="flex-row-center-center"
       style="padding: 0px 5px;"
     >
+      <Loading v-if="pageLoading" />
       <v-col
+        v-else
         cols="12"
         xl="6"
         lg="6"
@@ -25,9 +28,9 @@
             class="flex-column-center-center"
           >
             <v-row class="flex-row-around-center">
-              <GreetingCard doctor="Adsule" />
+              <GreetingCard :doctor="profile.displayName" />
               <DashCard
-                cardName="Patients"
+                cardName="Total"
                 :stat="stats.total"
                 icon="mdi-account-group"
               />
@@ -81,95 +84,67 @@
           </v-row>
         </v-col>
       </v-row>
-    </v-col> -->
+      </v-col>-->
       <NextEntryDialog v-if="FAB" />
       <NewEntryDialog v-if="FAB" />
       <Snackbar />
     </v-row>
-    <v-row v-else class="flex-row-center-center" style="height: 80vh;">
-      <div class="flex-column-center-center">
-        <v-icon>mdi-alert-circle</v-icon>
-        <p>Create new entrybook</p>
-      </div>
-    </v-row>
+    <NoEntryBook v-else />
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex';
-import DashCard from './components/DashCard';
-import GreetingCard from './components/GreetingCard';
-import Loading from '../ui/Loading';
-import NewEntryDialog from '../ui/NewEntryDialog';
-import NextEntryDialog from '../ui/NextEntryDialog';
-import Snackbar from '../ui/Snackbar';
-import { routerMixin } from '../../mixins/routerMixin';
-
+import { mapGetters, mapActions, mapState } from "vuex";
+import DashCard from "./components/DashCard";
+import GreetingCard from "./components/GreetingCard";
+import Loading from "../ui/Loading";
+import NewEntryDialog from "../ui/NewEntryDialog";
+import NextEntryDialog from "../ui/NextEntryDialog";
+import Snackbar from "../ui/Snackbar";
+import NoEntryBook from "../ui/NoEntryBook";
+import { routerMixin } from "../../mixins/routerMixin";
+import { userProfileMixin } from "../../mixins/user/userProfileMixin";
+import { fabMixin } from "../../mixins/ui/fabMixin";
+import AppNav from "../ui/AppNav";
+import Drawer from "../ui/Drawer";
 export default {
-  name: 'Dashboard',
-  mixins: [routerMixin],
+  name: "Dashboard",
+  mixins: [routerMixin, userProfileMixin, fabMixin],
   components: {
+    AppNav,
     DashCard,
     GreetingCard,
     NextEntryDialog,
     NewEntryDialog,
     Snackbar,
-
+    NoEntryBook,
     Loading,
+    Drawer
   },
-  created() {
-    let timer = null;
-    window.addEventListener(
-      'scroll',
-      () => {
-        this.hideFAB();
-        if (timer !== null) {
-          clearTimeout(timer);
-        }
-        timer = setTimeout(this.showFAB, 500);
-      },
-      false
-    );
-    this.updateAppBar(true);
-    this.$store.commit('UPDATE_BOTTOM_NAV', 'dashboard');
-  },
-  async mounted() {
+  async created() {
     this.pageLoading = true;
+
     await this.isEntryBookExist();
     if (this.isCreated) {
       await this.getEntryBook();
     }
     this.pageLoading = false;
+    this.updateAppBar(true);
+    this.updateBottomNav(0);
   },
   data() {
     return {
-      FAB: true,
-      doctor: 'Adsule',
-      pageLoading: false,
-      list: [
-        { name: 'saud chougle' },
-        { name: 'sami chougle' },
-        { name: 'sanober chougle' },
-      ],
+      pageLoading: false
     };
   },
   computed: {
-    ...mapState('entrybook', ['stats', 'isCreated']),
+    ...mapState("entrybook", ["stats", "isCreated"]),
+    ...mapGetters("user", ["profile"])
   },
   methods: {
-    ...mapActions('entrybook', ['isEntryBookExist', 'getEntryBook']),
-    myWatcher() {
-      this.$store.subscribe('entrybook/GET_ENTRYBOOK', (mutation, state) => {
-        console.log(state);
-      });
-    },
-    hideFAB() {
-      this.FAB = false;
-    },
-    showFAB() {
-      this.FAB = true;
-    },
-  },
+    ...mapActions("entrybook", ["isEntryBookExist", "getEntryBook"]),
+    ...mapActions("ui", ["updateBottomNav"])
+  }
 };
 </script>
 

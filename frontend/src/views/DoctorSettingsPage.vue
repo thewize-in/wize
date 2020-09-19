@@ -2,12 +2,12 @@
   <BaseEntryBookSetting />
 </template>
 <script>
-import BaseEntryBookSetting from '../components/doctorsettings/BaseEntryBookSetting.vue';
-import { routerMixin } from '../mixins/routerMixin';
+import BaseEntryBookSetting from "../components/doctorsettings/BaseEntryBookSetting.vue";
+import { routerMixin } from "../mixins/routerMixin";
 export default {
-  name: 'DoctorSettingsPage',
+  name: "DoctorSettingsPage",
   components: {
-    BaseEntryBookSetting,
-  },
+    BaseEntryBookSetting
+  }
 };
 </script>

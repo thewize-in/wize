@@ -1,27 +1,26 @@
-import { mapGetters } from 'vuex';
-import store from '@/store';
+import { mapGetters } from "vuex";
+import store from "@/store";
 
 const snackbarMixin = {
   data() {
     return {
-      timeout: 2500,
+      timeout: 2500
     };
   },
   computed: {
-    ...mapGetters(['snackbar']),
+    ...mapGetters("ui", ["snackbar"]),
     display: {
       get() {
-        return store.state.snackbar.display;
+        return store.getters["ui/snackbar"].display;
       },
       set(value: boolean) {
-        store.commit('UPDATE_SNACKBAR', {
+        store.commit("ui/UPDATE_SNACKBAR", {
           display: value,
-          color: '',
-          text: '',
+          text: ""
         });
-      },
-    },
-  },
+      }
+    }
+  }
 };
 
 export { snackbarMixin };

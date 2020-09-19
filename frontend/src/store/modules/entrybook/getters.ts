@@ -13,7 +13,7 @@ const getters = {
   },
   isCreated: (state: any) => {
     return state.isCreated;
-  },
+  }
 };
 
 export { getters };

@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "wize",
   "version": "1.0.0",
   "private": true,
   "description": "",
@@ -27,6 +27,8 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^2.1.0",
+    "@fullhuman/vue-cli-plugin-purgecss": "~2.2.0",
     "@mdi/font": "^5.5.55",
     "@types/jest": "^24.0.19",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
@@ -55,9 +57,9 @@
     "vuex-class": "^0.3.2",
     "vuex-module-decorators": "^0.17.0"
   },
-  "_id": "frontend@1.0.0",
+  "_id": "wize@1.0.0",
   "keywords": [],
   "license": "ISC",
-  "readme": "ERROR: No README data found!",
-  "proxy": "http://localhost:3000"
+  "proxy": "http://192.168.43.215:3000",
+  "readme": "ERROR: No README data found!"
 }

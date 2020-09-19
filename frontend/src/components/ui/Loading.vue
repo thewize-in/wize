@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import '../../assets/styles/colors.css';
+import "../../assets/styles/colors.css";
 export default {
-  name: 'Loading',
+  name: "Loading"
 };
 </script>
 

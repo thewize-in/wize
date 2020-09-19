@@ -1,5 +1,5 @@
 import express from 'express';
-import { userProfileRouter } from './profile';
+import { userProfileRouter } from '../profile';
 import { userAccountRouter } from './account';
 
 const userSettingRouter = express.Router();

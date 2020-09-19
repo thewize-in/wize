@@ -1,72 +1,67 @@
 <template>
-  <v-dialog v-model="dialog" max-width="350">
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn
-        v-bind="attrs"
-        v-on="on"
-        class="btn-float-2"
-        color="primary"
-        fab
-        medium
-        :loading="loading"
-      >
-        <v-icon>mdi-arrow-right</v-icon>
-      </v-btn>
-    </template>
-    <v-card class="flex-column-start-center">
-      <v-card-title>
-        <span class="headline">Done</span>
-      </v-card-title>
-      <v-card-text class="flex-row-start-center">
-        <v-row>
-          <v-radio-group v-model="isDone" row>
-            <v-radio label="Yes" :value="yes"></v-radio>
-            <v-radio label="No" :value="no"></v-radio>
-          </v-radio-group>
-        </v-row>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-        <v-btn color="blue darken-1" text @click="this.callNextEntry"
-          >Next</v-btn
+  <v-row>
+    <v-btn
+      v-if="stats.total >= 1 && stats.current >= 1"
+      class="btn-float-2"
+      color="primary"
+      fab
+      medium
+      :loading="loading"
+      @click="validateBeforeNextEntry"
+    >
+      <v-icon>mdi-arrow-right</v-icon>
+    </v-btn>
+
+    <v-dialog v-model="dialog" max-width="350">
+      <v-card class="flex-column-start-center">
+        <v-card-title class="headline"
+          >Entry number {{ stats.current }} Done?</v-card-title
         >
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        <v-card-text class="flex-row-start-center">
+          <v-row>
+            <v-radio-group v-model="isDone" row>
+              <v-radio label="Yes" :value="yes" medium></v-radio>
+              <v-radio label="No" :value="no" medium></v-radio>
+            </v-radio-group>
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialog = false"
+            >Close</v-btn
+          >
+          <v-btn color="blue darken-1" text @click="callNextEntry">Next</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
 
 <script>
-import '../../assets/styles/colors.css';
-import { mapActions } from 'vuex';
-import { buttonMixin } from '../../mixins/ui/buttonMixin';
+import { mapActions, mapGetters, mapState } from "vuex";
+import { buttonMixin } from "../../mixins/ui/buttonMixin";
+import { nextEntryMixin } from "../../mixins/ui/nextEntryMixin";
+
 export default {
-  name: 'NextEntryDialog',
-  mixins: [buttonMixin],
+  name: "NextEntryDialog",
+  mixins: [buttonMixin, nextEntryMixin],
+
   data() {
     return {
       dialog: false,
       yes: true,
       no: false,
-      isDone: true,
+      isDone: true
     };
   },
-  methods: {
-    ...mapActions('entrybook', ['nextEntry', 'getEntryBook']),
-    ...mapActions(['displaySnackbarForInfo', 'displaySnackbarForSuccess']),
-    async callNextEntry() {
-      this.loading = true;
-      const res = await this.nextEntry(this.isDone);
-      if (res) {
-        this.loading = false;
-        this.displaySnackbarForSuccess('Entry Updated');
-      } else {
-        this.loading = false;
-        this.displaySnackbarForInfo('No more entries.');
-      }
-      this.dialog = false;
-    },
-  },
+  computed: {
+    ...mapGetters("entrybook", [
+      "stats",
+      "allPatients",
+      "donePatients",
+      "undonePatients"
+    ])
+  }
 };
 </script>
 
@@ -88,7 +83,7 @@ export default {
 }
 .btn-float-2 {
   position: fixed;
-  right: 10px;
+  right: 1rem;
   bottom: 160px;
   transition: ease-in-out 0.5s;
 }

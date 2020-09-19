@@ -10,6 +10,8 @@ const authConfig = {
   redisServerUrl: process.env.REDIS_SERVER_URL,
   sessionSecret: process.env.SESSION_SECRET,
   sessionExpiryTime: parseInt(process.env.SESSION_EXPIRAY_TIME),
+  port: parseInt(process.env.PORT),
+  host: process.env.HOST,
 };
 
 export { authConfig };

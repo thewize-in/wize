@@ -18,6 +18,6 @@ export class GetPatientEntryBookController extends BaseController {
 
     if (result.isFailure) return this.fail('not found');
 
-    return this.ok(this.response.status(200), result.getValue());
+    return this.ok(this.response, result.getValue());
   }
 }

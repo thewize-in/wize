@@ -3,12 +3,12 @@
 </template>
 
 <script>
-import Dashboard from '../components/dashboard/Dashboard';
+import Dashboard from "../components/dashboard/Dashboard";
 export default {
-  name: 'DashboardPage',
+  name: "DashboardPage",
   components: {
-    Dashboard,
-  },
+    Dashboard
+  }
 };
 </script>
 

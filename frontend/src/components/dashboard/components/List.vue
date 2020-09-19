@@ -11,8 +11,8 @@
 
 <script>
 export default {
-  name: 'List',
-  props: ['patient', 'index'],
+  name: "List",
+  props: ["patient", "index"]
 };
 </script>
 

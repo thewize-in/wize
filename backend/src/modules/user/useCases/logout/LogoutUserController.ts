@@ -1,3 +1,4 @@
+import { authConfig } from '../../../../shared/config/authConfig';
 import { BaseController } from '../../../../shared/infra/BaseController';
 import { LogoutUser } from './LogoutUser';
 import { LogoutUserDTO } from './LogoutUserDTO';
@@ -12,6 +13,8 @@ export class LogoutUserController extends BaseController {
     const dto: LogoutUserDTO = this.request;
 
     await this.useCase.execute(dto);
-    return this.response.clearCookie('user').redirect('http://localhost:8080/');
+    return this.response
+      .clearCookie('user')
+      .redirect(`http://192.168.43.215:${authConfig.port}/login`);
   }
 }

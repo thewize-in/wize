@@ -3,12 +3,12 @@
 </template>
 
 <script>
-import PatientList from '../components/patientlist/PatientList';
+import PatientList from "../components/patientlist/PatientList";
 export default {
-  name: 'PatientListPage',
+  name: "PatientListPage",
   components: {
-    PatientList,
-  },
+    PatientList
+  }
 };
 </script>
 

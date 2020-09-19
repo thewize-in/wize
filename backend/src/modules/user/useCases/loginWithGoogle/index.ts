@@ -4,8 +4,10 @@ import { googleService } from '../../../../shared/services/authProviders';
 import { userRepo } from '../../repos';
 import { UserLoginRequestController } from './UserLoginRequestController';
 
-const userLogin = new UserLoginWithGoogle(googleService, userRepo);
-const userLoginController = new UserLoginController(userLogin);
-const userLoginRequestController = new UserLoginRequestController(googleService);
+const userLoginWithGoogle = new UserLoginWithGoogle(googleService, userRepo);
+const userLoginController = new UserLoginController(userLoginWithGoogle);
+const userLoginRequestController = new UserLoginRequestController(
+  googleService
+);
 
-export { userLogin, userLoginController, userLoginRequestController };
+export { userLoginWithGoogle, userLoginController, userLoginRequestController };

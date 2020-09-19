@@ -97,29 +97,32 @@ export class PatientEntryBook extends AggregateRoot<PatientEntryBookProps> {
 
     return Result.ok<PatientEntryBook>(defaultPatientEntryBook);
   }
-  public nextEntry(previousEntryDone: boolean): void {
-    if (!(this.currentPatientNumber < 1)) {
-      if (previousEntryDone) {
-        this.addToDone(this.currentPatientDetails);
-      } else {
-        this.addToUndone(this.currentPatientDetails);
-      }
+
+  public callNextEntry(): void {
+    if (this.currentPatientNumber < this.totalPatientNumber) {
+      this.updateCurrentPatientNumber();
     }
-    this.updateCurrentPatientNumber();
   }
   private updateCurrentPatientNumber(): void {
     this.props.patientStats.incrCurrentPatientNumber();
   }
 
-  private addToDone(patientDetail: PatientDetail): void {
-    this.donePatientList.push(patientDetail);
+  public addToDone(): void {
+    this.donePatientList.push(this.currentPatientDetails);
   }
-  private addToUndone(patientDetail: PatientDetail): void {
-    this.undonePatientList.push(patientDetail);
+  public addToUndone(): void {
+    this.undonePatientList.push(this.currentPatientDetails);
   }
 
   public createOfflineEntry(patientDetail: PatientDetail): void {
     patientDetail.number = this.totalPatientNumber + 1;
+
+    if (
+      this.sumOfDoneAndUndone() === this.totalPatientNumber &&
+      this.currentPatientNumber === this.totalPatientNumber
+    ) {
+      this.updateCurrentPatientNumber();
+    }
     this.patientList.push(patientDetail);
   }
 
@@ -147,5 +150,8 @@ export class PatientEntryBook extends AggregateRoot<PatientEntryBookProps> {
   private entryExist(index: number): boolean {
     const NOT_FOUND = -1;
     return index === NOT_FOUND ? false : true;
+  }
+  private sumOfDoneAndUndone(): number {
+    return this.donePatientList.length + this.undonePatientList.length;
   }
 }

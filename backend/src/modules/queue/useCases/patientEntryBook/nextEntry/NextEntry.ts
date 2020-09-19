@@ -32,11 +32,16 @@ export class NextEntry implements UseCase<Request, Response> {
     const currentPatientNumber = patientEntryBook.currentPatientNumber;
     const totalPatientNumber = patientEntryBook.totalPatientNumber;
 
-    if (!(currentPatientNumber < totalPatientNumber)) {
+    if (!(currentPatientNumber <= totalPatientNumber)) {
       return Result.ok<boolean>(false);
     }
 
-    patientEntryBook.nextEntry(isPreviousEntryDone);
+    if (isPreviousEntryDone) {
+      patientEntryBook.addToDone();
+    } else {
+      patientEntryBook.addToUndone();
+    }
+    patientEntryBook.callNextEntry();
 
     await this.patientEntryBookRepo.save(patientEntryBook);
 

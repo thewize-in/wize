@@ -1,9 +1,9 @@
 const buttonMixin = {
   data() {
     return {
-      loading: false,
+      loading: false
     };
-  },
+  }
 };
 
 export { buttonMixin };

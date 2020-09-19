@@ -17,6 +17,8 @@ const origin = {
   origin: ['http://localhost:8080', 'http://localhost:3000'],
   credentials: true,
 };
+const port = authConfig.port;
+const host = authConfig.host;
 const app = express();
 const redisStore = redisConnect(session);
 
@@ -30,7 +32,7 @@ app.use(
       client: redisSessionClient,
       ttl: authConfig.sessionExpiryTime,
     }),
-    secret: authConfig.sessionSecret,
+    secret: `${authConfig.sessionSecret}`,
     resave: false,
     saveUninitialized: false,
     name: 'user',
@@ -59,8 +61,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../../../../../frontend/dist/index.html'));
 });
 
-app.listen(3000, () => {
-  console.log('server started:.:.:.');
+app.listen(port, host, () => {
+  console.log(`server started at http://${host}:${port}`);
 });
 
 export { app };
