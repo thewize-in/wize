@@ -10,8 +10,7 @@
             :loading="loading"
             outlined
             v-on:click="createEntryBook"
-            >Create new entrybook</v-btn
-          >
+          >Create new entrybook</v-btn>
         </v-col>
       </v-row>
       <v-row v-else class="flex-row-start-center">
@@ -23,26 +22,23 @@
             :loading="loading"
             outlined
             @click.stop="dialog = true"
-            >Delete Entrybook</v-btn
-          >
+          >Delete Entrybook</v-btn>
         </v-col>
         <v-dialog v-model="dialog" max-width="290">
           <v-card>
             <v-card-title class="headline">Are you sure?</v-card-title>
 
             <v-card-text>
-              Once you delete a entrybook, there is no going back. Please be
+              Once you delete an entrybook, there is no going back. Please be
               certain.
             </v-card-text>
 
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <v-btn color="darken-1" text @click="dialog = false"
-                >Cancel</v-btn
-              >
+              <v-btn color="darken-1" text @click="dialog = false">Cancel</v-btn>
 
-              <v-btn color="darken-1" text @click="deleteEntryBook">Yes</v-btn>
+              <v-btn color="error" text @click="deleteEntryBook">Delete</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>

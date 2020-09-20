@@ -1,31 +1,32 @@
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 
 const nextEntryMixin = {
   methods: {
-    ...mapActions("entrybook", ["nextEntry", "getEntryBook"]),
-    ...mapActions("ui", [
-      "displaySnackbarForInfo",
-      "displaySnackbarForSuccess",
-      "displaySnackbarForFailure"
+    ...mapActions('entrybook', ['nextEntry', 'getEntryBook']),
+    ...mapActions('ui', [
+      'displaySnackbarForInfo',
+      'displaySnackbarForSuccess',
+      'displaySnackbarForFailure',
     ]),
 
     async callNextEntry() {
       this.dialog = false;
+      this.loading = true;
       const res = await this.nextEntry(this.isDone);
       if (res) {
         this.loading = false;
         const message = this.isDone
-          ? "ENTRY ADDED TO DONE LIST"
-          : "ENTRY ADDED TO UNDONE LIST";
+          ? 'ENTRY ADDED TO DONE LIST'
+          : 'ENTRY ADDED TO UNDONE LIST';
         this.displaySnackbarForSuccess(message);
       } else {
         this.loading = false;
-        this.displaySnackbarForInfo("NO MORE ENTRIES.");
+        this.displaySnackbarForInfo('NO MORE ENTRIES.');
       }
     },
 
     async searchEntryByNumber(number, list) {
-      return list.some(entry => entry.number === number);
+      return list.some((entry) => entry.number === number);
     },
     async validateBeforeNextEntry() {
       let result = false;
@@ -44,13 +45,13 @@ const nextEntryMixin = {
         }
       }
       if (result) {
-        this.displaySnackbarForInfo("NO MORE ENTRIES.");
+        this.displaySnackbarForInfo('NO MORE ENTRIES.');
         return;
       } else {
         this.dialog = true;
       }
-    }
-  }
+    },
+  },
 };
 
 export { nextEntryMixin };

@@ -20,11 +20,5 @@ const mutations = {
   UPDATE_BOTTOM_NAV(state: any, value: any) {
     state.bottomNav = value;
   },
-  UPDATE_APP_BAR(state: any, value: boolean) {
-    state.appBar = value;
-  },
-  UPDATE_NAV_BAR(state: any, value: boolean) {
-    state.navBar = value;
-  }
 };
 export { mutations };

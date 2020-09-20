@@ -1,14 +1,8 @@
 <template>
-  <v-col
-    cols="12"
-    xl="6"
-    lg="6"
-    md="8"
-    sm="12"
-    class="flex-column-center-center"
-  >
+  <v-col cols="12" xl="12" lg="12" md="12" sm="12" class="flex-column-center-center">
     <div class="flex-column-center-center">
-      <v-icon>mdi-vlc</v-icon>Under Construction
+      <v-icon>mdi-vlc</v-icon>
+      <small>Under Construction</small>
     </div>
   </v-col>
 </template>
@@ -19,4 +13,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+small {
+  text-align: center;
+}
+</style>

@@ -22,7 +22,6 @@ export class UserRepo implements IUserRepo {
 
     if (userExist) {
       await new this.model(rawUser).save();
-      console.log('new user saved');
     } else {
       await this.model.findOneAndUpdate(
         { user_id: user.userId.id.toString() },

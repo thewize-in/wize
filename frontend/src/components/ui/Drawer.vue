@@ -21,11 +21,7 @@
 
     <v-list nav dense flat class="pa-2">
       <v-list-item-group>
-        <v-list-item
-          v-for="(item, index) in items"
-          :key="index"
-          v-on:click="sendTo(item.to)"
-        >
+        <v-list-item v-for="(item, index) in items" :key="index" v-on:click="sendTo(item.to)">
           <v-list-item-icon>
             <v-icon medium>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -38,11 +34,7 @@
     <template v-slot:append>
       <v-list nav dense>
         <v-list-item-group>
-          <v-list-item
-            v-for="(item, index) in misc"
-            :key="index"
-            v-on:click="sendTo(item.to)"
-          >
+          <v-list-item v-for="(item, index) in misc" :key="index" v-on:click="sendTo(item.to)">
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
           <v-divider></v-divider>
@@ -74,8 +66,8 @@ export default {
       ],
       misc: [
         { title: "Guide", to: "/guide" },
-        { title: "About Us", to: "/aboutus" },
-        { title: "Contact Us", to: "/contactus" }
+        { title: "Contact Us", to: "/contactus" },
+        { title: "About Us", to: "/aboutus" }
       ]
     };
   },
@@ -99,12 +91,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions("ui", ["updateDrawer", "updateGroup"]),
+    ...mapActions("ui", ["updateGroup"]),
 
     async logout() {
-      await this.updateDrawer(false);
-      this.$store.commit("UPDATE_APP_BAR", false);
-      this.$store.commit("UPDATE_NAV_BAR", false);
       localStorage.clear();
       window.location.href = "http://192.168.43.215:3000/api/v1/auth/logout";
     }

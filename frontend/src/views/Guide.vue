@@ -1,7 +1,7 @@
 <template>
   <div>
     <GoBack name="Guide" />
-    <v-row class="flex-row-center-center" style="height: 90vh;">
+    <v-row class="y-center">
       <UnderConstruction />
     </v-row>
   </div>

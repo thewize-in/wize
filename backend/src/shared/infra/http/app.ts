@@ -61,7 +61,12 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../../../../../frontend/dist/index.html'));
 });
 
-app.listen(port, host, () => {
+// Handle 500
+app.use(function (error, req, res, next) {
+  res.redirect('/servererror');
+});
+
+app.listen(3000, host, () => {
   console.log(`server started at http://${host}:${port}`);
 });
 

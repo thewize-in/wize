@@ -4,15 +4,7 @@
     <Drawer />
     <v-row v-if="isCreated" class="flex-row-center-center">
       <Loading v-if="pageLoading" />
-      <v-col
-        v-else
-        cols="12"
-        xl="6"
-        lg="6"
-        md="12"
-        sm="12"
-        class="flex-column-center-center"
-      >
+      <v-col v-else cols="12" xl="6" lg="6" md="12" sm="12" class="flex-column-center-center">
         <v-tabs
           v-model="tab"
           :centered="centered"
@@ -39,6 +31,7 @@
       <Snackbar />
     </v-row>
     <NoEntryBook v-else />
+    <BottomNav />
   </div>
 </template>
 
@@ -55,6 +48,7 @@ import { routerMixin } from "../../mixins/routerMixin";
 import { userProfileMixin } from "../../mixins/user/userProfileMixin";
 import { fabMixin } from "../../mixins/ui/fabMixin";
 import AppNav from "../ui/AppNav";
+import BottomNav from "../ui/BottomNav";
 import Drawer from "../ui/Drawer";
 
 export default {
@@ -62,6 +56,7 @@ export default {
   mixins: [routerMixin, userProfileMixin, fabMixin],
   components: {
     AppNav,
+    BottomNav,
     Loading,
     PatientListTable,
     NextEntryDialog,
@@ -77,7 +72,6 @@ export default {
       await this.getEntryBook();
     }
     this.pageLoading = false;
-    this.updateAppBar(true);
     this.updateBottomNav(1);
   },
 

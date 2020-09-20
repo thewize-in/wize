@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "",
-  "author": "",
+  "author": "saud chougle",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -11,7 +11,7 @@
     "lint": "vue-cli-service lint",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "main": "script.js",
+  "main": "index.js",
   "dependencies": {
     "axios": "^0.20.0",
     "core-js": "^3.6.5",

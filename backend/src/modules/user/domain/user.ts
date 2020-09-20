@@ -60,8 +60,6 @@ export class User extends AggregateRoot<UserProps> {
     super(props, id);
   }
   public static create(props: UserProps, id?: UniqueEntityID): Result<User> {
-    const isNewUser = id ? false : true;
-
     const user = new User(
       {
         ...props,
@@ -73,9 +71,7 @@ export class User extends AggregateRoot<UserProps> {
       },
       id
     );
-    if (isNewUser) {
-      user.addDomainEvent(new UserCreated(user));
-    }
+
     return Result.ok<User>(user);
   }
 }

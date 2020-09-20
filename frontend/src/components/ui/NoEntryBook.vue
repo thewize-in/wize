@@ -1,5 +1,5 @@
 <template>
-  <v-row class="flex-row-center-center">
+  <v-row class="flex-row-center-center y-center">
     <div class="flex-column-center-center">
       <div>
         <v-btn
@@ -9,8 +9,7 @@
           large
           :loading="loading"
           v-on:click="createEntryBook"
-          >Create new entrybook</v-btn
-        >
+        >Create new entrybook</v-btn>
       </div>
     </div>
   </v-row>
@@ -35,8 +34,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.row {
-  height: 80vh !important;
-}
-</style>
+ 

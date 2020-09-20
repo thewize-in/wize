@@ -39,7 +39,6 @@ export abstract class BaseController {
     return res.sendStatus(204);
   }
   public fail(error: Error | string) {
-    console.log(error);
     return this.response?.status(500).json({
       message: error.toString(),
     });

@@ -20,12 +20,6 @@ const getters = {
   bottomNav: (state: any) => {
     return state.bottomNav;
   },
-  appBar: (state: any) => {
-    return state.appBar;
-  },
-  navBar: (state: any) => {
-    return state.navBar;
-  }
 };
 
 export { getters };

@@ -14,11 +14,7 @@
         <v-tabs v-model="tab">
           <v-tab>Entrybook Setting</v-tab>
         </v-tabs>
-        <v-tabs-items
-          v-model="tab"
-          class="v-tab-itmes-container"
-          background-color="base"
-        >
+        <v-tabs-items v-model="tab" class="v-tab-itmes-container" background-color="base">
           <EntryBookSetting />
         </v-tabs-items>
       </v-col>
@@ -36,10 +32,7 @@ export default {
     GoBack,
     EntryBookSetting
   },
-  created() {
-    this.$store.commit("ui/UPDATE_APP_BAR", false);
-    this.$store.commit("ui/UPDATE_NAV_BAR", true);
-  },
+
   data() {
     return {
       tab: "entrybooksetting"

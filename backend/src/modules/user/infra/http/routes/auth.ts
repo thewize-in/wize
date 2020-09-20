@@ -2,7 +2,7 @@ import express, { Request, Response, response } from 'express';
 import {
   userLoginRequestController,
   userLoginController,
-} from '../../../useCases/loginWithGoogle';
+} from '../../../useCases/UserLoginWithGoogle';
 import { logoutUserController } from '../../../useCases/logout';
 import { authorizationMiddleware } from '../../../../../shared/infra/http/middlewares';
 

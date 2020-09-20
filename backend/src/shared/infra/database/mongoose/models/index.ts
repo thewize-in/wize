@@ -4,11 +4,11 @@ import '../hooks';
 import { userSchema } from './schemas/userSchmea';
 import { doctorSchema } from './schemas/doctorSchema';
 import { patientSchema } from './schemas/patientSchema';
-import { patienEntryBooktSchema } from './schemas/patientEntryBookSchema';
+import { entryBooktSchema } from './schemas/entryBookSchema';
 
 const userModel = model('user', userSchema);
 const doctorModel = model('doctor', doctorSchema);
 const patientModel = model('patient', patientSchema);
-const patientEntryBookModel = model('patientEntryBook', patienEntryBooktSchema);
+const entryBookModel = model('entryBook', entryBooktSchema);
 
-export { userModel, doctorModel, patientModel, patientEntryBookModel };
+export { userModel, doctorModel, patientModel, entryBookModel };

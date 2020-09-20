@@ -2,11 +2,7 @@
   <div>
     <AppNav />
     <Drawer />
-    <v-row
-      v-if="isCreated"
-      class="flex-row-center-center"
-      style="padding: 0px 5px;"
-    >
+    <v-row v-if="isCreated" class="flex-row-center-center" style="padding: 0px 5px;">
       <Loading v-if="pageLoading" />
       <v-col
         v-else
@@ -19,77 +15,21 @@
         style="padding-bottom: 0px;"
       >
         <v-row>
-          <v-col
-            cols="12"
-            xl="12"
-            lg="12"
-            md="12"
-            sm="12"
-            class="flex-column-center-center"
-          >
+          <v-col cols="12" xl="12" lg="12" md="12" sm="12" class="flex-column-center-center">
             <v-row class="flex-row-around-center">
               <GreetingCard :doctor="profile.displayName" />
-              <DashCard
-                cardName="Total"
-                :stat="stats.total"
-                icon="mdi-account-group"
-              />
-              <DashCard
-                cardName="Current"
-                :stat="stats.current"
-                icon="mdi-account"
-              />
+              <DashCard cardName="Total" :stat="stats.total" icon="mdi-account-group" />
+              <DashCard cardName="Current" :stat="stats.current" icon="mdi-account" />
             </v-row>
           </v-col>
         </v-row>
       </v-col>
-
-      <!-- <v-col
-      cols="12"
-      xl="6"
-      lg="6"
-      md="12"
-      sm="12"
-      class="flex-row-center-center"
-      style="padding-top: 0px;"
-    >
-      <v-row>
-        <v-col
-          cols="12"
-          xl="12"
-          lg="12"
-          md="12"
-          sm="12"
-          class="flex-column-center-center"
-        >
-          <v-col
-            cols="12"
-            xl="12"
-            lg="12"
-            md="12"
-            sm="12"
-            style="padding: 0px 0px;"
-          >
-            <div style="padding: 5px 0px;">
-              <h1>Patients</h1>
-            </div>
-          </v-col>
-          <v-row v-if="isCreated" class="flex-row-around-center card">
-            <List
-              v-for="(patient, index) in list"
-              :key="index"
-              :index="index"
-              :patient="patient"
-            />
-          </v-row>
-        </v-col>
-      </v-row>
-      </v-col>-->
       <NextEntryDialog v-if="FAB" />
       <NewEntryDialog v-if="FAB" />
       <Snackbar />
     </v-row>
     <NoEntryBook v-else />
+    <BottomNav />
   </div>
 </template>
 
@@ -106,12 +46,14 @@ import { routerMixin } from "../../mixins/routerMixin";
 import { userProfileMixin } from "../../mixins/user/userProfileMixin";
 import { fabMixin } from "../../mixins/ui/fabMixin";
 import AppNav from "../ui/AppNav";
+import BottomNav from "../ui/BottomNav";
 import Drawer from "../ui/Drawer";
 export default {
   name: "Dashboard",
   mixins: [routerMixin, userProfileMixin, fabMixin],
   components: {
     AppNav,
+    BottomNav,
     DashCard,
     GreetingCard,
     NextEntryDialog,
@@ -129,7 +71,6 @@ export default {
       await this.getEntryBook();
     }
     this.pageLoading = false;
-    this.updateAppBar(true);
     this.updateBottomNav(0);
   },
   data() {

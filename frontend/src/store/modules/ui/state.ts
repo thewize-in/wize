@@ -3,15 +3,13 @@ const state = {
   drawer: false,
   group: null,
   settings: true,
-  selected: "all",
+  selected: 'all',
   snackbar: {
     display: false,
-    color: "",
-    text: ""
+    color: '',
+    text: '',
   },
   bottomNav: 0,
-  appBar: true,
-  navBar: false
 };
 
 export { state };
