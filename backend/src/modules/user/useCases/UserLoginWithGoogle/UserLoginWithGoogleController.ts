@@ -3,7 +3,6 @@ import { UserLoginWithGoogle } from './UserLoginWithGoogle';
 import { UserLoginWithGoogleDTO } from './UserLoginWithGoogleDTO';
 import { UserSessionDTO } from '../../domain/dtos/UserSessionDTO';
 import { Role } from '../../domain/Role';
-import { authConfig } from '../../../../shared/config/authConfig';
 
 export class UserLoginController extends BaseController {
   private useCase: UserLoginWithGoogle;
@@ -23,12 +22,8 @@ export class UserLoginController extends BaseController {
 
     this.request.session['user'] = userSessionDetails;
     if (userSessionDetails.role === Role.doctor) {
-      return this.response.redirect(
-        `http://192.168.43.215:${authConfig.port}/dr/dashboard/`
-      );
+      return this.response.redirect(`/dr/dashboard/`);
     }
-    return this.response.redirect(
-      `http://192.168.43.215:${authConfig.port}/login`
-    );
+    return this.response.redirect(`/login`);
   }
 }
