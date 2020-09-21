@@ -14,11 +14,10 @@ import { redisSessionClient } from '../../services/caching/session/redisSessionC
 import { v1Router } from './api/v1';
 
 const origin = {
-  origin: ['http://localhost:8080', 'http://localhost:3000'],
+  origin: ['https://thewize.in'],
   credentials: true,
 };
 const port = authConfig.port;
-const host = authConfig.host;
 const app = express();
 const redisStore = redisConnect(session);
 
@@ -41,7 +40,7 @@ app.use(
       path: '/',
       httpOnly: true,
       maxAge: authConfig.sessionExpiryTime,
-      secure: false, // set true for https
+      secure: true, // set true for https
     },
   })
 );
@@ -49,7 +48,7 @@ app.use(
 app.use(cors(origin));
 app.use(compression());
 app.use(helmet());
-// app.use(morgan('combined'));
+app.use(morgan('combined'));
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -57,17 +56,17 @@ app.use(express.static(path.join(__dirname, '../../../../../frontend/dist/')));
 
 app.use('/api/v1', v1Router);
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../../../../frontend/dist/index.html'));
-});
-
 // Handle 500
 app.use(function (error, req, res, next) {
   res.redirect('/servererror');
 });
 
-app.listen(3000, host, () => {
-  console.log(`server started at http://${host}:${port}`);
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../../../../frontend/dist/index.html'));
+});
+
+app.listen(port, () => {
+  console.log(`server started at.:.:.:`);
 });
 
 export { app };

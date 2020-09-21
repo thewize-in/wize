@@ -21,7 +21,11 @@
 
     <v-list nav dense flat class="pa-2">
       <v-list-item-group>
-        <v-list-item v-for="(item, index) in items" :key="index" v-on:click="sendTo(item.to)">
+        <v-list-item
+          v-for="(item, index) in items"
+          :key="index"
+          v-on:click="sendTo(item.to)"
+        >
           <v-list-item-icon>
             <v-icon medium>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -34,7 +38,11 @@
     <template v-slot:append>
       <v-list nav dense>
         <v-list-item-group>
-          <v-list-item v-for="(item, index) in misc" :key="index" v-on:click="sendTo(item.to)">
+          <v-list-item
+            v-for="(item, index) in misc"
+            :key="index"
+            v-on:click="sendTo(item.to)"
+          >
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
           <v-divider></v-divider>
@@ -53,57 +61,57 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import { routerMixin } from "../../mixins/routerMixin";
+import { mapActions, mapGetters } from 'vuex';
+import { routerMixin } from '../../mixins/routerMixin';
 export default {
-  name: "Drawer",
+  name: 'Drawer',
   mixins: [routerMixin],
 
   data() {
     return {
       items: [
-        { title: "Settings", icon: "mdi-cog-outline", to: "/dr/settings" }
+        { title: 'Settings', icon: 'mdi-cog-outline', to: '/dr/settings' },
       ],
       misc: [
-        { title: "Guide", to: "/guide" },
-        { title: "Contact Us", to: "/contactus" },
-        { title: "About Us", to: "/aboutus" }
-      ]
+        { title: 'Guide', to: '/guide' },
+        { title: 'Contact Us', to: '/contactus' },
+        { title: 'About Us', to: '/aboutus' },
+      ],
     };
   },
   computed: {
-    ...mapGetters("user", ["profile"]),
+    ...mapGetters('user', ['profile']),
     drawer: {
       get() {
-        return this.$store.getters["ui/drawer"];
+        return this.$store.getters['ui/drawer'];
       },
       set(value) {
-        this.$store.commit("ui/UPDATE_DRAWER", value);
-      }
+        this.$store.commit('ui/UPDATE_DRAWER', value);
+      },
     },
     group: {
       get() {
-        return this.$store.getters["ui/group"];
+        return this.$store.getters['ui/group'];
       },
       set(value) {
-        this.$store.commit("ui/UPDATE_GROUP", value);
-      }
-    }
+        this.$store.commit('ui/UPDATE_GROUP', value);
+      },
+    },
   },
   methods: {
-    ...mapActions("ui", ["updateGroup"]),
+    ...mapActions('ui', ['updateGroup']),
 
     async logout() {
       localStorage.clear();
-      window.location.href = "http://192.168.43.215:3000/api/v1/auth/logout";
-    }
+      window.location.href = '/api/v1/auth/logout';
+    },
   },
 
   watch: {
     group() {
       this.drawer = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

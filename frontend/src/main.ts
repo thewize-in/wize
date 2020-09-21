@@ -9,7 +9,7 @@ import './assets/styles/grid.min.css';
 import './assets/styles/index.css';
 import './assets/styles/components.css';
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = true;
 
 const vue = new Vue({
   router,

@@ -8,7 +8,12 @@
         <v-btn color="primary" x-large @click="signIn" :loading="loading">
           <div class="icon-container flex-row-center-center">
             <div class="icon flex-column-center-center">
-              <svg width="24" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg
+                width="24"
+                viewBox="0 0 29 29"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <g clip-path="url(#clip0)">
                   <path
                     d="M29 14.8326C29 13.8469 28.9184 12.8559 28.7445 11.8862H14.7908V17.4699H22.7814C22.4498 19.2708 21.3844 20.8638 19.8243 21.8761V25.4991H24.5915C27.391 22.9737 29 19.2441 29 14.8326Z"
@@ -34,17 +39,20 @@
                 </defs>
               </svg>
             </div>
-          </div>sign in with google
+          </div>
+          sign in with google
         </v-btn>
       </v-col>
       <v-col cols="10" xl="3" lg="3" md="4" sm="10">
         <div class="links-container flex-row-around-center">
           <div>
             <router-link to="/guide">Guide</router-link>
-          </div>.
+          </div>
+          .
           <div>
             <router-link to="/contactus">Contact Us</router-link>
-          </div>.
+          </div>
+          .
           <div>
             <router-link to="/aboutus">About Us</router-link>
           </div>
@@ -56,18 +64,18 @@
 
 <script>
 export default {
-  name: "SignInPage",
+  name: 'SignInPage',
   data() {
     return {
-      loading: false
+      loading: false,
     };
   },
   methods: {
     signIn() {
       this.loading = true;
-      window.location.href = "http://192.168.43.215:3000/api/v1/auth/login";
-    }
-  }
+      window.location.href = '/api/v1/auth/login';
+    },
+  },
 };
 </script>
 
