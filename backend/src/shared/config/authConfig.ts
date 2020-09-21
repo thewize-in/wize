@@ -4,7 +4,7 @@ const authConfig = {
   googleClientId: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
   googleCallbackUrl: process.env.GOOGLE_CALLBACK_URL,
-  databaseConnectionUrl: process.env.DATABASE_CONNECTION_URL,
+  databaseConnectionUrl: process.env.DB_CONNECTION_URL,
   clientOriginUrl: process.env.CLIENT_ORIGIN_URL,
   redisServerPort: parseInt(process.env.REDIS_SERVER_PORT),
   redisServerUrl: process.env.REDIS_SERVER_URL,
