@@ -56,6 +56,14 @@ app.use(express.static(path.join(__dirname, '../../../../../frontend/dist/')));
 
 app.use('/api/v1', v1Router);
 
+app.get('/googlea3183e0e0aa8438d.html', (req, res) => {
+  res.sendFile(
+    path.join(
+      __dirname,
+      '../../../../../frontend/dist/googlea3183e0e0aa8438d.html'
+    )
+  );
+});
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../../../../../frontend/dist/index.html'));
 });
