@@ -39,5 +39,5 @@ test('user role should be doctor', () => {
 });
 
 test('new user should raise UserCreated Domain Event', () => {
-  expect(user.domainEvents.length).toBe(1);
+  expect(user.domainEvents.length).toBe(0);
 });
