@@ -56,13 +56,12 @@ app.use(express.static(path.join(__dirname, '../../../../../frontend/dist/')));
 
 app.use('/api/v1', v1Router);
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../../../../frontend/dist/index.html'));
+});
 // Handle 500
 app.use(function (error, req, res, next) {
   res.redirect('/servererror');
-});
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../../../../frontend/dist/index.html'));
 });
 
 app.listen(port, () => {
