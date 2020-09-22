@@ -13,8 +13,8 @@ export class UserLoginController extends BaseController {
   async executeImpl(): Promise<any> {
     const code = this.request.query['code'];
     const dto: UserLoginWithGoogleDTO = { code } as UserLoginWithGoogleDTO;
-
     const result = await this.useCase.execute(dto);
+    console.log(`UserLoginController Result: ${result}`);
 
     if (result.isFailure) {
       console.log('unauthorized token');

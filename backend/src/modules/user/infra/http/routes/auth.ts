@@ -1,4 +1,4 @@
-import express, { Request, Response, response } from 'express';
+import express, { Request, Response } from 'express';
 import {
   userLoginRequestController,
   userLoginController,
@@ -13,6 +13,7 @@ authRouter.get('/login', (req: Request, res: Response) => {
 });
 
 authRouter.get('/oauth2/google/callback', (req: Request, res: Response) => {
+  console.log('entered in /api/v1/auth/oauth2/google/callback');
   userLoginController.execute(req, res);
 });
 
