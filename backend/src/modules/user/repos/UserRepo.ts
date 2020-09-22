@@ -20,13 +20,17 @@ export class UserRepo implements IUserRepo {
     const rawUser = UserMap.toPersistence(user);
     const userExist = this.exists(user.email);
 
-    if (userExist) {
-      await new this.model(rawUser).save();
-    } else {
-      await this.model.findOneAndUpdate(
-        { user_id: user.userId.id.toString() },
-        rawUser
-      );
+    try {
+      if (userExist) {
+        await new this.model(rawUser).save();
+      } else {
+        await this.model.findOneAndUpdate(
+          { user_id: user.userId.id.toString() },
+          rawUser
+        );
+      }
+    } catch (error) {
+      throw error;
     }
   }
   async exists(email: string): Promise<boolean> {
