@@ -17,7 +17,7 @@ const origin = {
   origin: ['http://thewize.in'],
   credentials: true,
 };
-const port = process.env.PORT;
+const port = authConfig.port;
 const app = express();
 const redisStore = redisConnect(session);
 

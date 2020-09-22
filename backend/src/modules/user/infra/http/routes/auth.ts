@@ -12,7 +12,7 @@ authRouter.get('/login', (req: Request, res: Response) => {
   userLoginRequestController.execute(req, res);
 });
 
-authRouter.get('/oauth2/google/callback', (req: Request, res: Response) => {
+authRouter.get('/callback', (req: Request, res: Response) => {
   userLoginController.execute(req, res);
 });
 
