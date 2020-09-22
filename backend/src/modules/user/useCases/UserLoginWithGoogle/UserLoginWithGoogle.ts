@@ -24,7 +24,7 @@ export class UserLoginWithGoogle
       googleAuthToken
     );
     let user: User, userSessionDetails: UserSessionDTO;
-
+    console.log(`1: isAuthTokenValid: ${isAuthTokenValid}`);
     if (!isAuthTokenValid) {
       return Result.fail<any>('token is not valid');
     }
@@ -32,7 +32,9 @@ export class UserLoginWithGoogle
     const googleProfileInfo: AuthProviderProfileInfo = await this.googleService.getProfileInfo(
       googleAuthToken
     );
+    console.log(`2: googleProfileInfo: ${googleProfileInfo.email}`);
     const userExist = await this.userRepo.exists(googleProfileInfo.email);
+    console.log(`3: userExist: ${userExist}`);
 
     if (!userExist) {
       user = User.create({
@@ -43,9 +45,9 @@ export class UserLoginWithGoogle
         profilePic: googleProfileInfo.profile_pic,
         googleId: googleProfileInfo.google_id,
       }).getValue();
-      console.log(user);
+
       await this.userRepo.save(user);
-      console.log('user saved');
+      console.log('4: user saved: user');
 
       userSessionDetails = { id: user.userId.id.toString(), role: user.role };
       return Result.ok<UserSessionDTO>(userSessionDetails);
@@ -54,6 +56,7 @@ export class UserLoginWithGoogle
     userSessionDetails = await this.userRepo.getUserSessionDetails(
       googleProfileInfo.email
     );
+    console.log(`5: userSessionDetails: ${userSessionDetails}`);
 
     return Result.ok<UserSessionDTO>(userSessionDetails);
   }
