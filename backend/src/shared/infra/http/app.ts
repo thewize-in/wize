@@ -40,7 +40,7 @@ app.use(
       path: '/',
       httpOnly: true,
       maxAge: authConfig.sessionExpiryTime,
-      secure: false, // set true for https
+      secure: true, // set true for https
     },
   })
 );
