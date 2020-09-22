@@ -1,3 +1,4 @@
+require('dotenv').config();
 const authConfig = {
   jwtSecret: process.env.JWT_SECRET,
   jwtTokenExpiryTime: process.env.JWT_TOKEN_EXPIRY_TIME,
