@@ -29,7 +29,7 @@ export class GoogleService implements IGoogleService {
     this.client = new OAuth2Client({
       clientId: authConfig.googleClientId,
       clientSecret: authConfig.googleClientSecret,
-      redirectUri: `/api/v1/auth/oauth2/google/callback`,
+      redirectUri: authConfig.googleCallbackUrl,
     });
   }
   public getAuthUrl(): string {
