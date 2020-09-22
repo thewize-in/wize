@@ -28,12 +28,10 @@ export class UserLoginWithGoogle
     if (!isAuthTokenValid) {
       return Result.fail<any>('token is not valid');
     }
-    console.log(`googleAuthToken: ${googleAuthToken}`);
 
     const googleProfileInfo: AuthProviderProfileInfo = await this.googleService.getProfileInfo(
       googleAuthToken
     );
-    console.log(`googleProfileInfo: ${googleProfileInfo}`);
     const userExist = await this.userRepo.exists(googleProfileInfo.email);
 
     if (!userExist) {

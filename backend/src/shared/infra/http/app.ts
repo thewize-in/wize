@@ -14,7 +14,7 @@ import { redisSessionClient } from '../../services/caching/session/redisSessionC
 import { v1Router } from './api/v1';
 
 const origin = {
-  origin: ['https://thewize.in'],
+  origin: ['http://thewize.in'],
   credentials: true,
 };
 const port = process.env.PORT;

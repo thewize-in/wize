@@ -9,7 +9,6 @@ export class UserLoginRequestController extends BaseController {
   }
   async executeImpl(): Promise<any> {
     const user = this.request.session['user'];
-    console.log(`entered in /api/v1/auth/`);
     if (user) return this.response.redirect(`/dr/dashboard`);
 
     return this.response.redirect(this.googleService.getAuthUrl());
