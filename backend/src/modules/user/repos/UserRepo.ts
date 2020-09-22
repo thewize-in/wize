@@ -30,11 +30,15 @@ export class UserRepo implements IUserRepo {
     }
   }
   async exists(email: string): Promise<boolean> {
-    const isExist = await this.model.findOne({ email: email });
-    const guardResult = Guard.againstNullOrUndefined(isExist, 'isExist');
+    try {
+      const isExist = await this.model.findOne({ email: email });
+      const guardResult = Guard.againstNullOrUndefined(isExist, 'isExist');
 
-    if (!guardResult.succeeded) return false;
-    return true;
+      if (!guardResult.succeeded) return false;
+      return true;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async getUserSessionDetails(email: string) {

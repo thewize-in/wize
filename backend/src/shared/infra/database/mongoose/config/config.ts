@@ -1,10 +1,10 @@
-require('dotenv').config();
 import mongoose from 'mongoose';
+import { authConfig } from '../../../../config/authConfig';
 import { Result } from '../../../../core/logic/Result';
 
-export function startDatabase(connectionUrl: string) {
+export function startDatabase() {
   try {
-    mongoose.connect(connectionUrl, {
+    mongoose.connect(authConfig.databaseConnectionUrl, {
       useNewUrlParser: true,
       useCreateIndex: true,
       useUnifiedTopology: true,

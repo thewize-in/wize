@@ -21,7 +21,7 @@ const port = authConfig.port;
 const app = express();
 const redisStore = redisConnect(session);
 
-startDatabase(authConfig.databaseConnectionUrl);
+startDatabase();
 
 app.use(
   session({
