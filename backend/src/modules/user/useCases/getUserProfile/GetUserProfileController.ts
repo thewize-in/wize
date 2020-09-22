@@ -11,7 +11,6 @@ export class GetUserProfileController extends BaseController {
   }
   async executeImpl(): Promise<any> {
     const id = this.request.session['user']['id'];
-
     const dto: GetUserProfileDTO = { userId: id };
     const result: Result<any> = await this.useCase.execute(dto);
 

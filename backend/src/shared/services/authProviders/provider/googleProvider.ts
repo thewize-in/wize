@@ -31,6 +31,7 @@ export class GoogleService implements IGoogleService {
       clientSecret: authConfig.googleClientSecret,
       redirectUri: authConfig.googleCallbackUrl,
     });
+    console.log(`googleProvider this.client: ${this.client}`);
   }
   public getAuthUrl(): string {
     const generateAuthUrlOpts: GenerateAuthUrlOpts = {
@@ -40,10 +41,13 @@ export class GoogleService implements IGoogleService {
       ],
       access_type: 'offline',
     };
-    return this.client.generateAuthUrl(generateAuthUrlOpts);
+    const url = this.client.generateAuthUrl(generateAuthUrlOpts);
+    console.log(`generatedAuthUrl: ${url}`);
+    return url;
   }
   public async getAuthToken(code: string): Promise<any> {
     const { tokens }: GetTokenResponse = await this.client.getToken(code);
+    console.log(`authToken: ${tokens.id_token}`);
     return tokens.id_token;
   }
   public async getProfileInfo(token: string): Promise<AuthProviderProfileInfo> {

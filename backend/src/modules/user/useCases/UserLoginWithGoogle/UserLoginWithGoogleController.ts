@@ -16,7 +16,10 @@ export class UserLoginController extends BaseController {
 
     const result = await this.useCase.execute(dto);
 
-    if (result.isFailure) return this.unauthorized('unvalid token');
+    if (result.isFailure) {
+      console.log('unauthorized token');
+      return this.unauthorized('unvalid token');
+    }
 
     const userSessionDetails: UserSessionDTO = result.getValue();
 
