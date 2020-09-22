@@ -43,8 +43,9 @@ export class UserLoginWithGoogle
         profilePic: googleProfileInfo.profile_pic,
         googleId: googleProfileInfo.google_id,
       }).getValue();
-
+      console.log(user);
       await this.userRepo.save(user);
+      console.log('user saved');
 
       userSessionDetails = { id: user.userId.id.toString(), role: user.role };
       return Result.ok<UserSessionDTO>(userSessionDetails);
