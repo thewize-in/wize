@@ -15,8 +15,8 @@ module.exports = {
     appleMobileWebAppStatusBarStyle: 'white',
     manifestOptions: {
       name: 'Wize',
-      startUrl: '/dr/dashboard',
-      backgroundColor: '#ffffff',
+      start_url: '/dr/dashboard',
+      background_color: '#ffffff',
     },
   },
 };
