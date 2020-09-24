@@ -19,7 +19,6 @@ export class CreateEntryBook implements UseCase<Request, Response> {
     const entryBookExist = await this.entryBookRepo.exists(bookId);
 
     if (entryBookExist) return Result.ok<boolean>(false);
-
     try {
       entryBookResult = EntryBook.createDefault(bookId);
       entryBook = entryBookResult.getValue();
