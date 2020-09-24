@@ -20,8 +20,7 @@ export class GetEntryBook implements UseCase<Request, Response> {
       bookId
     );
 
-    if (donePatientsResult.isFailure) return Result.ok<any>(false);
-
+    if (!donePatientsResult.getValue()) return Result.ok<any>(false);
     return Result.ok<any>(donePatientsResult.getValue());
   }
 }

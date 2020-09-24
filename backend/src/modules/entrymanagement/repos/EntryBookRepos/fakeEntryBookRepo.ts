@@ -4,17 +4,14 @@ import { Model, Document } from 'mongoose';
 import { EntryBookMap } from '../../mappers/EntryBookMap/EntryBookMap';
 import { Result } from '../../../../shared/core/logic/Result';
 import { Guard } from '../../../../shared/core/logic/Guard';
+import { FakeRepo } from '../../../../shared/core/tests/FakeRepo';
+import { IEntryBookRepo } from './EntryBookRepo';
 
-export interface IEntryBookRepo extends Repo<EntryBook> {
-  getEntryBookByBookId(bookId: string): Promise<Result<EntryBook>>;
-  getEntryBook(bookId: string): Promise<Result<any>>;
-  delete(bookId: string): Promise<void>;
-}
-
-export class EntryBookRepo implements IEntryBookRepo {
-  private model: Model<Document>;
-  constructor(model: Model<Document>) {
-    this.model = model;
+export class FakeEntryBookRepo
+  extends FakeRepo<EntryBook>
+  implements IEntryBookRepo {
+  constructor() {
+    super();
   }
   async save(entryBook: EntryBook): Promise<void> {
     const bookId = entryBook.bookId.id.toString();
@@ -24,29 +21,24 @@ export class EntryBookRepo implements IEntryBookRepo {
 
     if (!entryBookExist) {
       try {
-        await new this.model(rawPatientEntryBook).save();
+        await this.insert(bookId, rawPatientEntryBook);
       } catch (error) {
         console.log(
           `[PatientEntryBookRepo]: something went wrong while saving\n${error}`
         );
       }
     } else {
-      await this.model.findOneAndUpdate(
-        { book_id: bookId },
-        rawPatientEntryBook
-      );
+      await this.findAndUpdate(bookId, rawPatientEntryBook);
+      //findOneAndUpdate raise domain event be carefull
     }
   }
   async exists(bookId: string): Promise<boolean> {
     try {
-      const entryBookExist = await this.model.findOne({
-        book_id: bookId,
-      });
+      const entryBookExist = await this.has(bookId);
       const guardResult = Guard.againstNullOrUndefined(
         entryBookExist,
         'entryBookExist'
       );
-
       if (!guardResult.succeeded) return false;
       return entryBookExist ? true : false;
     } catch (error) {
@@ -55,13 +47,13 @@ export class EntryBookRepo implements IEntryBookRepo {
   }
   async delete(bookId: string): Promise<void> {
     try {
-      await this.model.findOneAndDelete({ book_id: bookId });
+      await this.remove(bookId);
     } catch (error) {
       console.log('[PatientEntryBookRepo]: failed to delete EntryBook');
     }
   }
   async getEntryBookByBookId(bookId: string): Promise<Result<EntryBook>> {
-    const rawEntryBook = await this.model.findOne({ book_id: bookId });
+    const rawEntryBook = await this.find(bookId);
     const guardResult = Guard.againstNullOrUndefined(
       rawEntryBook,
       'rawEntryBook'
@@ -73,14 +65,18 @@ export class EntryBookRepo implements IEntryBookRepo {
     return Result.ok<EntryBook>(EntryBookMap.toDomain(rawEntryBook));
   }
   async getEntryBook(bookId: string): Promise<Result<any>> {
-    const rawEntryBook = await this.model.findOne({ book_id: bookId });
+    const rawEntryBook = await this.find(bookId);
     const guardResult = Guard.againstNullOrUndefined(
       rawEntryBook,
       'rawEntryBook'
     );
 
-    if (!guardResult.succeeded) return Result.ok<boolean>(false);
+    if (!guardResult.succeeded)
+      return Result.fail<EntryBook>('[getEntryBookByBookId]: not found');
 
     return Result.ok<any>(EntryBookMap.toDTO(rawEntryBook));
   }
 }
+
+const fakeEntryBookRepo = new FakeEntryBookRepo();
+export { fakeEntryBookRepo };
