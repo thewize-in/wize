@@ -8,30 +8,29 @@
           outlined
           large
           :loading="loading"
-          v-on:click="createEntryBook"
-        >Create new entrybook</v-btn>
+          v-on:click="createNewList"
+          >Create new list</v-btn
+        >
       </div>
     </div>
   </v-row>
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import { buttonMixin } from "../../mixins/ui/buttonMixin";
+import { mapActions } from 'vuex';
+import { buttonMixin } from '../../mixins/ui/buttonMixin';
 export default {
-  name: "NoEntryBook",
+  name: 'NoEntryBook',
   mixins: [buttonMixin],
   methods: {
-    ...mapActions("ui", ["displaySnackbarForSuccess"]),
-    ...mapActions("entrybook", ["createNewEntryBook"]),
+    ...mapActions('ui', ['displaySnackbarForSuccess']),
+    ...mapActions('list', ['createNewList']),
     async createEntryBook() {
       this.loading = true;
-      await this.createNewEntryBook();
-      this.displaySnackbarForSuccess("ENTRYBOOK CREATED");
+      await this.createNewList();
+      this.displaySnackbarForSuccess('LIST CREATED');
       this.loading = false;
-    }
-  }
+    },
+  },
 };
 </script>
-
- 

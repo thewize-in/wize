@@ -10,7 +10,8 @@
             :loading="loading"
             outlined
             v-on:click="createEntryBook"
-          >Create new entrybook</v-btn>
+            >Create new list</v-btn
+          >
         </v-col>
       </v-row>
       <v-row v-else class="flex-row-start-center">
@@ -22,23 +23,27 @@
             :loading="loading"
             outlined
             @click.stop="dialog = true"
-          >Delete Entrybook</v-btn>
+            >Delete List</v-btn
+          >
         </v-col>
         <v-dialog v-model="dialog" max-width="290">
           <v-card>
             <v-card-title class="headline">Are you sure?</v-card-title>
 
             <v-card-text>
-              Once you delete an entrybook, there is no going back. Please be
-              certain.
+              Once you delete a list, there is no going back. Please be certain.
             </v-card-text>
 
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <v-btn color="darken-1" text @click="dialog = false">Cancel</v-btn>
+              <v-btn color="darken-1" text @click="dialog = false"
+                >Cancel</v-btn
+              >
 
-              <v-btn color="error" text @click="deleteEntryBook">Delete</v-btn>
+              <v-btn color="error" text @click="deleteCurrentList"
+                >Delete</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -49,52 +54,48 @@
 </template>
 
 <script>
-import "../../../assets/styles/colors.css";
-import { mapGetters, mapActions } from "vuex";
-import Snackbar from "../../ui/Snackbar";
-import { buttonMixin } from "../../../mixins/ui/buttonMixin";
+import '../../../assets/styles/colors.css';
+import { mapGetters, mapActions } from 'vuex';
+import Snackbar from '../../ui/Snackbar';
+import { buttonMixin } from '../../../mixins/ui/buttonMixin';
 export default {
-  name: "EntryBookSetting",
+  name: 'EntryBookSetting',
   mixins: [buttonMixin],
   components: {
-    Snackbar
+    Snackbar,
   },
 
   async mounted() {
-    await this.isEntryBookExist();
+    await this.isListExist();
   },
   computed: {
-    ...mapGetters("entrybook", ["isCreated"])
+    ...mapGetters('list', ['isCreated']),
   },
   data() {
     return {
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
-    ...mapActions("entrybook", [
-      "createNewEntryBook",
-      "deleteCreatedEntryBook",
-      "isEntryBookExist"
-    ]),
-    ...mapActions("ui", [
-      "displaySnackbarForFailure",
-      "displaySnackbarForSuccess"
+    ...mapActions('list', ['createNewList', 'deleteList', 'isListExist']),
+    ...mapActions('ui', [
+      'displaySnackbarForFailure',
+      'displaySnackbarForSuccess',
     ]),
     async createEntryBook() {
       this.loading = true;
-      await this.createNewEntryBook();
-      this.displaySnackbarForSuccess("ENTRYBOOK CREATED");
+      await this.createNewList();
+      this.displaySnackbarForSuccess('LIST CREATED');
       this.loading = false;
     },
-    async deleteEntryBook() {
+    async deleteCurrentList() {
       this.dialog = false;
       this.loading = true;
-      await this.deleteCreatedEntryBook();
-      this.displaySnackbarForSuccess("ENTRYBOOK DELETED");
+      await this.deleteList();
+      this.displaySnackbarForSuccess('LIST DELETED');
       this.loading = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

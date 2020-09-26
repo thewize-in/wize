@@ -1,5 +1,6 @@
 import { vue } from '@/main';
 import router from '@/router';
+import store from '@/store';
 
 const routerMixin = {
   methods: {
@@ -11,6 +12,7 @@ const routerMixin = {
       }
     },
     goBack(): void {
+      store.commit('ui/UPDATE_DRAWER', false);
       vue.$router.go(-1);
     },
   },

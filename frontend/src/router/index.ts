@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import DoctorSettingsPage from '../views/DoctorSettingsPage.vue';
 import DashboardPage from '../views/DashboardPage.vue';
-import PatientListPage from '../views/PatientListPage.vue';
+import ListPage from '../views/ListPage.vue';
 import SignInPage from '../views/SignInPage.vue';
 import DoctorApp from '../DoctorApp.vue';
 import Axios from 'axios';
@@ -54,8 +54,8 @@ const routes: Array<RouteConfig> = [
       },
       {
         path: 'patientlist',
-        name: 'PatientListPage',
-        component: PatientListPage,
+        name: 'ListPage',
+        component: ListPage,
         meta: { requiresAuth: true, toBeDoctor: true },
       },
     ],

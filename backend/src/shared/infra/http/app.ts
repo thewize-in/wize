@@ -48,7 +48,7 @@ app.use(
 app.use(cors(origin));
 app.use(compression());
 app.use(helmet());
-app.use(morgan('combined'));
+// app.use(morgan('combined'));
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));

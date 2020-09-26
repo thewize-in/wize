@@ -60,6 +60,6 @@
   "_id": "wize@1.0.0",
   "keywords": [],
   "license": "ISC",
-  "proxy": "http://192.168.43.215:3000",
+  "proxy": "http://localhost:3000",
   "readme": "ERROR: No README data found!"
 }
