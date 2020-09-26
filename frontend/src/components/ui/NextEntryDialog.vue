@@ -28,7 +28,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="dialog = false"
-            >Close</v-btn
+            >Cancel</v-btn
           >
           <v-btn color="blue darken-1" text @click="callNextEntry">Next</v-btn>
         </v-card-actions>
