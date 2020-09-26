@@ -2,7 +2,7 @@ import { mapActions } from 'vuex';
 
 const nextEntryMixin = {
   methods: {
-    ...mapActions('entrybook', ['nextEntry', 'getEntryBook']),
+    ...mapActions('list', ['nextEntry', 'getList']),
     ...mapActions('ui', [
       'displaySnackbarForInfo',
       'displaySnackbarForSuccess',
@@ -34,12 +34,12 @@ const nextEntryMixin = {
         if (this.stats.current === this.stats.total) {
           result = await this.searchEntryByNumber(
             this.stats.current,
-            this.donePatients
+            this.doneEntries
           );
           if (!result) {
             result = await this.searchEntryByNumber(
               this.stats.current,
-              this.undonePatients
+              this.undoneEntries
             );
           }
         }

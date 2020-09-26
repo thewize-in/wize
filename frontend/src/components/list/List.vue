@@ -2,11 +2,7 @@
   <div>
     <AppNav />
     <Drawer />
-    <v-row
-      v-if="isCreated"
-      class="flex-row-center-center"
-      style="padding: 0px 5px;"
-    >
+    <v-row v-if="isCreated" class="flex-row-center-center">
       <Loading v-if="pageLoading" />
       <v-col
         v-else
@@ -15,33 +11,28 @@
         lg="6"
         md="12"
         sm="12"
-        class="flex-row-center-center"
-        style="padding-bottom: 0px;"
+        class="flex-column-center-center"
       >
-        <v-row>
-          <v-col
-            cols="12"
-            xl="12"
-            lg="12"
-            md="12"
-            sm="12"
-            class="flex-column-center-center"
-          >
-            <v-row class="flex-row-around-center">
-              <GreetingCard :doctor="profile.displayName" />
-              <DashCard
-                cardName="Total"
-                :stat="stats.total"
-                icon="mdi-account-group"
-              />
-              <DashCard
-                cardName="Current"
-                :stat="stats.current"
-                icon="mdi-account"
-              />
-            </v-row>
-          </v-col>
-        </v-row>
+        <v-tabs
+          v-model="tab"
+          :centered="centered"
+          :grow="grow"
+          :vertical="vertical"
+          :icons-and-text="icons"
+          flat
+        >
+          <v-tab flat v-for="i in tabs" :key="i" :href="`#${i}`">{{ i }}</v-tab>
+
+          <v-tab-item value="all">
+            <EntryTable :list="allEntries" />
+          </v-tab-item>
+          <v-tab-item value="done">
+            <EntryTable :list="doneEntries" />
+          </v-tab-item>
+          <v-tab-item value="undone">
+            <EntryTable :list="undoneEntries" />
+          </v-tab-item>
+        </v-tabs>
       </v-col>
       <NextEntryDialog v-if="FAB" />
       <NewEntryDialog v-if="FAB" />
@@ -53,54 +44,68 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex';
-import DashCard from './components/DashCard';
-import GreetingCard from './components/GreetingCard';
+import { mapGetters, mapActions } from 'vuex';
 import Loading from '../ui/Loading';
-import NewEntryDialog from '../ui/NewEntryDialog';
-import NextEntryDialog from '../ui/NextEntryDialog';
 import Snackbar from '../ui/Snackbar';
+import EntryTable from './components/EntryTable';
+import NextEntryDialog from '../ui/NextEntryDialog';
+import NewEntryDialog from '../ui/NewEntryDialog';
 import NoEntryBook from '../ui/NoEntryBook';
+
 import { routerMixin } from '../../mixins/routerMixin';
 import { userProfileMixin } from '../../mixins/user/userProfileMixin';
 import { fabMixin } from '../../mixins/ui/fabMixin';
 import AppNav from '../ui/AppNav';
 import BottomNav from '../ui/BottomNav';
 import Drawer from '../ui/Drawer';
+
 export default {
-  name: 'Dashboard',
+  name: 'List',
   mixins: [routerMixin, userProfileMixin, fabMixin],
   components: {
     AppNav,
     BottomNav,
-    DashCard,
-    GreetingCard,
+    Loading,
+    EntryTable,
     NextEntryDialog,
     NewEntryDialog,
-    Snackbar,
     NoEntryBook,
-    Loading,
+    Snackbar,
     Drawer,
   },
   async created() {
     this.pageLoading = true;
-
     await this.isListExist();
     if (this.isCreated) {
       await this.getList();
     }
     this.pageLoading = false;
-    this.updateBottomNav(0);
+    this.updateBottomNav(1);
   },
+
   data() {
     return {
       pageLoading: false,
+      tab: null,
+      icons: false,
+      centered: false,
+      grow: true,
+      vertical: false,
+      prevIcon: false,
+      nextIcon: false,
+      left: true,
+      tabs: ['all', 'done', 'undone'],
     };
   },
   computed: {
-    ...mapGetters('list', ['stats', 'isCreated']),
-    ...mapGetters('user', ['profile']),
+    ...mapGetters('list', [
+      'allEntries',
+      'doneEntries',
+      'undoneEntries',
+      'isCreated',
+    ]),
   },
+
   methods: {
     ...mapActions('list', ['isListExist', 'getList']),
     ...mapActions('ui', ['updateBottomNav']),
@@ -109,8 +114,12 @@ export default {
 </script>
 
 <style scoped>
-.stats-container,
-.list-container {
+.v-tabs {
+  padding: 0px !important;
+  margin: 0px 0px !important;
+  width: 100%;
+}
+.v-tab {
   padding: 0px !important;
 }
 </style>

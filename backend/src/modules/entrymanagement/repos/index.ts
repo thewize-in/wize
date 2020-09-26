@@ -1,15 +1,7 @@
-import { DoctorRepo } from './doctorRepos/DoctorRepo';
-import { doctorModel } from '../../../shared/infra/database/mongoose/models';
-import { DoctorStatusCacheRepo } from './doctorRepos/DoctorStatusCacheRepo';
-import { redisApplicationClient } from '../../../shared/services/caching/application/redisApplicationClient';
-import {
-  patientModel,
-  entryBookModel,
-} from '../../../shared/infra/database/mongoose/models';
-import { EntryBookRepo } from './EntryBookRepos/EntryBookRepo';
+import { listModel } from '../../../shared/infra/database/mongoose/models';
 
-const doctorRepo = new DoctorRepo(doctorModel);
-const doctorStatusCacheRepo = new DoctorStatusCacheRepo(redisApplicationClient);
-const entryBookRepo = new EntryBookRepo(entryBookModel);
+import { ListRepo } from './ListRepos/ListRepo';
 
-export { doctorRepo, doctorStatusCacheRepo, entryBookRepo };
+const listRepo = new ListRepo(listModel);
+
+export { listRepo };

@@ -11,10 +11,10 @@
 </template>
 
 <script>
-import "../../../assets/styles/colors.css";
+import '../../../assets/styles/colors.css';
 export default {
-  name: "DashCard",
-  props: ["icon", "cardName", "stat"]
+  name: 'DashCard',
+  props: ['icon', 'cardName', 'stat'],
 };
 </script>
 

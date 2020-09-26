@@ -1,7 +1,7 @@
 module.exports = {
   transpileDependencies: ['vuetify'],
   devServer: {
-    proxy: 'http://192.168.43.215:3000',
+    proxy: 'http://localhost:3000',
   },
   pwa: {
     workboxOptions: {
