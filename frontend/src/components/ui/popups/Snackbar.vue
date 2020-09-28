@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { snackbarMixin } from "../../mixins/ui/snackbarMixin";
+import { snackbarMixin } from "../../../mixins/ui/snackbarMixin";
 
 export default {
   name: "Snackbar",

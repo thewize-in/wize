@@ -1,5 +1,12 @@
 <template>
-  <v-bottom-navigation color="primary" v-model="bottomNav" vertical fixed grow app>
+  <v-bottom-navigation
+    color="primary"
+    v-model="bottomNav"
+    vertical
+    fixed
+    grow
+    app
+  >
     <v-btn text @click="sendTo('/dr/dashboard')">
       <span>dashboard</span>
       <v-icon>mdi-view-dashboard-outline</v-icon>
@@ -12,7 +19,7 @@
 </template>
 
 <script>
-import { routerMixin } from "../../mixins/routerMixin";
+import { routerMixin } from "../../../mixins/routerMixin";
 export default {
   name: "BottomNav",
   mixins: [routerMixin],

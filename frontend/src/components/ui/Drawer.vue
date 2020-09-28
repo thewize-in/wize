@@ -61,57 +61,62 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import { routerMixin } from '../../mixins/routerMixin';
+import { mapActions, mapGetters } from "vuex";
+import { routerMixin } from "../../mixins/routerMixin";
 export default {
-  name: 'Drawer',
+  name: "Drawer",
   mixins: [routerMixin],
 
   data() {
     return {
       items: [
-        { title: 'Settings', icon: 'mdi-cog-outline', to: '/dr/settings' },
+        {
+          title: "Entrybook",
+          icon: "mdi-notebook-outline",
+          to: "/dr/entrybook"
+        },
+        { title: "Settings", icon: "mdi-cog-outline", to: "/dr/settings" }
       ],
       misc: [
-        { title: 'Guide', to: '/guide' },
-        { title: 'Contact Us', to: '/contactus' },
-        { title: 'About Us', to: '/aboutus' },
-      ],
+        { title: "Guide", to: "/guide" },
+        { title: "Contact Us", to: "/contactus" },
+        { title: "About Us", to: "/aboutus" }
+      ]
     };
   },
   computed: {
-    ...mapGetters('user', ['profile']),
+    ...mapGetters("user", ["profile"]),
     drawer: {
       get() {
-        return this.$store.getters['ui/drawer'];
+        return this.$store.getters["ui/drawer"];
       },
       set(value) {
-        this.$store.commit('ui/UPDATE_DRAWER', value);
-      },
+        this.$store.commit("ui/UPDATE_DRAWER", value);
+      }
     },
     group: {
       get() {
-        return this.$store.getters['ui/group'];
+        return this.$store.getters["ui/group"];
       },
       set(value) {
-        this.$store.commit('ui/UPDATE_GROUP', value);
-      },
-    },
+        this.$store.commit("ui/UPDATE_GROUP", value);
+      }
+    }
   },
   methods: {
-    ...mapActions('ui', ['updateGroup']),
+    ...mapActions("ui", ["updateGroup"]),
 
     async logout() {
       localStorage.clear();
-      window.location.href = '/api/v1/auth/logout';
-    },
+      window.location.href = "/api/v1/auth/logout";
+    }
   },
 
   watch: {
     group() {
       this.drawer = false;
-    },
-  },
+    }
+  }
 };
 </script>
 

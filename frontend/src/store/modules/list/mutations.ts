@@ -5,7 +5,7 @@ const mutations = {
   CREATE_NEW_LIST(state: any, value: boolean) {
     state.isCreated = value;
   },
-  DELETE_LIST(state: any, value: boolean) {
+  CLOSE_LIST(state: any, value: boolean) {
     state.isCreated = value;
   },
   GET_LIST(state: any, value: any) {

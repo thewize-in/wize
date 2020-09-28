@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { routerMixin } from "../../mixins/routerMixin";
+import { routerMixin } from "../../../mixins/routerMixin";
 export default {
   name: "GoBack",
   props: ["name"],

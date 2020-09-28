@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import GoBack from "../components/ui/GoBack";
+import GoBack from "../components/ui/navs/GoBack";
 import UnderConstruction from "../components/ui/UnderConstruction";
 export default {
   name: "AboutUs",

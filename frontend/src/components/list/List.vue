@@ -24,13 +24,13 @@
           <v-tab flat v-for="i in tabs" :key="i" :href="`#${i}`">{{ i }}</v-tab>
 
           <v-tab-item value="all">
-            <EntryTable :list="allEntries" />
+            <Table :items="allEntries" />
           </v-tab-item>
           <v-tab-item value="done">
-            <EntryTable :list="doneEntries" />
+            <Table :items="doneEntries" />
           </v-tab-item>
           <v-tab-item value="undone">
-            <EntryTable :list="undoneEntries" />
+            <Table :items="undoneEntries" />
           </v-tab-item>
         </v-tabs>
       </v-col>
@@ -38,40 +38,41 @@
       <NewEntryDialog v-if="FAB" />
       <Snackbar />
     </v-row>
-    <NoEntryBook v-else />
+    <NoList v-else />
     <BottomNav />
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import Loading from '../ui/Loading';
-import Snackbar from '../ui/Snackbar';
-import EntryTable from './components/EntryTable';
-import NextEntryDialog from '../ui/NextEntryDialog';
-import NewEntryDialog from '../ui/NewEntryDialog';
-import NoEntryBook from '../ui/NoEntryBook';
+import { mapGetters, mapActions } from "vuex";
+import Loading from "../ui/Loading";
+import Snackbar from "../ui/popups/Snackbar";
+import Table from "../ui/Table";
+import NextEntryDialog from "../ui/dialogs/NextEntryDialog";
+import NewEntryDialog from "../ui/dialogs/NewEntryDialog";
+import NoList from "../ui/NoList";
 
-import { routerMixin } from '../../mixins/routerMixin';
-import { userProfileMixin } from '../../mixins/user/userProfileMixin';
-import { fabMixin } from '../../mixins/ui/fabMixin';
-import AppNav from '../ui/AppNav';
-import BottomNav from '../ui/BottomNav';
-import Drawer from '../ui/Drawer';
+import { routerMixin } from "../../mixins/routerMixin";
+import { userProfileMixin } from "../../mixins/user/userProfileMixin";
+import { fabMixin } from "../../mixins/ui/fabMixin";
+import AppNav from "../ui/navs/AppNav";
+import BottomNav from "../ui/navs/BottomNav";
+import Drawer from "../ui/Drawer";
+import { tabsMixin } from "../../mixins/ui/tabsMixin";
 
 export default {
-  name: 'List',
-  mixins: [routerMixin, userProfileMixin, fabMixin],
+  name: "List",
+  mixins: [routerMixin, userProfileMixin, fabMixin, tabsMixin],
   components: {
     AppNav,
     BottomNav,
     Loading,
-    EntryTable,
     NextEntryDialog,
     NewEntryDialog,
-    NoEntryBook,
+    NoList,
     Snackbar,
     Drawer,
+    Table
   },
   async created() {
     this.pageLoading = true;
@@ -86,30 +87,25 @@ export default {
   data() {
     return {
       pageLoading: false,
-      tab: null,
-      icons: false,
-      centered: false,
-      grow: true,
-      vertical: false,
       prevIcon: false,
       nextIcon: false,
       left: true,
-      tabs: ['all', 'done', 'undone'],
+      tabs: ["all", "done", "undone"]
     };
   },
   computed: {
-    ...mapGetters('list', [
-      'allEntries',
-      'doneEntries',
-      'undoneEntries',
-      'isCreated',
-    ]),
+    ...mapGetters("list", [
+      "allEntries",
+      "doneEntries",
+      "undoneEntries",
+      "isCreated"
+    ])
   },
 
   methods: {
-    ...mapActions('list', ['isListExist', 'getList']),
-    ...mapActions('ui', ['updateBottomNav']),
-  },
+    ...mapActions("list", ["isListExist", "getList"]),
+    ...mapActions("ui", ["updateBottomNav"])
+  }
 };
 </script>
 
