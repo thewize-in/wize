@@ -10,6 +10,7 @@ let addNewEntryResult: Result<boolean>;
 let createNewListResult: Result<boolean>;
 let bookId: string;
 let entryDetail;
+let listName = 'saud chougle';
 
 beforeAll(async () => {
   bookId = 'sdlfkasjflsfjf';
@@ -30,7 +31,7 @@ describe('AddNewEntry', () => {
     expect(addNewEntryResult.getValue()).toBeFalsy();
   });
   it('Since there is no list create new list and\n\t createNewList must be true', async () => {
-    createNewListResult = await createNewList.execute({ bookId });
+    createNewListResult = await createNewList.execute({ bookId, listName });
     expect(createNewListResult.isSuccess).toBeTruthy();
     expect(createNewListResult.getValue()).toBeTruthy();
   });

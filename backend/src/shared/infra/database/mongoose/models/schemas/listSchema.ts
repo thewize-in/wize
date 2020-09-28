@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
 
 const listSchema = new mongoose.Schema({
+  list_name: {
+    type: String,
+  },
   created_on: {
     type: String,
-    required: true,
   },
   book_id: {
     type: String,
@@ -53,5 +55,5 @@ const listSchema = new mongoose.Schema({
   },
 });
 
-listSchema.index({ book_id: -1 });
+listSchema.index({ book_id: -1, created_on: -1 });
 export { listSchema };

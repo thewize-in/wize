@@ -3,12 +3,13 @@ import { Result } from '../../../shared/core/logic/Result';
 import { List } from './list';
 
 let customListResult: Result<List>, defaultListResult: Result<List>, list: List;
+const listName = 'saud chougle';
 
 test('create custom list', () => {
   const defaultBookId = new UniqueEntityID('1');
-
   customListResult = List.create(
     {
+      listName,
       createdOn: '28.5.20',
       allEntries: [],
       doneEntries: [],
@@ -26,7 +27,7 @@ test('create custom list', () => {
 test('create default list', () => {
   const defaultBookId = new UniqueEntityID('1').toString();
 
-  defaultListResult = List.createDefault(defaultBookId);
+  defaultListResult = List.createDefault(defaultBookId, listName);
 
   expect(defaultListResult.isSuccess).toBeTruthy();
   expect(defaultListResult.isFailure).toBeFalsy();
