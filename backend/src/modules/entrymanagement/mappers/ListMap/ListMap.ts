@@ -7,6 +7,7 @@ export class ListMap implements Mapper<List> {
   public static toPersistence(list: List) {
     return {
       created_on: list.props.createdOn,
+      list_name: list.props.listName,
       book_id: list.bookId.id.toString(),
       all_entries: list.allEntries,
       done_entries: list.doneEntries,
@@ -23,6 +24,7 @@ export class ListMap implements Mapper<List> {
     const listOrError = List.create(
       {
         createdOn: raw.created_on,
+        listName: raw.list_name,
         allEntries: raw.all_entries,
         doneEntries: raw.done_entries,
         undoneEntries: raw.undone_entries,

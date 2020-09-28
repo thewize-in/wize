@@ -2,13 +2,15 @@
   <div>
     <GoBack name="Error" />
     <v-row class="y-center flex-column-start-start">
-      <h1 class="error-message server-error">Sorry. It's not your mistake it's our.</h1>
+      <h1 class="error-message server-error">
+        Sorry. It's not your mistake it's our.
+      </h1>
     </v-row>
   </div>
 </template>
 
 <script>
-import GoBack from "../../components/ui/GoBack";
+import GoBack from "../../components/ui/navs/GoBack";
 export default {
   name: "ServerErrorPage",
   components: {

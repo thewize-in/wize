@@ -15,7 +15,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { routerMixin } from "../../mixins/routerMixin";
+import { routerMixin } from "../../../mixins/routerMixin";
 export default {
   name: "AppNav",
   mixins: [routerMixin],

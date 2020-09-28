@@ -1,15 +1,19 @@
-import { DeleteDTO } from './DeleteListDTO';
+import { CloseListDTO } from './CloseListDTO';
 import { UseCase } from '../../../../../shared/domain/UseCase';
 import { Result } from '../../../../../shared/core/logic/Result';
 import { IListRepo } from '../../../repos/ListRepos/ListRepo';
+import { IArchiveListRepo } from '../../../repos/ListRepos/ArchiveListRepo';
+import { List } from '../../../domain/list';
 
-type Request = DeleteDTO;
+type Request = CloseListDTO;
 type Response = Result<boolean>;
 
-export class DeleteList implements UseCase<Request, Response> {
+export class CloseList implements UseCase<Request, Response> {
   private listRepo: IListRepo;
-  constructor(listRepo: IListRepo) {
+  private archiveListRepo: IArchiveListRepo;
+  constructor(listRepo: IListRepo, archiveListRepo: IArchiveListRepo) {
     this.listRepo = listRepo;
+    this.archiveListRepo = archiveListRepo;
   }
   async execute(request: Request): Promise<Response> {
     const { bookId } = request;
@@ -18,6 +22,9 @@ export class DeleteList implements UseCase<Request, Response> {
 
     if (!listExist) return Result.ok<boolean>(false);
 
+    const list: List = (await this.listRepo.getListByBookId(bookId)).getValue();
+
+    await this.archiveListRepo.save(list);
     await this.listRepo.delete(bookId);
 
     return Result.ok<boolean>(true);

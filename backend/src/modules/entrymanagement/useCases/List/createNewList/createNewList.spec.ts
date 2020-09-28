@@ -5,9 +5,11 @@ import { CreateNewList } from './CreateNewList';
 let createNewList = new CreateNewList(fakeListRepo);
 let result: Result<boolean>;
 let bookId: string;
+let listName = 'saud chougle';
 beforeAll(async () => {
   bookId = 'sdlfkasjflsfjf';
-  result = await createNewList.execute({ bookId });
+  listName;
+  result = await createNewList.execute({ bookId, listName });
 });
 
 describe('CreateNewList', () => {
@@ -17,7 +19,7 @@ describe('CreateNewList', () => {
   });
 
   it('Now this time if want to create new list result should be false that means list exists', async () => {
-    result = await createNewList.execute({ bookId });
+    result = await createNewList.execute({ bookId, listName });
     expect(result.isSuccess).toBeTruthy();
     expect(result.getValue()).toBeFalsy();
   });

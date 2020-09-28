@@ -10,8 +10,9 @@ export class CreateNewListController extends BaseController {
   }
   async executeImpl(): Promise<any> {
     const id = this.request.session['user']['id'];
+    const listName = this.request.body['listName'];
 
-    const dto: CreateNewListDTO = { bookId: id };
+    const dto: CreateNewListDTO = { bookId: id, listName };
     const result = await this.useCase.execute(dto);
 
     if (!result.getValue()) return this.fail('failed');

@@ -8,21 +8,25 @@ const actions = {
     });
     commit('IS_LIST_EXIST', data.isExist);
   },
-  async createNewList({ commit }: any): Promise<void> {
-    const res = await Axios.post(`${apiVersion}/list`, null, {
-      withCredentials: true,
-    });
+  async createNewList({ commit }: any, listName: string): Promise<void> {
+    const res = await Axios.post(
+      `${apiVersion}/list`,
+      { listName },
+      {
+        withCredentials: true,
+      }
+    );
     if (res.status === 201) {
       commit('CREATE_NEW_LIST', true);
       store.dispatch('list/getList');
     }
   },
-  async deleteList({ commit }: any): Promise<void> {
+  async closeList({ commit }: any): Promise<void> {
     const res = await Axios.delete(`${apiVersion}/list`, {
       withCredentials: true,
     });
     if (res.status === 200) {
-      commit('DELETE_LIST', false);
+      commit('CLOSE_LIST', false);
     }
   },
   async getList({ commit }: any): Promise<void> {

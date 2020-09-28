@@ -38,29 +38,29 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex';
-import { buttonMixin } from '../../mixins/ui/buttonMixin';
-import { nextEntryMixin } from '../../mixins/ui/nextEntryMixin';
+import { mapActions, mapGetters, mapState } from "vuex";
+import { buttonMixin } from "../../../mixins/ui/buttonMixin";
+import { nextEntryMixin } from "../../../mixins/ui/nextEntryMixin";
 
 export default {
-  name: 'NextEntryDialog',
+  name: "NextEntryDialog",
   mixins: [buttonMixin, nextEntryMixin],
   data() {
     return {
       dialog: false,
       yes: true,
       no: false,
-      isDone: true,
+      isDone: true
     };
   },
   computed: {
-    ...mapGetters('list', [
-      'stats',
-      'allEntries',
-      'doneEntries',
-      'undoneEntries',
-    ]),
-  },
+    ...mapGetters("list", [
+      "stats",
+      "allEntries",
+      "doneEntries",
+      "undoneEntries"
+    ])
+  }
 };
 </script>
 

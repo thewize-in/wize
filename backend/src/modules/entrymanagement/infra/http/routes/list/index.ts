@@ -2,10 +2,12 @@ import express, { Request, Response } from 'express';
 import { authorizationMiddleware } from '../../../../../../shared/infra/http/middlewares';
 import { addNewEntryController } from '../../../../useCases/List/addNewEntry';
 import { createNewListController } from '../../../../useCases/List/createNewList';
-import { deleteListController } from '../../../../useCases/List/deleteList';
+import { closeListController } from '../../../../useCases/List/closeList';
 import { getListController } from '../../../../useCases/List/getList';
 import { isListExistController } from '../../../../useCases/List/isListExist';
 import { nextEntryController } from '../../../../useCases/List/nextEntry';
+import { getArchivedListMetadataController } from '../../../../useCases/List/getArchivedListMetadata';
+import { getArchivedListController } from '../../../../useCases/List/getArchivedList';
 
 const listRouter = express.Router();
 
@@ -31,7 +33,7 @@ listRouter.delete(
   authorizationMiddleware.ensureAuthenticated(),
   authorizationMiddleware.ensureUserIsDoctor(),
   (req: Request, res: Response) => {
-    deleteListController.execute(req, res);
+    closeListController.execute(req, res);
   }
 );
 listRouter.get(
@@ -57,6 +59,22 @@ listRouter.post(
   authorizationMiddleware.ensureUserIsDoctor(),
   (req: Request, res: Response) => {
     nextEntryController.execute(req, res);
+  }
+);
+listRouter.post(
+  '/archivedlist',
+  authorizationMiddleware.ensureAuthenticated(),
+  authorizationMiddleware.ensureUserIsDoctor(),
+  (req: Request, res: Response) => {
+    getArchivedListMetadataController.execute(req, res);
+  }
+);
+listRouter.get(
+  '/archivedlist/:listid',
+  authorizationMiddleware.ensureAuthenticated(),
+  authorizationMiddleware.ensureUserIsDoctor(),
+  (req: Request, res: Response) => {
+    getArchivedListController.execute(req, res);
   }
 );
 

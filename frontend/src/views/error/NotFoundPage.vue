@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import GoBack from "../../components/ui/GoBack";
+import GoBack from "../../components/ui/navs/GoBack";
 export default {
   name: "NotFoundPage",
   components: {

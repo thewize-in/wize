@@ -47,28 +47,28 @@
       <NewEntryDialog v-if="FAB" />
       <Snackbar />
     </v-row>
-    <NoEntryBook v-else />
+    <NoList v-else />
     <BottomNav />
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex';
-import DashCard from './components/DashCard';
-import GreetingCard from './components/GreetingCard';
-import Loading from '../ui/Loading';
-import NewEntryDialog from '../ui/NewEntryDialog';
-import NextEntryDialog from '../ui/NextEntryDialog';
-import Snackbar from '../ui/Snackbar';
-import NoEntryBook from '../ui/NoEntryBook';
-import { routerMixin } from '../../mixins/routerMixin';
-import { userProfileMixin } from '../../mixins/user/userProfileMixin';
-import { fabMixin } from '../../mixins/ui/fabMixin';
-import AppNav from '../ui/AppNav';
-import BottomNav from '../ui/BottomNav';
-import Drawer from '../ui/Drawer';
+import { mapGetters, mapActions, mapState } from "vuex";
+import DashCard from "./components/DashCard";
+import GreetingCard from "./components/GreetingCard";
+import Loading from "../ui/Loading";
+import NewEntryDialog from "../ui/dialogs/NewEntryDialog";
+import NextEntryDialog from "../ui/dialogs/NextEntryDialog";
+import Snackbar from "../ui/popups/Snackbar";
+import NoList from "../ui/NoList";
+import { routerMixin } from "../../mixins/routerMixin";
+import { userProfileMixin } from "../../mixins/user/userProfileMixin";
+import { fabMixin } from "../../mixins/ui/fabMixin";
+import AppNav from "../ui/navs/AppNav";
+import BottomNav from "../ui/navs/BottomNav";
+import Drawer from "../ui/Drawer";
 export default {
-  name: 'Dashboard',
+  name: "Dashboard",
   mixins: [routerMixin, userProfileMixin, fabMixin],
   components: {
     AppNav,
@@ -78,9 +78,9 @@ export default {
     NextEntryDialog,
     NewEntryDialog,
     Snackbar,
-    NoEntryBook,
+    NoList,
     Loading,
-    Drawer,
+    Drawer
   },
   async created() {
     this.pageLoading = true;
@@ -94,17 +94,17 @@ export default {
   },
   data() {
     return {
-      pageLoading: false,
+      pageLoading: false
     };
   },
   computed: {
-    ...mapGetters('list', ['stats', 'isCreated']),
-    ...mapGetters('user', ['profile']),
+    ...mapGetters("list", ["stats", "isCreated"]),
+    ...mapGetters("user", ["profile"])
   },
   methods: {
-    ...mapActions('list', ['isListExist', 'getList']),
-    ...mapActions('ui', ['updateBottomNav']),
-  },
+    ...mapActions("list", ["isListExist", "getList"]),
+    ...mapActions("ui", ["updateBottomNav"])
+  }
 };
 </script>
 

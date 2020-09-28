@@ -9,7 +9,8 @@
             frameborder="0"
             marginheight="0"
             marginwidth="0"
-          >Loading…</iframe>
+            >Loading…</iframe
+          >
         </v-row>
       </v-col>
     </v-row>
@@ -17,7 +18,7 @@
 </template>
 
 <script>
-import GoBack from "../components/ui/GoBack";
+import GoBack from "../components/ui/navs/GoBack";
 export default {
   name: "ContactUs",
   components: {

@@ -4,6 +4,8 @@ import DoctorSettingsPage from '../views/DoctorSettingsPage.vue';
 import DashboardPage from '../views/DashboardPage.vue';
 import ListPage from '../views/ListPage.vue';
 import SignInPage from '../views/SignInPage.vue';
+import ArchivesPage from '../views/Entrybook/ArchivesPage.vue';
+import ArchivedListPage from '../views/Entrybook/ArchivedListPage.vue';
 import DoctorApp from '../DoctorApp.vue';
 import Axios from 'axios';
 
@@ -39,24 +41,40 @@ const routes: Array<RouteConfig> = [
     path: '/dr',
     name: 'DoctorApp',
     component: DoctorApp,
+    meta: { requiresAuth: true, toBeDoctor: true },
+
     children: [
       {
         path: 'settings',
         name: 'DoctorSettingsPage',
         component: DoctorSettingsPage,
-        meta: { requiresAuth: true, toBeDoctor: true },
       },
       {
         path: 'dashboard',
         name: 'DashboardPage',
         component: DashboardPage,
-        meta: { requiresAuth: true, toBeDoctor: true },
       },
       {
         path: 'patientlist',
         name: 'ListPage',
         component: ListPage,
-        meta: { requiresAuth: true, toBeDoctor: true },
+      },
+      {
+        path: 'entrybook',
+        name: 'EntrybookPage',
+        component: () => import('../views/Entrybook/EntrybookPage.vue'),
+        children: [
+          {
+            path: '/',
+            name: 'ArchivesPage',
+            component: ArchivesPage,
+          },
+          {
+            path: ':id',
+            name: 'ArchivedListPage',
+            component: ArchivedListPage,
+          },
+        ],
       },
     ],
   },

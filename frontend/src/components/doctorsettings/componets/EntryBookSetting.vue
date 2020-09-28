@@ -3,15 +3,7 @@
     <v-col cols="12" class="flex-row-center-center">
       <v-row v-if="!isCreated" class="flex-row-start-center">
         <v-col cols="12" class="col-container">
-          <v-btn
-            text
-            color="primary"
-            large
-            :loading="loading"
-            outlined
-            v-on:click="createEntryBook"
-            >Create new list</v-btn
-          >
+          <CreateNewListDialog />
         </v-col>
       </v-row>
       <v-row v-else class="flex-row-start-center">
@@ -23,7 +15,7 @@
             :loading="loading"
             outlined
             @click.stop="dialog = true"
-            >Delete List</v-btn
+            >Close List</v-btn
           >
         </v-col>
         <v-dialog v-model="dialog" max-width="290">
@@ -31,7 +23,7 @@
             <v-card-title class="headline">Are you sure?</v-card-title>
 
             <v-card-text>
-              Once you delete a list, there is no going back. Please be certain.
+              Once you close a list, you won't be able to add new entries to it.
             </v-card-text>
 
             <v-card-actions>
@@ -41,8 +33,8 @@
                 >Cancel</v-btn
               >
 
-              <v-btn color="error" text @click="deleteCurrentList"
-                >Delete</v-btn
+              <v-btn color="error" text @click="closeCurrentList"
+                >Yes,Close</v-btn
               >
             </v-card-actions>
           </v-card>
@@ -54,48 +46,44 @@
 </template>
 
 <script>
-import '../../../assets/styles/colors.css';
-import { mapGetters, mapActions } from 'vuex';
-import Snackbar from '../../ui/Snackbar';
-import { buttonMixin } from '../../../mixins/ui/buttonMixin';
+import "../../../assets/styles/colors.css";
+import { mapGetters, mapActions } from "vuex";
+import CreateNewListDialog from "../../ui/dialogs/CreateNewListDialog";
+import Snackbar from "../../ui/popups/Snackbar";
+import { buttonMixin } from "../../../mixins/ui/buttonMixin";
 export default {
-  name: 'EntryBookSetting',
+  name: "EntryBookSetting",
   mixins: [buttonMixin],
   components: {
     Snackbar,
+    CreateNewListDialog
   },
 
   async mounted() {
     await this.isListExist();
   },
   computed: {
-    ...mapGetters('list', ['isCreated']),
+    ...mapGetters("list", ["isCreated"])
   },
   data() {
     return {
-      dialog: false,
+      dialog: false
     };
   },
   methods: {
-    ...mapActions('list', ['createNewList', 'deleteList', 'isListExist']),
-    ...mapActions('ui', [
-      'displaySnackbarForFailure',
-      'displaySnackbarForSuccess',
+    ...mapActions("list", ["createNewList", "closeList", "isListExist"]),
+    ...mapActions("ui", [
+      "displaySnackbarForFailure",
+      "displaySnackbarForSuccess"
     ]),
-    async createEntryBook() {
-      this.loading = true;
-      await this.createNewList();
-      this.displaySnackbarForSuccess('LIST CREATED');
-      this.loading = false;
-    },
-    async deleteCurrentList() {
+    async closeCurrentList() {
       this.dialog = false;
       this.loading = true;
-      await this.deleteList();
-      this.displaySnackbarForSuccess('LIST DELETED');
+      await this.closeList();
+      this.displaySnackbarForSuccess("LIST CLOSED");
       this.loading = false;
-    },
-  },
+    }
+  }
 };
 </script>
 

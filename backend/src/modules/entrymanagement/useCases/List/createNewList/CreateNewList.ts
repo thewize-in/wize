@@ -13,17 +13,16 @@ export class CreateNewList implements UseCase<Request, Response> {
     this.listRepo = listRepo;
   }
   async execute(request: Request): Promise<Response> {
-    const { bookId } = request;
+    const { bookId, listName } = request;
     let listResult: Result<List>, list: List;
 
     const listExist = await this.listRepo.exists(bookId);
 
     if (listExist) return Result.ok<boolean>(false);
     try {
-      listResult = List.createDefault(bookId);
+      listResult = List.createDefault(bookId, listName);
       list = listResult.getValue();
     } catch (error) {
-      console.log(error);
       return Result.ok<boolean>(false);
     }
 

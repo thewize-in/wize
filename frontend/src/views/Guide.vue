@@ -9,7 +9,7 @@
 
 <script>
 import UnderConstruction from "../components/ui/UnderConstruction";
-import GoBack from "../components/ui/GoBack";
+import GoBack from "../components/ui/navs/GoBack";
 export default {
   name: "Guide",
   components: {

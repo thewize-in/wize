@@ -4,7 +4,6 @@ import { Entity } from '../../../shared/domain/Entity';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
 import { BookId } from './bookId';
 import { EntryStats } from './entryStats';
-import { ListId } from './listid';
 
 export interface EntryDetail {
   name: string;
@@ -17,6 +16,7 @@ export interface EntryDetail {
 
 interface ListProps {
   createdOn: string;
+  listName: string;
   bookId?: BookId;
   allEntries: EntryDetail[];
   doneEntries: EntryDetail[];
@@ -25,15 +25,8 @@ interface ListProps {
 }
 
 export class List extends Entity<ListProps> {
-  get listId(): ListId {
-    return ListId.create(this._id).getValue();
-  }
   get bookId(): BookId {
     return BookId.create(this._id).getValue();
-  }
-  static get createdOn(): string {
-    const date = new Date();
-    return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
   }
   get allEntries(): EntryDetail[] {
     return this.props.allEntries;
@@ -70,12 +63,13 @@ export class List extends Entity<ListProps> {
 
     return Result.ok<List>(list);
   }
-  public static createDefault(id: string): Result<List> {
+  public static createDefault(id: string, listName: string): Result<List> {
     const bookId = new UniqueEntityID(id);
     const defaultEntryStats = EntryStats.createDefault().getValue();
 
     const defaultListProps: ListProps = {
-      createdOn: this.createdOn,
+      listName,
+      createdOn: new Date().toISOString().substr(0, 10),
       allEntries: [],
       doneEntries: [],
       undoneEntries: [],
