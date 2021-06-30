@@ -98,7 +98,7 @@ we have install all our dependencies now we are ready to rock and roll.
 
 ## Build And Run Application
 
-Our frontend and backend is written in vuejs and typescript it need to build before run.
+Our frontend and backend is written in vuejs and typescript it need to be build before run.
 
 _I assume you are in **frontend** directory_
 
