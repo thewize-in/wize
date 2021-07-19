@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Appointment {
+  id            String  @id
+  doctor_id     String
+  patient_id    String
+  status        String
+  date_and_time BigInt
+  Doctor        Doctor  @relation(fields: [doctor_id], references: [id])
+  Patient       Patient @relation(fields: [patient_id], references: [id])
+
+  @@index([doctor_id], name: "fki_doctorId")
+  @@index([patient_id], name: "fki_patientId")
+}
+
+model Doctor {
+  id          String        @id
+  name        String
+  verified    Boolean?      @default(true)
+  phone       String
+  Appointment Appointment[]
+}
+
+model Patient {
+  id          String        @id
+  name        String?
+  userId      String
+  User        User          @relation(fields: [userId], references: [id])
+  Appointment Appointment[]
+}
+
+model User {
+  id            String    @id
+  username      String?
+  email         String?
+  address       String?
+  phone         String?
+  firstName     String?
+  lastName      String?
+  profilePic    String?
+  googleId      String?
+  role          Int?
+  verifiedEmail Boolean?
+  Patient       Patient[]
+}

@@ -8,20 +8,17 @@ import morgan from 'morgan';
 import cors from 'cors';
 import path from 'path';
 import compression from 'compression';
-import { startDatabase } from '../database/mongoose/config/config';
 import { authConfig } from '../../config/authConfig';
 import { redisSessionClient } from '../../services/caching/session/redisSessionClient';
 import { v1Router } from './api/v1';
 
 const origin = {
-  origin: ['http://thewize.in'],
+  origin: ['http://thewize.in', 'http://localhost:3000'],
   credentials: true,
 };
 const port = authConfig.port;
 const app = express();
 const redisStore = redisConnect(session);
-
-startDatabase();
 
 app.use(
   session({
