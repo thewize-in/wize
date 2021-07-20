@@ -37,8 +37,8 @@ export class Appointment extends AggregateRoot<AppointmentProps> {
   get date(): Date {
     return this.props.date;
   }
-  set dateAndTime(value: Date) {
-    this.props.date = value;
+  set date(value: Date) {
+    this.props.date = new Date(value);
   }
 
   private constructor(props: AppointmentProps, id?: UniqueEntityID) {

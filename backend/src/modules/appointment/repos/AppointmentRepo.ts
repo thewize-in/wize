@@ -6,7 +6,6 @@ import { AppointmentMap } from '../mapper/AppointmentMap/AppointmentMap';
 
 export interface IAppointmentRepo extends Repo<Appointment> {
   getAppointmentsByDoctorId(doctorId: string): Promise<Result<Appointment[]>>;
-  save(appointment: Appointment): Promise<Result<void>>;
 }
 
 export class AppointmentRepo implements IAppointmentRepo {
@@ -26,8 +25,8 @@ export class AppointmentRepo implements IAppointmentRepo {
         },
       });
       return Result.ok<void>();
-    } catch {
-      return Result.fail<void>('');
+    } catch (error) {
+      throw error;
     }
   }
   public async getAppointmentsByDoctorId(doctorId: string): Promise<Result<Appointment[]>> {

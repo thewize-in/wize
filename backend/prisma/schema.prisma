@@ -13,27 +13,23 @@ model Appointment {
   patient_id String
   status     String
   date       DateTime @db.Date
-  Doctor     Doctor   @relation(fields: [doctor_id], references: [id])
-  Patient    Patient  @relation(fields: [patient_id], references: [id])
 
   @@index([doctor_id], name: "fki_doctorId")
   @@index([patient_id], name: "fki_patientId")
 }
 
 model Doctor {
-  id          String        @id
-  name        String
-  verified    Boolean?      @default(true)
-  phone       String
-  Appointment Appointment[]
+  id       String   @id
+  name     String
+  verified Boolean? @default(true)
+  phone    String
 }
 
 model Patient {
-  id          String        @id
-  name        String?
-  userId      String
-  User        User          @relation(fields: [userId], references: [id])
-  Appointment Appointment[]
+  id     String  @id
+  name   String?
+  userId String
+  User   User    @relation(fields: [userId], references: [id])
 }
 
 model User {
