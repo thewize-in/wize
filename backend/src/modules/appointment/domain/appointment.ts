@@ -3,17 +3,16 @@ import { Result } from '../../../shared/core/logic/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
 import { AppointmentId } from './appointmentId';
 import { Status } from './status';
-import { DateAndTime } from './dateAnTime';
 
-interface DoctorProps {
+interface AppointmentProps {
   appointmentId?: AppointmentId;
   doctorId: string;
   patientId: string;
-  dateAndTime?: DateAndTime;
+  date?: Date;
   status?: Status;
 }
 
-export class Appointment extends AggregateRoot<DoctorProps> {
+export class Appointment extends AggregateRoot<AppointmentProps> {
   get appointmentId(): AppointmentId {
     return AppointmentId.create(this._id).getValue();
   }
@@ -35,17 +34,17 @@ export class Appointment extends AggregateRoot<DoctorProps> {
   set status(value: Status) {
     this.props.status = value;
   }
-  get dateAndTime(): number {
-    return this.props.dateAndTime.value;
+  get date(): Date {
+    return this.props.date;
   }
-  set dateAndTime(value: number) {
-    this.props.dateAndTime = DateAndTime.create({ value }).getValue();
+  set dateAndTime(value: Date) {
+    this.props.date = value;
   }
 
-  private constructor(props: DoctorProps, id?: UniqueEntityID) {
+  private constructor(props: AppointmentProps, id?: UniqueEntityID) {
     super(props, id);
   }
-  public static create(props: DoctorProps, id?: UniqueEntityID): Result<Appointment> {
+  public static create(props: AppointmentProps, id?: UniqueEntityID): Result<Appointment> {
     const doctor = new Appointment(
       {
         ...props,

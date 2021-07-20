@@ -22,7 +22,7 @@ export class AppointmentRepo implements IAppointmentRepo {
           patient_id: appointment.patientId,
           doctor_id: appointment.doctorId,
           status: appointment.status.value,
-          date_and_time: appointment.dateAndTime,
+          date: appointment.date,
         },
       });
       return Result.ok<void>();
@@ -38,7 +38,7 @@ export class AppointmentRepo implements IAppointmentRepo {
           doctor_id: true,
           patient_id: true,
           status: true,
-          date_and_time: true,
+          date: true,
         },
         where: {
           doctor_id: doctorId,
@@ -61,7 +61,7 @@ export class AppointmentRepo implements IAppointmentRepo {
           doctor_id: true,
           patient_id: true,
           status: true,
-          date_and_time: true,
+          date: true,
         },
         where: {
           doctor_id: doctorId,
@@ -74,7 +74,7 @@ export class AppointmentRepo implements IAppointmentRepo {
       return Result.fail<Appointment[]>([]);
     }
   }
-  public async getAppointmentsByDateAndTime(dateAndTime: number): Promise<Result<Appointment[]>> {
+  public async getAppointmentsByDate(date: Date): Promise<Result<Appointment[]>> {
     try {
       const appointments = await this._db.appointment.findMany({
         select: {
@@ -82,11 +82,11 @@ export class AppointmentRepo implements IAppointmentRepo {
           doctor_id: true,
           patient_id: true,
           status: true,
-          date_and_time: true,
+          date: true,
         },
         where: {
-          date_and_time: {
-            lte: dateAndTime,
+          date: {
+            equals: date,
           },
         },
       });
