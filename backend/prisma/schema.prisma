@@ -8,11 +8,13 @@ datasource db {
 }
 
 model Appointment {
-  id         String   @id
-  doctor_id  String
-  patient_id String
-  status     String
-  date       DateTime @db.Date
+  id           String   @id
+  doctor_id    String
+  patient_id   String
+  status       String
+  date         DateTime @db.Date
+  patient_name String
+  created_at   BigInt
 
   @@index([doctor_id], name: "fki_doctorId")
   @@index([patient_id], name: "fki_patientId")

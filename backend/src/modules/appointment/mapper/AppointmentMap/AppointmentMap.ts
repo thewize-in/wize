@@ -1,7 +1,6 @@
 import { UniqueEntityID } from '../../../../shared/domain/UniqueEntityID';
 import { Mapper } from '../../../../shared/infra/Mapper';
 import { Appointment } from '../../domain/appointment';
-import { AppointmentId } from '../../domain/appointmentId';
 
 export class AppointmentMap implements Mapper<Appointment> {
   public static toPersistence(appointment: Appointment) {
@@ -11,6 +10,8 @@ export class AppointmentMap implements Mapper<Appointment> {
       patient_id: appointment.patientId,
       date: appointment.date,
       status: appointment.status,
+      patient_name: appointment.patientName,
+      created_at: appointment.createdAt,
     };
   }
   public static toDomain(raw: any): Appointment {
@@ -20,6 +21,7 @@ export class AppointmentMap implements Mapper<Appointment> {
       {
         doctorId: raw.doctorId,
         patientId: raw.patientId,
+        patientName: raw.patientName,
         status: raw.status,
         date: raw.date,
       },
@@ -27,5 +29,15 @@ export class AppointmentMap implements Mapper<Appointment> {
     ).getValue();
 
     return appointment;
+  }
+  public static toDTO(appointment: any): any {
+    return {
+      id: appointment.id,
+      doctorId: appointment.doctor_id,
+      patientId: appointment.patient_id,
+      patientName: appointment.patient_name,
+      status: appointment.status,
+      date: appointment.date,
+    };
   }
 }

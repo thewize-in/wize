@@ -12,9 +12,9 @@ export class CreateNewAppointmentController extends BaseController {
   async executeImpl(): Promise<any> {
     const dto: CreateNewAppointmentDTO = this.request.body;
 
-    const response: Result<any> = await this.useCase.execute(dto);
+    const result: Result<any> = await this.useCase.execute(dto);
 
-    if (response.isFailure) {
+    if (result.isFailure) {
       return this.fail('failed to create new appointment');
     }
 

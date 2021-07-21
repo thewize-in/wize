@@ -6,6 +6,13 @@ import { AppointmentMap } from '../mapper/AppointmentMap/AppointmentMap';
 
 export interface IAppointmentRepo extends Repo<Appointment> {
   getAppointmentsByDoctorId(doctorId: string): Promise<Result<Appointment[]>>;
+  getAppointmentsByDoctorIdAndStatus(doctorId: string, status: string): Promise<Result<Appointment[]>>;
+  getAppointmentsByDoctorIdAndDate(doctorId: string, date: string): Promise<Result<Appointment[]>>;
+  getAppointmentsByDoctorIdAndStatusAndDate(
+    doctorId: string,
+    status: string,
+    date: string
+  ): Promise<Result<Appointment[]>>;
 }
 
 export class AppointmentRepo implements IAppointmentRepo {
@@ -18,10 +25,12 @@ export class AppointmentRepo implements IAppointmentRepo {
       await this._db.appointment.create({
         data: {
           id: appointment.appointmentId.id.toString(),
-          patient_id: appointment.patientId,
           doctor_id: appointment.doctorId,
+          patient_name: appointment.patientName,
+          patient_id: appointment.patientId,
           status: appointment.status.value,
           date: appointment.date,
+          created_at: appointment.createdAt,
         },
       });
       return Result.ok<void>();
@@ -36,6 +45,7 @@ export class AppointmentRepo implements IAppointmentRepo {
           id: true,
           doctor_id: true,
           patient_id: true,
+          patient_name: true,
           status: true,
           date: true,
         },
@@ -44,7 +54,29 @@ export class AppointmentRepo implements IAppointmentRepo {
         },
       });
 
-      return Result.ok<Appointment[]>(appointments.map((appointment) => AppointmentMap.toDomain(appointment)));
+      return Result.ok<Appointment[]>(appointments.map((appointment) => AppointmentMap.toDTO(appointment)));
+    } catch {
+      return Result.fail<Appointment[]>([]);
+    }
+  }
+  public async getAppointmentsByDoctorIdAndStatus(doctorId: string, status: string): Promise<Result<Appointment[]>> {
+    try {
+      const appointments = await this._db.appointment.findMany({
+        select: {
+          id: true,
+          doctor_id: true,
+          patient_id: true,
+          patient_name: true,
+          status: true,
+          date: true,
+        },
+        where: {
+          doctor_id: doctorId,
+          status: status,
+        },
+      });
+
+      return Result.ok<Appointment[]>(appointments.map((appointment) => AppointmentMap.toDTO(appointment)));
     } catch {
       return Result.fail<Appointment[]>([]);
     }
@@ -73,24 +105,55 @@ export class AppointmentRepo implements IAppointmentRepo {
       return Result.fail<Appointment[]>([]);
     }
   }
-  public async getAppointmentsByDate(date: Date): Promise<Result<Appointment[]>> {
+  public async getAppointmentsByDoctorIdAndDate(doctorId: string, date: string): Promise<Result<Appointment[]>> {
     try {
       const appointments = await this._db.appointment.findMany({
         select: {
           id: true,
           doctor_id: true,
           patient_id: true,
+          patient_name: true,
           status: true,
           date: true,
         },
         where: {
+          doctor_id: doctorId,
           date: {
-            equals: date,
+            equals: new Date(date),
           },
         },
       });
 
-      return Result.ok<Appointment[]>(appointments.map((appointment) => AppointmentMap.toDomain(appointment)));
+      return Result.ok<Appointment[]>(appointments.map((appointment) => AppointmentMap.toDTO(appointment)));
+    } catch {
+      return Result.fail<Appointment[]>([]);
+    }
+  }
+  public async getAppointmentsByDoctorIdAndStatusAndDate(
+    doctorId: string,
+    status: string,
+    date: string
+  ): Promise<Result<Appointment[]>> {
+    try {
+      const appointments = await this._db.appointment.findMany({
+        select: {
+          id: true,
+          doctor_id: true,
+          patient_id: true,
+          patient_name: true,
+          status: true,
+          date: true,
+        },
+        where: {
+          doctor_id: doctorId,
+          status,
+          date: {
+            equals: new Date(date),
+          },
+        },
+      });
+
+      return Result.ok<Appointment[]>(appointments.map((appointment) => AppointmentMap.toDTO(appointment)));
     } catch {
       return Result.fail<Appointment[]>([]);
     }

@@ -3,11 +3,13 @@ import { Result } from '../../../shared/core/logic/Result';
 import { UniqueEntityID } from '../../../shared/domain/UniqueEntityID';
 import { AppointmentId } from './appointmentId';
 import { Status } from './status';
+import { Timestamp } from '../../../shared/domain/timeStamp';
 
 interface AppointmentProps {
   appointmentId?: AppointmentId;
   doctorId: string;
   patientId: string;
+  patientName: string;
   date?: Date;
   status?: Status;
 }
@@ -19,8 +21,11 @@ export class Appointment extends AggregateRoot<AppointmentProps> {
   get doctorId(): string {
     return this.props.doctorId;
   }
-  set name(value: string) {
-    this.props.doctorId = value;
+  get patientName(): string {
+    return this.props.patientName;
+  }
+  set patientName(value: string) {
+    this.props.patientName = value;
   }
   get patientId(): string {
     return this.props.patientId;
@@ -39,6 +44,10 @@ export class Appointment extends AggregateRoot<AppointmentProps> {
   }
   set date(value: Date) {
     this.props.date = new Date(value);
+  }
+  get createdAt(): number {
+    // timestamp in seconds
+    return new Timestamp().value;
   }
 
   private constructor(props: AppointmentProps, id?: UniqueEntityID) {

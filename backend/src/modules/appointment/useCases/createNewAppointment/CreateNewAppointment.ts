@@ -20,6 +20,7 @@ export class CreateNewAppointment implements UseCase<Request, Response> {
       const appointment = Appointment.create({
         doctorId: request.doctorId,
         patientId: request.patientId,
+        patientName: request.patientName,
         status: createdStatus,
         date: new Date(request.date),
       }).getValue();
